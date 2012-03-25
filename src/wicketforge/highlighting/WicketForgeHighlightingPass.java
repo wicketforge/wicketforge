@@ -16,8 +16,6 @@
 package wicketforge.highlighting;
 
 import com.intellij.codeHighlighting.TextEditorHighlightingPass;
-import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
-import com.intellij.codeInsight.daemon.impl.DaemonCodeAnalyzerImpl;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.codeInsight.daemon.impl.HighlightInfoType;
 import com.intellij.codeInsight.daemon.impl.UpdateHighlightersUtil;
@@ -125,9 +123,7 @@ public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
 
     @Override
     public void doApplyInformationToEditor() {
-        UpdateHighlightersUtil.setHighlightersToEditor(myProject, myDocument, startOffset, endOffset, highlights, getId());
-        DaemonCodeAnalyzer daemonCodeAnalyzer = DaemonCodeAnalyzer.getInstance(myProject);
-        ((DaemonCodeAnalyzerImpl) daemonCodeAnalyzer).getFileStatusMap().markFileUpToDate(myDocument, file, getId());
+        UpdateHighlightersUtil.setHighlightersToEditor(myProject, myDocument, startOffset, endOffset, highlights, getColorsScheme(), getId());
     }
 
     private static class WicketIdHighlightInfo extends HighlightInfo {
