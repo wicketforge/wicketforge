@@ -40,10 +40,6 @@ public abstract class WicketClassBaseAction extends CreateElementActionBase {
         super(text, description, Constants.WICKET_ICON);
     }
 
-    @Override
-    protected void checkBeforeCreate(String newName, PsiDirectory directory) throws IncorrectOperationException {
-    }
-
     @NotNull
     @Override
     protected PsiElement[] create(String newName, PsiDirectory directory) throws Exception {

@@ -21,7 +21,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.psi.*;
-import com.intellij.util.Icons;
+import com.intellij.util.PlatformIcons;
 import wicketforge.WicketForgeUtil;
 import wicketforge.visitor.CompletionResult;
 import wicketforge.visitor.PropertyModelVisitor;
@@ -61,7 +61,7 @@ public class PropertyModelCompletionContributor extends AbstractJavaCompletionCo
             for (CompletionResult s : references) {
                 LookupElementBuilder lookupElementBuilder =
                         LookupElementBuilder.create(s.getKey())
-                                .setIcon(Icons.METHOD_ICON)
+                                .setIcon(PlatformIcons.METHOD_ICON)
                                 .setTypeText(".java")
                                 .setTailText("  " + s.getDescription(), true);
                 rs.addElement(lookupElementBuilder);

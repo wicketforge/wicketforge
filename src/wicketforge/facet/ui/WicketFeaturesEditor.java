@@ -29,6 +29,7 @@ import com.intellij.openapi.vfs.pointers.VirtualFilePointer;
 import com.intellij.openapi.vfs.pointers.VirtualFilePointerManager;
 import com.intellij.pom.java.LanguageLevel;
 import com.intellij.ui.EnumComboBoxModel;
+import com.intellij.util.ArrayFactory;
 import com.intellij.util.ArrayUtil;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -84,6 +85,13 @@ public class WicketFeaturesEditor extends FacetEditorTab {
 
     private LibraryInfo[] myLastLibraryInfos = LibraryInfo.EMPTY_ARRAY;
 
+    private static final ArrayFactory<LibraryInfo> LIBRARY_INFO_ARRAY_FACTORY = new ArrayFactory<LibraryInfo>() {
+        @Override
+        public LibraryInfo[] create(final int count) {
+            return count == 0 ? LibraryInfo.EMPTY_ARRAY : new LibraryInfo[count];
+        }
+    };
+
     public WicketFeaturesEditor(@NotNull FacetEditorContext editorContext, final FacetLibrariesValidator librariesValidator) {
         this.librariesValidator = librariesValidator;
         this.wicketForgeFacet = (WicketForgeFacet) editorContext.getFacet();
@@ -107,7 +115,7 @@ public class WicketFeaturesEditor extends FacetEditorTab {
 
         mySpringCheckBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                if (mySpringCheckBox.isSelected() && getSelectedVersion().isAtLeast(WicketVersion.WICKET_1_4)) {
+                if (mySpringCheckBox.isSelected() && getSelectedVersion().getSpringAnnotations() != null) {
                     mySpringAnnotationsCheckBox.setEnabled(true);
                     mySpringAnnotationsCheckBox.setSelected(mySpringAnnotSupport.get());
                 }
@@ -232,39 +240,38 @@ public class WicketFeaturesEditor extends FacetEditorTab {
     @NotNull
     private LibraryInfo[] getRequiredLibraries() {
         LibraryInfo[] libs = myVersion.getCore();
-        if (myDateTimeCheckBox.isSelected() && myVersion.getDateTime() != null) {
-            libs = ArrayUtil.mergeArrays(libs, myVersion.getDateTime(), LibraryInfo.class);
+        if (myDateTimeCheckBox.isSelected()) {
+            libs = addLibraryInfoArray(libs, myVersion.getDateTime());
         }
-
-        if (myVelocityCheckBox.isSelected() && myVersion.getVelocity() != null) {
-            libs = ArrayUtil.mergeArrays(libs, myVersion.getVelocity(), LibraryInfo.class);
+        if (myVelocityCheckBox.isSelected()) {
+            libs = addLibraryInfoArray(libs, myVersion.getVelocity());
         }
-
         if (myExtensionsCheckBox.isSelected()) {
-            libs = ArrayUtil.mergeArrays(libs, myVersion.getExtensions(), LibraryInfo.class);
+            libs = addLibraryInfoArray(libs, myVersion.getExtensions());
         }
-
         if (mySpringCheckBox.isSelected()) {
-            libs = ArrayUtil.mergeArrays(libs, myVersion.getSpring(), LibraryInfo.class);
+            libs = addLibraryInfoArray(libs, myVersion.getSpring());
         }
-
         if (myJMXCheckBox.isSelected()) {
-            libs = ArrayUtil.mergeArrays(libs, myVersion.getJmx(), LibraryInfo.class);
+            libs = addLibraryInfoArray(libs, myVersion.getJmx());
         }
-
         if (mySpringAnnotationsCheckBox.isSelected()) {
-            libs = ArrayUtil.mergeArrays(libs, myVersion.getSpringAnnotations(), LibraryInfo.class);
+            libs = addLibraryInfoArray(libs, myVersion.getSpringAnnotations());
         }
-
         if (myAuthRolesCheckBox.isSelected()) {
-            libs = ArrayUtil.mergeArrays(libs, myVersion.getAuthRoles(), LibraryInfo.class);
+            libs = addLibraryInfoArray(libs, myVersion.getAuthRoles());
         }
-
         if (myGuiceCheckBox.isSelected()) {
-            libs = ArrayUtil.mergeArrays(libs, myVersion.getGuice(), LibraryInfo.class);
+            libs = addLibraryInfoArray(libs, myVersion.getGuice());
         }
-
         return libs;
+    }
+
+    private static LibraryInfo[] addLibraryInfoArray(@NotNull LibraryInfo[] libraryInfos, @Nullable LibraryInfo[] toAdd) {
+        if (toAdd != null) {
+            return ArrayUtil.mergeArrays(libraryInfos, toAdd, LIBRARY_INFO_ARRAY_FACTORY);
+        }
+        return libraryInfos;
     }
 
     private void init() {

@@ -23,6 +23,7 @@ import static com.intellij.facet.ui.libraries.MavenLibraryUtil.createSubMavenJar
 /**
  *
  */
+@SuppressWarnings("deprecation") // TODO change using LibrariesDownloadAssistant
 public enum WicketVersion {
     WICKET_1_3("1.3", "http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd",
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket", Release.V1_3, "org.apache.wicket.Application"), createSubMavenJarInfo("org/slf4j", "slf4j-api", "1.4.2", "org.slf4j.Logger")},
@@ -48,7 +49,7 @@ public enum WicketVersion {
 
     ),
     WICKET_1_5("1.5", "http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd", // at the moment there is no 1.5 dtd...
-            new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket", Release.V1_5, "org.apache.wicket.Application"), createSubMavenJarInfo("org/slf4j", "slf4j-api", "1.5.8", "org.slf4j.Logger")},
+            new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket", Release.V1_5, "org.apache.wicket.Application"), createSubMavenJarInfo("org/slf4j", "slf4j-api", "1.6.1", "org.slf4j.Logger")},
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket-datetime", Release.V1_5, "org.apache.wicket.datetime.DateConverter")},
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket-extensions", Release.V1_5, "org.apache.wicket.extensions.Initializer")},
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket-velocity", Release.V1_5, "org.apache.wicket.velocity.Initializer")},
@@ -60,12 +61,12 @@ public enum WicketVersion {
 
     );
 
-    public static WicketVersion HIGHEST_STABLE = WICKET_1_4;
+    public static WicketVersion HIGHEST_STABLE = WICKET_1_5;
 
     private static interface Release {
         public static final String V1_3 = "1.3.7";
-        public static final String V1_4 = "1.4.13";
-        public static final String V1_5 = "1.5-M3"; // -> when change -> check if new dtd available for 1.5
+        public static final String V1_4 = "1.4.20";
+        public static final String V1_5 = "1.5.5"; // -> when change -> check if new dtd available for 1.5
     }
 
     private final String name;
@@ -152,9 +153,5 @@ public enum WicketVersion {
 
     public String toString() {
         return name;
-    }
-
-    public boolean isAtLeast(WicketVersion level) {
-      return compareTo(level) >= 0;
     }
 }
