@@ -1,0 +1,187 @@
+<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
+<idea-plugin version="2">
+    <id>WicketForge</id>
+    <name>WicketForge</name>
+    <version>1.0-SNAPSHOT</version>
+    <description>
+        <![CDATA[
+        <p>WicketForge assists developers creating <a href="http://wicket.apache.org/">Wicket</a> applications.</p>
+        <p>Homepage: <a href="http://code.google.com/p/wicketforge">http://code.google.com/p/wicketforge</a></p>
+        <p>Features and usage instructions may be found at:
+            <ul>
+                <li><a href="http://code.google.com/p/wicketforge/wiki/PluginFeatures">http://code.google.com/p/wicketforge/wiki/PluginFeatures</a></li>
+                <li><a href="http://code.google.com/p/wicketforge/wiki/UsageInstructions">http://code.google.com/p/wicketforge/wiki/UsageInstructions</a></li>
+            </ul>
+        </p>
+        ]]>
+    </description>
+    <vendor url="http://code.google.com/p/wicketforge" logo="/icons/wicket.png">Nick Heudecker, Minas Manthos</vendor>
+    <idea-version since-build="10000"/>
+    <depends>com.intellij.properties</depends>
+    <change-notes>
+        <![CDATA[
+        <b><u>1.0.1</u></b><br>
+            <ul>
+                <li>Fixed: StackOverflowError at WicketClassHierarchy.addRecursive [Defect 69]</li>
+            </ul>
+        <b><u>1.0.0</u></b><br>
+            <ul>
+                <li>Fixed: Java/HTML toggle does not work when cursor outside of respective body contents [Defect 82]</li>
+                <li>Fixed: Shortcut Toggle Markup/Java does not care about missing wicket facet [Defect 83]</li>
+                <li>Fixed: Missing references on MarkupContainer.replace(...) and Component#replaceWith(...) [Defect 87]</li>
+                <li>Added: Using add() in a ListView's populateItem causes hierarchy mismatch (should be listItem.add()) [Enhancement 80]</li>
+                <li>Added: Report missing references (ex created but never added components) [Enhancement 85]</li>
+                <li>Added: Add descriptions to WicketForge Inspections [Enhancement 88]</li>
+                <li>Added: Different highlight for resolvable and not resolvable wicket ids [Enhancement 89]</li>
+                <li>Added: Straightforward support if wicket facet present or not [Enhancement 90]</li>
+                <li>Added: Allow navigation also in libraries containing wicket stuff [Enhancement 91]</li>
+                <li>Added: Do not change caret position when toggling from markup to java [Enhancement 92]</li>
+                <li>Change: Update default markup file templates: insert xml tag with encoding, remove doctype, lang and head [Task 93]</li>
+                <li>Minor changes.</li>
+            </ul>
+        <b><u>0.9.2</u></b><br>
+            <ul>
+                <li>Fixed: gutter jitter [Defect 77]</li>
+                <li>Fixed: Repeated F4 from class needs me to move cursor [Defect 62]</li>
+                <li>Fixed: WicketForge does not recognize FormComponentPanel as a Panel [Defect 70]</li>
+                <li>Added: Border hierarchy not recognised [Enhancement 68]</li>
+                <li>Minor changes.</li>
+            </ul>
+        <b><u>0.9.1</u></b><br>
+            <ul>
+                <li>Fixed: Exception on ListView.populateItem() of inner classes. [Defect 67]</li>
+                <li>Fixed: Typo 'Auth Roles'. [Defect 66]</li>
+                <li>Added: Hitting 'Wicket Java/HTML Toggle' offers to create markup if not present. [Enhancement 64]</li>
+                <li>Minor changes.</li>
+            </ul>
+        <b><u>0.9.0</u></b><br>
+            <ul>
+                <li>Completely changed how WicketForge works: Respect wicket id hierarchy on completion/inspection. [Enhancement 50]</li>
+                <li>Removed: Show components in gutter of markup and java file (introduced in 0.7.0). Sorry, not longer possible with enhancement 50.</li>
+                <li>Fixed: Panel markup not found (wicket 1.5). [Defect 65]</li>
+            </ul>
+        <b><u>0.8.2</u></b><br>
+            <ul>
+                <li>Support alternate resource paths for markup/properties. [Enhancement 61]</li>
+            </ul>
+        <b><u>0.8.1</u></b><br>
+            <ul>
+                <li>Highlight Wicket components (wicketId) in markup and java file. [Enhancement 56]</li>
+                <li>Fixed: Changed the 'Wicket Java/HTML Toggle' default keymap back to Alt-Shift-W (changed at 0.6.1), MacOs keymap to Control-Shift-W. [Defect 55]</li>
+                <li>Fixed: java code completition does not work on anonymous class. [Defect 57]</li>
+                <li>Fixed: Exception 'Empty PSI elements should not be passed to createDescriptor' in JavaIdInspection. [Defect 59]</li>
+                <li>Minor changes/fixes.</li>
+            </ul>
+        <b><u>0.8.0</u></b><br>
+            <ul>
+                <li>Facet detection implemented (at least one markup file with xmlns:wicket is needed for detection).</li>
+                <li>Visibility of gutter icons are configurable. [Enhancement 52]</li>
+                <li>Wicket 1.5 support.</li>
+                <li>Minor changes/fixes.</li>
+            </ul>
+        <b><u>0.7.2</u></b><br>
+            <ul>
+                <li>Fixed: NPE on anonymous class creation of Panel/Border etc... [Defect 48]</li>
+            </ul>
+        <b><u>0.7.1</u></b><br>
+            <ul>
+                <li>WicketId References implemented (for better integration. solves issue 18 and prep for issue 12).</li>
+                <li>Goto Declaration shows now multiple targets (if available).</li>
+                <li>Minor bugfixes.</li>
+            </ul>
+        <b><u>0.7.0</u></b><br>
+            <ul>
+                <li>Full support of multiple source paths for java/markup/properties.</li>
+                <li>Inner Page/Panel classes support added (inspections/navigation/code completition).</li>
+                <li>Show components in gutter of markup and java file.</li>
+                <li>Support variables in markup file template (including version dependend dtd).</li>
+                <li>Markup inspections are supressable now.</li>
+                <li>Many usability improvements.</li>
+                <li>Minor changes/fixes.</li>
+            </ul>
+        <b><u>0.6.1</u></b><br>
+            <ul>
+                <li>Removed the dependencies on the javaee package only found in IDEA Ultimate.</li>
+                <li>Changed the 'Wicket Java/HTML Toggle' keymap from Alt-Shift-W to Control-Shift-W. If this doesn't work for you, you can edit the plugin keymap from Settings &gt; Keymap &gt; WicketForge. You'll likely need to do this on OSX since the 'Control' key is mapped to the Command key, which is already mapped to something else.</li>
+                <li>Added completion for PropertyModel property expressions that should work with Objects and IModels as long as they have a generic type defined.</li>
+            </ul>
+        ]]>
+    </change-notes>
+    <extensions defaultExtensionNs="com.intellij">
+        <facetType implementation="wicketforge.facet.WicketForgeFacetType"/>
+        <fileTemplateGroup implementation="wicketforge.templates.WicketFileTemplateGroupFactory"/>
+
+        <completion.contributor language="JAVA" implementationClass="wicketforge.completion.HtmlCompletionContributor"/>
+        <completion.contributor language="JAVA" implementationClass="wicketforge.completion.PropertyModelCompletionContributor"/>
+        <completion.contributor language="HTML" implementationClass="wicketforge.completion.JavaCompletionContributor"/>
+        <completion.contributor language="JAVA" implementationClass="wicketforge.completion.PropertiesCompletionContributor"/>
+        <completion.contributor language="HTML" implementationClass="wicketforge.completion.PropertiesCompletionContributor"/>
+        <completion.contributor language="HTML" implementationClass="wicketforge.completion.WicketElementCompletionContributor"/>
+        <completion.contributor language="HTML" implementationClass="wicketforge.completion.WicketElementAttributeCompletionContributor"/>
+
+        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="wicketforge.codeInsight.WicketClassLineMarkerProvider"/>
+        <codeInsight.lineMarkerProvider language="HTML" implementationClass="wicketforge.codeInsight.WicketMarkupLineMarkerProvider"/>        
+
+        <colorSettingsPage implementation="wicketforge.highlighting.WicketForgeColorSettingsPage"/>
+
+        <psi.referenceContributor implementation="wicketforge.psi.WicketReferenceContributor"/>
+
+    </extensions>
+    <application-components>
+        <component>
+            <implementation-class>wicketforge.WicketForgeApplicationComponent</implementation-class>
+        </component>
+    </application-components>
+    <project-components>
+        <component>
+            <implementation-class>wicketforge.WicketForgeProjectComponent</implementation-class>
+        </component>
+        <component>
+            <implementation-class>wicketforge.highlighting.WicketForgeHighlightingPassFactory</implementation-class>
+        </component>
+    </project-components>
+    <actions>
+            <action id="wicketforge.action.ToggleAction"
+                    class="wicketforge.action.ToggleAction"
+                    text="Wicket Java/HTML Toggle"
+                    description="Toggles between Wicket HTML and Java files">
+                <keyboard-shortcut keymap="$default" first-keystroke="alt shift W"/>
+                <keyboard-shortcut keymap="Mac OS X" first-keystroke="control shift W"/>
+                <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift W"/>
+            </action>
+            <action id="wicketforge.action.ExtractHtmlTextAction"
+                    class="wicketforge.action.ExtractHtmlTextAction"
+                    text="Extract Text to Properties..."
+                    description="Extract selected text to properties"/>
+            <action id="wicketforge.action.CreateAction.NewPage"
+                    class="wicketforge.action.WicketPageAction"
+                    text="New Wicket Page"
+                    description="Creates new Wicket page skeleton"/>
+            <action id="wicketforge.action.CreateAction.NewPanel"
+                    class="wicketforge.action.WicketPanelAction"
+                    text="New Wicket Panel"
+                    description="Creates new Wicket panel skeleton"/>
+            <action id="wicketforge.action.ViewWicketHierarchyAction"
+                    class="wicketforge.action.ViewWicketHierarchyAction"
+                    text="Wicket Hierarchy"
+                    description="Show Wicket Hierarchy Dialog">
+                <!--TODO this action is not in menu until its finished (currently only for debug)-->
+                <!--<add-to-group group-id="ViewMenu" anchor="last"/>-->
+                <keyboard-shortcut keymap="$default" first-keystroke="alt shift F12"/>
+                <keyboard-shortcut keymap="Mac OS X" first-keystroke="control shift F12"/>
+                <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift F12"/>
+        </action>
+
+        <group text="WicketForge">
+            <separator/>
+            <reference ref="wicketforge.action.ToggleAction"/>
+            <reference ref="wicketforge.action.ExtractHtmlTextAction"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="CutCopyPasteGroup"/>
+        </group>
+        <group id="wicketforge.action.CreateAction" class="wicketforge.action.WicketActionGroup" text="Wicket">
+            <reference ref="wicketforge.action.CreateAction.NewPage"/>
+            <reference ref="wicketforge.action.CreateAction.NewPanel"/>
+            <add-to-group group-id="NewGroup" anchor="last"/>
+        </group>
+    </actions>
+</idea-plugin>

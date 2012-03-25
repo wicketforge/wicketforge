@@ -1,0 +1,60 @@
+/*
+ * Copyright 2010 The WicketForge-Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package wicketforge.model.tags;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ */
+public class WicketTag {
+
+    private final String name;
+    private List<WicketTagAttribute> attributes;
+
+    public WicketTag(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public List<WicketTagAttribute> getAttributes() {
+        return attributes;
+    }
+
+    public WicketTag addAttribute(WicketTagAttribute attr) {
+        if (attributes == null) {
+            attributes = new ArrayList<WicketTagAttribute>();
+        }
+        attributes.add(attr);
+        return this;
+    }
+
+    public WicketTagAttribute getAttribute(String attributeName) {
+        if (attributes == null || attributes.isEmpty()) {
+            return null;
+        }
+        for (WicketTagAttribute attribute : attributes) {
+            if (attribute.getName().equals(attributeName)) {
+                return attribute;
+            }
+        }
+        return null;
+    }
+}
