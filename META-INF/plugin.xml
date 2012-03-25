@@ -2,7 +2,7 @@
 <idea-plugin version="2">
     <id>WicketForge</id>
     <name>WicketForge</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <description>
         <![CDATA[
         <p>WicketForge assists developers creating <a href="http://wicket.apache.org/">Wicket</a> applications.</p>
@@ -13,13 +13,17 @@
                 <li><a href="http://code.google.com/p/wicketforge/wiki/UsageInstructions">http://code.google.com/p/wicketforge/wiki/UsageInstructions</a></li>
             </ul>
         </p>
+        <p>Thanks to Nick Heudecker starting this project.</p>
         ]]>
     </description>
-    <vendor url="http://code.google.com/p/wicketforge" logo="/icons/wicket.png">Nick Heudecker, Minas Manthos</vendor>
-    <idea-version since-build="10000"/>
+    <vendor url="http://code.google.com/p/wicketforge" logo="/icons/wicket.png">Minas Manthos</vendor>
+    <idea-version since-build="111.69"/>
     <depends>com.intellij.properties</depends>
     <change-notes>
         <![CDATA[
+        <b><u>1.1.0</u></b><br>
+            <ul>
+            </ul>
         <b><u>1.0.1</u></b><br>
             <ul>
                 <li>Fixed: StackOverflowError at WicketClassHierarchy.addRecursive [Defect 69]</li>
