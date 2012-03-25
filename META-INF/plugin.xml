@@ -113,6 +113,7 @@
     </change-notes>
     <extensions defaultExtensionNs="com.intellij">
         <facetType implementation="wicketforge.facet.WicketForgeFacetType"/>
+        <framework.detector implementation="wicketforge.facet.WicketForgeFacetType$WicketForgeFacetDetector"/>
         <fileTemplateGroup implementation="wicketforge.templates.WicketFileTemplateGroupFactory"/>
 
         <completion.contributor language="JAVA" implementationClass="wicketforge.completion.HtmlCompletionContributor"/>

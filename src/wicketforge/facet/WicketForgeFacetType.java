@@ -18,26 +18,23 @@ package wicketforge.facet;
 import com.intellij.facet.Facet;
 import com.intellij.facet.FacetType;
 import com.intellij.facet.FacetTypeId;
-import com.intellij.facet.autodetecting.FacetDetector;
-import com.intellij.facet.autodetecting.FacetDetectorRegistry;
+import com.intellij.facet.FacetTypeRegistry;
+import com.intellij.framework.detection.FacetBasedFrameworkDetector;
+import com.intellij.framework.detection.FileContentPattern;
+import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.module.JavaModuleType;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
-import com.intellij.openapi.vfs.VfsUtil;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.patterns.ElementPattern;
 import com.intellij.patterns.PatternCondition;
-import com.intellij.patterns.PlatformPatterns;
-import com.intellij.patterns.VirtualFilePattern;
 import com.intellij.util.ProcessingContext;
+import com.intellij.util.indexing.FileContent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
 
 import javax.swing.*;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * WicketForgeFacetType
@@ -73,32 +70,32 @@ public class WicketForgeFacetType extends FacetType<WicketForgeFacet, WicketForg
         return Constants.WICKET_ICON;
     }
 
-    @Override
-    public void registerDetectors(FacetDetectorRegistry<WicketForgeFacetConfiguration> registry) {
-        VirtualFilePattern pattern = PlatformPatterns.virtualFile().with(new PatternCondition<VirtualFile>("containsText") {
-            public boolean accepts(@NotNull final VirtualFile virtualFile, final ProcessingContext context) {
-                try {
-                    return VfsUtil.loadText(virtualFile).contains("xmlns:wicket");
-                } catch (IOException e) {
-                    return false;
+    public static class WicketForgeFacetDetector extends FacetBasedFrameworkDetector<WicketForgeFacet, WicketForgeFacetConfiguration> {
+        public WicketForgeFacetDetector() {
+            super(STRING_ID);
+        }
+
+        @Override
+        public FacetType<WicketForgeFacet, WicketForgeFacetConfiguration> getFacetType() {
+            //noinspection unchecked
+            return FacetTypeRegistry.getInstance().findFacetType(STRING_ID);
+        }
+
+        @NotNull
+        @Override
+        public FileType getFileType() {
+            return StdFileTypes.HTML;
+        }
+
+        @NotNull
+        @Override
+        public ElementPattern<FileContent> createSuitableFilePattern() {
+            // review: improve "xmlns:wicket" detection with patterns
+            return FileContentPattern.fileContent().with(new PatternCondition<FileContent>("wicketNamespace") {
+                public boolean accepts(@NotNull final FileContent fileContent, final ProcessingContext context) {
+                    return fileContent.getContentAsText().toString().contains("xmlns:wicket");
                 }
-            }
-        });
-        registry.registerUniversalDetector(StdFileTypes.HTML, pattern, new WicketForgeFacetDetector());
-    }
-
-    private static class WicketForgeFacetDetector extends FacetDetector<VirtualFile, WicketForgeFacetConfiguration> {
-        private WicketForgeFacetDetector() {
-            super("wicketforge-detector");
-        }
-
-        public WicketForgeFacetConfiguration detectFacet(final VirtualFile source, final Collection<WicketForgeFacetConfiguration> existentFacetConfigurations) {
-            Iterator<WicketForgeFacetConfiguration> iterator = existentFacetConfigurations.iterator();
-            if (iterator.hasNext()) {
-                return iterator.next();
-            }
-            return new WicketForgeFacetConfiguration();
+            });
         }
     }
-
 }
