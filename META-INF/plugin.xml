@@ -2,7 +2,7 @@
 <idea-plugin version="2">
     <id>WicketForge</id>
     <name>WicketForge</name>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1.0</version>
     <description>
         <![CDATA[
         <p>WicketForge assists developers creating <a href="http://wicket.apache.org/">Wicket</a> applications.</p>
@@ -23,6 +23,11 @@
         <![CDATA[
         <b><u>1.1.0</u></b><br>
             <ul>
+                <li>Fixed: IDEA 11.1 support (since-build of plugin is now 111.69, IDEA 11.0 and above)</li>
+                <li>Fixed: Highlighting NoSuchMethodError (IDEA 114.65) [Defect 106]</li>
+                <li>Fixed: FacetDetector broken (IDEA 111.69) [Defect 109]</li>
+                <li>Fixed: Exception on Spring Annotations checkbox [Defect 105]</li>
+                <li>Added: Support key in wicket:label like it is done for wicket:message [Enhancement 103]</li>
             </ul>
         <b><u>1.0.1</u></b><br>
             <ul>
