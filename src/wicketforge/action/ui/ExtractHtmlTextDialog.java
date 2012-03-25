@@ -15,8 +15,8 @@
  */
 package wicketforge.action.ui;
 
+import com.intellij.lang.properties.IProperty;
 import com.intellij.lang.properties.psi.PropertiesFile;
-import com.intellij.lang.properties.psi.Property;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
@@ -152,7 +152,7 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
 
         Object o = propertiesFileComboBox.getSelectedItem();
         if (o instanceof PropertiesFile) {
-            for (Property prop : ((PropertiesFile) o).getProperties()) {
+            for (IProperty prop : ((PropertiesFile) o).getProperties()) {
                 if (key.equals(prop.getKey())) {
                     setErrorText(String.format("Property key '%s' already in use", key));
                     return false;

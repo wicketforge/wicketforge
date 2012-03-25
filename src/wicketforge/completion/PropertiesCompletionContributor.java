@@ -19,8 +19,8 @@ import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.lang.properties.IProperty;
 import com.intellij.lang.properties.psi.PropertiesFile;
-import com.intellij.lang.properties.psi.Property;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.psi.*;
@@ -75,7 +75,7 @@ public class PropertiesCompletionContributor extends CompletionContributor {
         PropertiesFile properties = WicketForgeUtil.getPropertiesFile(c);
         if (properties != null) {
             List<CompletionResult> references = new ArrayList<CompletionResult>();
-            for (Property property : properties.getProperties()) {
+            for (IProperty property : properties.getProperties()) {
                 references.add(new CompletionResult(property.getKey(), property.getValue()));
             }
 

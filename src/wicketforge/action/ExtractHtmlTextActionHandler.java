@@ -15,7 +15,6 @@
  */
 package wicketforge.action;
 
-import com.intellij.lang.properties.psi.PropertiesElementFactory;
 import com.intellij.lang.properties.psi.PropertiesFile;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
@@ -108,7 +107,7 @@ public class ExtractHtmlTextActionHandler extends EditorWriteActionHandler {
                         }
 
                         // add 
-                        propertiesFile.addProperty(PropertiesElementFactory.createProperty(project, key, value));
+                        propertiesFile.addProperty(key, value);
 
                         // replace in html with wicket:message
                         if (psiFile instanceof XmlFile) {
