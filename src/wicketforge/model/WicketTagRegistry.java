@@ -35,6 +35,7 @@ public class WicketTagRegistry {
         tags.add(new WicketTag("wicket:extend"));
         tags.add(new WicketTag("wicket:head"));
         tags.add(new WicketTag("wicket:message").addAttribute(new WicketTagAttribute("key", WicketCompletionType.PROPERTIES)));
+        tags.add(new WicketTag("wicket:label").addAttribute(new WicketTagAttribute("key", WicketCompletionType.PROPERTIES)));
         tags.add(new WicketTag("wicket:panel"));
         tags.add(new WicketTag("wicket:child"));
     }

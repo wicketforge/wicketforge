@@ -36,6 +36,7 @@ public class WicketElementCompletionContributor extends CompletionContributor {
         new CompletionResult("wicket:panel", "Inserts a <wicket:panel> element."),
         new CompletionResult("wicket:head", "Inserts a <wicket:head> element."),
         new CompletionResult("wicket:message", "Inserts a <wicket:message> element."),
+        new CompletionResult("wicket:label", "Inserts a <wicket:label> element."),
         new CompletionResult("wicket:enclosure", "Inserts a <wicket:enclosure> element."),
         new CompletionResult("wicket:container", "Inserts a <wicket:container> element."),
         new CompletionResult("wicket:extend", "Inserts a <wicket:extend> element.")
