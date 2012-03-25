@@ -16,7 +16,6 @@
 package wicketforge.intention;
 
 import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.WicketForgeUtil;
 import wicketforge.templates.WicketTemplates;
@@ -37,8 +36,8 @@ public class AddMarkupPanelIntention extends AddMarkupIntention {
     }
 
     @Override
-    protected PsiFile getResourceFile(@NotNull PsiClass psiClass) {
-        return WicketForgeUtil.getMarkupFile(psiClass);
+    protected boolean hasResourceFile(@NotNull PsiClass psiClass) {
+        return WicketForgeUtil.getMarkupFile(psiClass) != null;
     }
 
     @NotNull

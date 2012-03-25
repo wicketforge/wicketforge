@@ -23,7 +23,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import wicketforge.WicketForgeUtil;
 import wicketforge.facet.WicketForgeFacet;
 
@@ -62,7 +61,7 @@ abstract class AddMarkupIntention implements IntentionAction {
         return  psiClass.getName() != null && // add..intention needs a name for resource (ex anonymous classes dont have) (issue 54)
                 WicketForgeFacet.isLibraryPresent(ModuleUtil.findModuleForPsiElement(element)) && // let user create page/panel when we have a wicket-lib (so we can detect new facet)
                 isApplicableForClass(psiClass) && 
-                getResourceFile(psiClass) == null;
+                !hasResourceFile(psiClass);
     }
 
     public void invoke(@NotNull final Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
@@ -93,8 +92,7 @@ abstract class AddMarkupIntention implements IntentionAction {
         }
     }
 
-    @Nullable
-    protected abstract PsiFile getResourceFile(@NotNull PsiClass psiClass);
+    protected abstract boolean hasResourceFile(@NotNull PsiClass psiClass);
 
     @NotNull
     protected abstract String getResourceFileName(@NotNull PsiClass psiClass);
