@@ -24,6 +24,7 @@
         <b><u>1.1.1</u></b><br>
             <ul>
                 <li>Fixed: Support properties in XML format [Enhancement 32]</li>
+                <li>Fixed: Exception when generating html file [Defect 110]</li>
             </ul>
         <b><u>1.1.0</u></b><br>
             <ul>
