@@ -1,3 +1,6 @@
 .idea/
 out/
 *.iml
+target/
+wicketforge.jar
+
