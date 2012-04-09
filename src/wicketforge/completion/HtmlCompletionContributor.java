@@ -56,7 +56,7 @@ public class HtmlCompletionContributor extends CompletionContributor {
                                         if (parentPath != null) {
                                             AttributeItem item = WicketMarkupHierarchy.create((XmlFile) markup).getWicketIdPathMap().get(parentPath);
                                             if (item != null) {
-                                                for (AttributeItem child : item.getChilds()) {
+                                                for (AttributeItem child : item.getChildren()) {
                                                     rs.addElement(LookupElementBuilder.create(child.getWicketId()).setIcon(child.getIcon()).setTypeText(".html").setTailText("  " + child.getLocationString(), true));
                                                 }
                                             }

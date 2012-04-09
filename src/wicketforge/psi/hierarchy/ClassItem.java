@@ -32,7 +32,7 @@ import java.util.List;
 public final class ClassItem implements ItemPresentation {
     private String wicketId;
     private List<NewComponentReference> references;
-    private List<ClassItem> childs;
+    private List<ClassItem> children;
 
     ClassItem(@NotNull String wicketId) {
         this.wicketId = wicketId;
@@ -41,8 +41,8 @@ public final class ClassItem implements ItemPresentation {
 
     @Nullable
     ClassItem findChild(@NotNull String wicketId) {
-        if (childs != null) {
-            for (ClassItem child : childs) {
+        if (children != null) {
+            for (ClassItem child : children) {
                 if (wicketId.equals(child.wicketId)) {
                     return child;
                 }
@@ -52,10 +52,10 @@ public final class ClassItem implements ItemPresentation {
     }
 
     void addChild(@NotNull ClassItem child) {
-        if (childs == null) {
-            childs = new ArrayList<ClassItem>();
+        if (children == null) {
+            children = new ArrayList<ClassItem>();
         }
-        childs.add(child);
+        children.add(child);
     }
 
     @NotNull
@@ -69,8 +69,8 @@ public final class ClassItem implements ItemPresentation {
     }
 
     @NotNull
-    public List<ClassItem> getChilds() {
-        return childs == null ? Collections.<ClassItem>emptyList() : childs;
+    public List<ClassItem> getChildren() {
+        return children == null ? Collections.<ClassItem>emptyList() : children;
     }
 
     /* ItemPresentation */

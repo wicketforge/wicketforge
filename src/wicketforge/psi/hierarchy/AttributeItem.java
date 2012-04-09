@@ -32,7 +32,7 @@ public final class AttributeItem implements ItemPresentation {
     private String wicketId;
     private XmlAttribute attribute;
     private XmlAttributeValue attributeValue;
-    private List<AttributeItem> childs;
+    private List<AttributeItem> children;
 
     // for root
     AttributeItem() {
@@ -46,10 +46,10 @@ public final class AttributeItem implements ItemPresentation {
     }
 
     void addChild(@NotNull AttributeItem child) {
-        if (childs == null) {
-            childs = new ArrayList<AttributeItem>();
+        if (children == null) {
+            children = new ArrayList<AttributeItem>();
         }
-        childs.add(child);
+        children.add(child);
     }
 
     @NotNull
@@ -68,8 +68,8 @@ public final class AttributeItem implements ItemPresentation {
     }
 
     @NotNull
-    public List<AttributeItem> getChilds() {
-        return childs == null ? Collections.<AttributeItem>emptyList() : childs;
+    public List<AttributeItem> getChildren() {
+        return children == null ? Collections.<AttributeItem>emptyList() : children;
     }
 
     /* ItemPresentation*/

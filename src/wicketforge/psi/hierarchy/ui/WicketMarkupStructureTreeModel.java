@@ -46,7 +46,7 @@ class WicketMarkupStructureTreeModel extends TextEditorBasedStructureViewModel {
 
     private static class MarkupTreeElement implements StructureViewTreeElement {
         private AttributeItem attributeItem;
-        private TreeElement[] childs;
+        private TreeElement[] children;
 
         private MarkupTreeElement(AttributeItem attributeItem) {
             this.attributeItem = attributeItem;
@@ -73,14 +73,14 @@ class WicketMarkupStructureTreeModel extends TextEditorBasedStructureViewModel {
         }
 
         public TreeElement[] getChildren() {
-            if (childs == null) {
-                childs = new TreeElement[attributeItem.getChilds().size()];
-                List<AttributeItem> attributeItemChilds = attributeItem.getChilds();
-                for (int i = 0, n = attributeItemChilds.size(); i < n; i++) {
-                    childs[i] = new MarkupTreeElement(attributeItemChilds.get(i));
+            if (children == null) {
+                children = new TreeElement[attributeItem.getChildren().size()];
+                List<AttributeItem> attributeItemChildren = attributeItem.getChildren();
+                for (int i = 0, n = attributeItemChildren.size(); i < n; i++) {
+                    children[i] = new MarkupTreeElement(attributeItemChildren.get(i));
                 }
             }
-            return childs;
+            return children;
         }
     }
 }

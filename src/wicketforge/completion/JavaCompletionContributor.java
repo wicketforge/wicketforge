@@ -57,7 +57,7 @@ public class JavaCompletionContributor extends CompletionContributor {
                                 if (parentPath != null) {
                                     ClassItem item = WicketClassHierarchy.create(clazz).getWicketIdPathMap().get(parentPath);
                                     if (item != null) {
-                                        for (ClassItem child : item.getChilds()) {
+                                        for (ClassItem child : item.getChildren()) {
                                             rs.addElement(LookupElementBuilder.create(child.getWicketId()).setIcon(child.getIcon()).setTypeText(".java").setTailText("  " + child.getLocationString(), true));
                                         }
                                     }

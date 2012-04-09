@@ -45,7 +45,7 @@ class WicketClassStructureTreeModel extends TextEditorBasedStructureViewModel {
 
     private class ClassTreeElement implements StructureViewTreeElement {
         private ClassItem classItem;
-        private TreeElement[] childs;
+        private TreeElement[] children;
 
         private ClassTreeElement(ClassItem classItem) {
             this.classItem = classItem;
@@ -73,14 +73,14 @@ class WicketClassStructureTreeModel extends TextEditorBasedStructureViewModel {
         }
 
         public TreeElement[] getChildren() {
-            if (childs == null) {
-                childs = new TreeElement[classItem.getChilds().size()];
-                List<ClassItem> classItemChilds = classItem.getChilds();
-                for (int i = 0, n = classItemChilds.size(); i < n; i++) {
-                    childs[i] = new ClassTreeElement(classItemChilds.get(i));
+            if (children == null) {
+                children = new TreeElement[classItem.getChildren().size()];
+                List<ClassItem> classItemChildren = classItem.getChildren();
+                for (int i = 0, n = classItemChildren.size(); i < n; i++) {
+                    children[i] = new ClassTreeElement(classItemChildren.get(i));
                 }
             }
-            return childs;
+            return children;
         }
     }
 }
