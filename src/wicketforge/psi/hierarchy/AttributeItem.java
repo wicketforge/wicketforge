@@ -81,7 +81,7 @@ public final class AttributeItem implements ItemPresentation {
     private String location;
     public String getLocationString() {
         if (attribute != null && location == null) {
-            location = new StringBuilder().append('<').append(attribute.getParent().getName()).append('>').toString();
+            location = "<" + attribute.getParent().getName() + ">";
         }
         return location;
     }

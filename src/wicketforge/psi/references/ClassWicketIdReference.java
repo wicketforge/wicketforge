@@ -63,6 +63,7 @@ public class ClassWicketIdReference implements PsiReference {
         return null;
     }
 
+    @NotNull
     public String getCanonicalText() {
         return textRange.substring(wicketIdExpression.getText());
     }

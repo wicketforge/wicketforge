@@ -102,6 +102,7 @@ public class WicketForgeColorSettingsPage implements ColorSettingsPage {
             this.textAttributesKey = textAttributesKey;
         }
 
+        @NotNull
         public HighlightSeverity getSeverity(PsiElement psiElement) {
             return HighlightSeverity.INFORMATION;
         }

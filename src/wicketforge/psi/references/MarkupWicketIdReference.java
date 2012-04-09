@@ -74,6 +74,7 @@ public class MarkupWicketIdReference implements PsiReference, PsiPolyVariantRefe
         return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
     }
 
+    @NotNull
     public String getCanonicalText() {
         return textRange.substring(attributeValue.getText());
     }

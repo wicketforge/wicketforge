@@ -325,7 +325,7 @@ public final class WicketForgeUtil {
      */
     @NotNull
     public static String getMarkupFileName(@NotNull PsiClass clazz) {
-        return new StringBuilder(getResourceFileName(clazz)).append(".").append(Constants.HTML).toString();
+        return getResourceFileName(clazz) + "." + Constants.HTML;
     }
 
     /**
