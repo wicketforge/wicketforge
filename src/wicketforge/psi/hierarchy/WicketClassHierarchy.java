@@ -393,6 +393,10 @@ public class WicketClassHierarchy {
         
         if (addedComponents != null) {
             for (PsiNewExpression newExpression : addedComponents) {
+                // fix issue 95: add the component to itself (no sense) but crash wicketforge
+                if (newExpression.equals(parentElement)) {
+                    continue;
+                }
                 ClassItem.NewComponentReference newComponentReference = newComponentReferenceMap.get(newExpression);
                 if (newComponentReference != null) {
 
