@@ -21,6 +21,7 @@ import com.intellij.ide.fileTemplates.FileTemplate;
 import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.ide.fileTemplates.FileTemplateUtil;
 import com.intellij.ide.util.PackageUtil;
+import com.intellij.lang.properties.PropertiesUtil;
 import com.intellij.lang.properties.psi.PropertiesFile;
 import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.application.Result;
@@ -189,19 +190,19 @@ public final class WicketForgeUtil {
      */
     @Nullable
     public static PropertiesFile getPropertiesFile(@NotNull PsiClass psiClass) {
-        PsiFile psiFile = getResourceFile(psiClass, getPropertiesFileName(psiClass));
-        return psiFile instanceof PropertiesFile ? (PropertiesFile) psiFile : null;
+        PsiFile psiFile = getResourceFile(psiClass, getPropertiesFileName(psiClass, Constants.PropertiesType.PROPERTIES), getPropertiesFileName(psiClass, Constants.PropertiesType.XML));
+        return PropertiesUtil.getPropertiesFile(psiFile);
     }
 
     /**
      * Returns a resource file from same package like PsiClass.
      *
      * @param psiClass the PsiClass
-     * @param resourceName resourceName to Find
+     * @param resourceNames resourceNames to Find
      * @return the markup PsiFile or null if no such file exists.
      */
     @Nullable
-    private static PsiFile getResourceFile(@NotNull PsiClass psiClass, @NotNull String resourceName) {
+    private static PsiFile getResourceFile(@NotNull PsiClass psiClass, @NotNull String... resourceNames) {
         PsiFile psiFile = psiClass.getContainingFile();
         if (!(psiFile instanceof PsiJavaFile)) {
             return null;
@@ -226,9 +227,11 @@ public final class WicketForgeUtil {
                             if (virtualFile != null && virtualFile.isValid()) {
                                 PsiDirectory psiDirectory = PsiManager.getInstance(module.getProject()).findDirectory(virtualFile);
                                 if (psiDirectory != null) {
-                                    PsiFile file = psiDirectory.findFile(resourceName);
-                                    if (file != null) {
-                                        return file;
+                                    for (String resourceName : resourceNames) {
+                                        PsiFile file = psiDirectory.findFile(resourceName);
+                                        if (file != null) {
+                                            return file;
+                                        }
                                     }
                                 }
                             }
@@ -240,9 +243,11 @@ public final class WicketForgeUtil {
         // try to find in classpath
         GlobalSearchScope scope = module != null ? GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module) : GlobalSearchScope.allScope(psiClass.getProject());
         for (PsiDirectory psiDirectory : psiPackage.getDirectories(scope)) {
-            PsiFile file = psiDirectory.findFile(resourceName);
-            if (file != null) {
-                return file;
+            for (String resourceName : resourceNames) {
+                PsiFile file = psiDirectory.findFile(resourceName);
+                if (file != null) {
+                    return file;
+                }
             }
         }
         return null;
@@ -330,8 +335,22 @@ public final class WicketForgeUtil {
      * @return the markup file name
      */
     @NotNull
-    public static String getPropertiesFileName(@NotNull PsiClass clazz) {
-        return new StringBuilder(getResourceFileName(clazz)).append(".").append(Constants.PROPERTIES).toString();
+    public static String getPropertiesFileName(@NotNull PsiClass clazz, @NotNull Constants.PropertiesType propertiesType) {
+        switch (propertiesType) {
+            case PROPERTIES: return getResourceFileName(clazz) + "." + Constants.PROPERTIES;
+            case XML:
+                WicketVersion wicketVersion = null;
+                Module module = ModuleUtil.findModuleForPsiElement(clazz);
+                if (module != null) {
+                    wicketVersion = WicketForgeSupportModel.createModel(module).getVersion();
+                }
+                if (wicketVersion == null) {
+                    wicketVersion = WicketVersion.HIGHEST_STABLE;
+                }
+                return getResourceFileName(clazz) + "." + wicketVersion.getXmlPropertiesFileExtension();
+            default:
+                throw new IllegalArgumentException("Unsupported PropertiesType " + propertiesType);
+        }
     }
 
     /**

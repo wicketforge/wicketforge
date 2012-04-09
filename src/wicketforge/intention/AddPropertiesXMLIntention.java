@@ -22,18 +22,18 @@ import wicketforge.WicketForgeUtil;
 import wicketforge.templates.WicketTemplates;
 
 /**
- * Class level intention used to create properties files for Wicket page and panel components.
+ * Class level intention used to create properties xml files for Wicket page and panel components.
  */
-public class AddPropertiesIntention extends AddMarkupIntention {
+public class AddPropertiesXMLIntention extends AddMarkupIntention {
 
     @NotNull
     public String getText() {
-        return "Create Properties File";
+        return "Create Properties XML File";
     }
 
     @NotNull
     public String getFamilyName() {
-        return "Create Properties File";
+        return "Create Properties XML File";
     }
 
     @Override
@@ -44,13 +44,13 @@ public class AddPropertiesIntention extends AddMarkupIntention {
     @NotNull
     @Override
     protected String getResourceFileName(@NotNull PsiClass psiClass) {
-        return WicketForgeUtil.getPropertiesFileName(psiClass, Constants.PropertiesType.PROPERTIES);
+        return WicketForgeUtil.getPropertiesFileName(psiClass, Constants.PropertiesType.XML);
     }
 
     @NotNull
     @Override
     protected String getTemplateName() {
-        return WicketTemplates.WICKET_PROPERTIES;
+        return WicketTemplates.WICKET_PROPERTIES_XML;
     }
 
     protected boolean isApplicableForClass(@NotNull PsiClass psiClass) {

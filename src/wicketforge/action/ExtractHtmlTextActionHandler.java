@@ -15,6 +15,7 @@
  */
 package wicketforge.action;
 
+import com.intellij.lang.properties.PropertiesUtil;
 import com.intellij.lang.properties.psi.PropertiesFile;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
@@ -37,7 +38,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.WicketForgeUtil;
 import wicketforge.action.ui.ExtractHtmlTextDialog;
-import wicketforge.templates.WicketTemplates;
 
 /**
  */
@@ -91,39 +91,48 @@ public class ExtractHtmlTextActionHandler extends EditorWriteActionHandler {
         }
 
         ExtractHtmlTextDialog.ActionRunnable actionRunnable = new ExtractHtmlTextDialog.ActionRunnable() {
-            public boolean run(@Nullable final PropertiesFile pFile, @NotNull final PsiDirectory destinationDirectory, final @NotNull String key, final @NotNull String value) {
+            public boolean run(@Nullable final Object selectedItem, @NotNull final PsiDirectory destinationDirectory, final @NotNull String key, final @NotNull String value) {
                 return ApplicationManager.getApplication().runWriteAction(new Computable<Boolean>() {
                     public Boolean compute() {
-                        PropertiesFile propertiesFile = pFile;
+                        final PropertiesFile propertiesFile;
 
-                        // if not set, we create for the component one...
-                        if (propertiesFile == null) {
-                            PsiElement element = WicketForgeUtil.createFileFromTemplate(WicketForgeUtil.getPropertiesFileName(psiClass), destinationDirectory, WicketTemplates.WICKET_PROPERTIES);
+                        if (selectedItem instanceof ExtractHtmlTextDialog.NewPropertiesFileInfo) {
+                            // create new properties file
+                            ExtractHtmlTextDialog.NewPropertiesFileInfo newPropertiesFileInfo = (ExtractHtmlTextDialog.NewPropertiesFileInfo) selectedItem;
+                            PsiElement element = WicketForgeUtil.createFileFromTemplate(newPropertiesFileInfo.getName(), destinationDirectory, newPropertiesFileInfo.getPropertiesType().getTemplateName());
                             if (element == null) {
                                 Messages.showErrorDialog(project, "Could not create properties file.", "Extract Text");
                                 return false;
                             }
-                            propertiesFile = (PropertiesFile) element;
+                            propertiesFile = PropertiesUtil.getPropertiesFile((PsiFile) element) ;
+                        } else if (selectedItem instanceof PropertiesFile) {
+                            // use existing properties file
+                            propertiesFile = (PropertiesFile) selectedItem;
+                        } else {
+                            throw new IllegalArgumentException("Unsupported type " + selectedItem);
                         }
 
-                        // add 
-                        propertiesFile.addProperty(key, value);
+                        if (propertiesFile != null) {
+                            // add
+                            propertiesFile.addProperty(key, value);
 
-                        // replace in html with wicket:message
-                        if (psiFile instanceof XmlFile) {
-                            String startTag = String.format("<wicket:message key=\"%s\">", key);
-                            String endTag = "</wicket:message>";
-                            CaretModel caret = editor.getCaretModel();
-                            SelectionModel selection = editor.getSelectionModel();
-                            int start = selection.getSelectionStart();
-                            int end = selection.getSelectionEnd();
-                            selection.removeSelection();
+                            // replace in html with wicket:message
+                            if (psiFile instanceof XmlFile) {
+                                String startTag = String.format("<wicket:message key=\"%s\">", key);
+                                String endTag = "</wicket:message>";
+                                CaretModel caret = editor.getCaretModel();
+                                SelectionModel selection = editor.getSelectionModel();
+                                int start = selection.getSelectionStart();
+                                int end = selection.getSelectionEnd();
+                                selection.removeSelection();
 
-                            caret.moveToOffset(start);
-                            EditorModificationUtil.insertStringAtCaret(editor, startTag);
-                            // move the caret to the end of the selection
-                            caret.moveToOffset(startTag.length() + end);
-                            EditorModificationUtil.insertStringAtCaret(editor, endTag);
+                                caret.moveToOffset(start);
+                                EditorModificationUtil.insertStringAtCaret(editor, startTag);
+                                // move the caret to the end of the selection
+                                caret.moveToOffset(startTag.length() + end);
+                                EditorModificationUtil.insertStringAtCaret(editor, endTag);
+                            }
+                            // TODO mm replace in java with getString(...) ...?
                         }
 
                         return true;

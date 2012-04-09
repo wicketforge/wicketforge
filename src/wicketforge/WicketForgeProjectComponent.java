@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import wicketforge.intention.AddMarkupPageIntention;
 import wicketforge.intention.AddMarkupPanelIntention;
 import wicketforge.intention.AddPropertiesIntention;
+import wicketforge.intention.AddPropertiesXMLIntention;
 
 /**
  *
@@ -35,6 +36,7 @@ public class WicketForgeProjectComponent implements ProjectComponent {
         IntentionManager.getInstance().registerIntentionAndMetaData(new AddMarkupPageIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
         IntentionManager.getInstance().registerIntentionAndMetaData(new AddMarkupPanelIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
         IntentionManager.getInstance().registerIntentionAndMetaData(new AddPropertiesIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
+        IntentionManager.getInstance().registerIntentionAndMetaData(new AddPropertiesXMLIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
     }
 
     public void disposeComponent() {

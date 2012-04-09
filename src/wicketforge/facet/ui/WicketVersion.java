@@ -26,6 +26,7 @@ import static com.intellij.facet.ui.libraries.MavenLibraryUtil.createSubMavenJar
 @SuppressWarnings("deprecation") // TODO change using LibrariesDownloadAssistant
 public enum WicketVersion {
     WICKET_1_3("1.3", "http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd",
+            "xml",
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket", Release.V1_3, "org.apache.wicket.Application"), createSubMavenJarInfo("org/slf4j", "slf4j-api", "1.4.2", "org.slf4j.Logger")},
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket-datetime", Release.V1_3, "org.apache.wicket.datetime.DateConverter")},
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket-extensions", Release.V1_3, "org.apache.wicket.extensions.Initializer")},
@@ -37,6 +38,7 @@ public enum WicketVersion {
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket-guice", Release.V1_3, "org.apache.wicket.guice.GuiceComponentInjector")}
     ),
     WICKET_1_4("1.4", "http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd",
+            "xml",
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket", Release.V1_4, "org.apache.wicket.Application"), createSubMavenJarInfo("org/slf4j", "slf4j-api", "1.5.8", "org.slf4j.Logger")},
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket-datetime", Release.V1_4, "org.apache.wicket.datetime.DateConverter")},
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket-extensions", Release.V1_4, "org.apache.wicket.extensions.Initializer")},
@@ -49,6 +51,7 @@ public enum WicketVersion {
 
     ),
     WICKET_1_5("1.5", "http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd", // at the moment there is no 1.5 dtd...
+            "properties.xml",
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket", Release.V1_5, "org.apache.wicket.Application"), createSubMavenJarInfo("org/slf4j", "slf4j-api", "1.6.1", "org.slf4j.Logger")},
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket-datetime", Release.V1_5, "org.apache.wicket.datetime.DateConverter")},
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket-extensions", Release.V1_5, "org.apache.wicket.extensions.Initializer")},
@@ -80,9 +83,11 @@ public enum WicketVersion {
     private final LibraryInfo[] authRoles;
     private final LibraryInfo[] guice;
     private String dtd;
+    private String xmlPropertiesFileExtension;
 
     private WicketVersion(@NotNull String name,
                           @NotNull String dtd,
+                          @NotNull String xmlPropertiesFileExtension,
                           LibraryInfo[] core,
                           LibraryInfo[] dateTime,
                           LibraryInfo[] extensions,
@@ -94,6 +99,7 @@ public enum WicketVersion {
                           LibraryInfo[] guice) {
         this.name = name;
         this.dtd = dtd;
+        this.xmlPropertiesFileExtension = xmlPropertiesFileExtension;
         this.core = core;
         this.dateTime = dateTime;
         this.extensions = extensions;
@@ -108,6 +114,11 @@ public enum WicketVersion {
     @NotNull
     public String getName() {
         return name;
+    }
+
+    @NotNull
+    public String getXmlPropertiesFileExtension() {
+        return xmlPropertiesFileExtension;
     }
 
     @NotNull

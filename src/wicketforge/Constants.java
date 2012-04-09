@@ -16,6 +16,8 @@
 package wicketforge;
 
 import com.intellij.openapi.util.IconLoader;
+import org.jetbrains.annotations.NotNull;
+import wicketforge.templates.WicketTemplates;
 
 import javax.swing.*;
 
@@ -58,4 +60,20 @@ public interface Constants {
     public static final Icon WICKET_COMPONENT_ICON = IconLoader.findIcon("/icons/wicket_component.png");
     public static final Icon TOJAVAREF = IconLoader.findIcon("/icons/form.png");
     public static final Icon TOMARKUPREF = IconLoader.findIcon("/icons/form.png");
+
+    enum PropertiesType {
+        PROPERTIES(WicketTemplates.WICKET_PROPERTIES),
+        XML(WicketTemplates.WICKET_PROPERTIES_XML);
+
+        private String templateName;
+
+        private PropertiesType(String templateName) {
+            this.templateName = templateName;
+        }
+
+        @NotNull
+        public String getTemplateName() {
+            return templateName;
+        }
+    }
 }

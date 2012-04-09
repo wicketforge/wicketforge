@@ -28,6 +28,7 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiPackage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import wicketforge.Constants;
 import wicketforge.WicketForgeUtil;
 
 import javax.swing.*;
@@ -110,7 +111,8 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
         { // find component class properties file
             PropertiesFile propertiesFile = WicketForgeUtil.getPropertiesFile(componentClass);
             if (propertiesFile == null) {
-                data.add(componentClass);
+                data.add(new NewPropertiesFileInfo(componentClass, Constants.PropertiesType.PROPERTIES));
+                data.add(new NewPropertiesFileInfo(componentClass, Constants.PropertiesType.XML));
             } else {
                 data.add(propertiesFile);
             }
@@ -166,11 +168,10 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
 
     @Override
     protected void doOKAction() {
-        Object o = propertiesFileComboBox.getSelectedItem();
-        PropertiesFile propertiesFile = o instanceof PropertiesFile ? (PropertiesFile) o : null;
+        Object selectedItem = propertiesFileComboBox.getSelectedItem();
 
         // if we dont have any properties file (we will create one) -> ask for destination
-        if (module != null && psiPackage != null && propertiesFile == null && chooseDifferentDestinationFolderCheckBox.isSelected()) {
+        if (module != null && psiPackage != null && selectedItem instanceof NewPropertiesFileInfo && chooseDifferentDestinationFolderCheckBox.isSelected()) {
             PsiDirectory directory = WicketForgeUtil.selectTargetDirectory(psiPackage.getQualifiedName(), project, module);
             if (directory == null) {
                 return; // aborted
@@ -178,7 +179,7 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
             destinationDirectory = directory;
         }
 
-        if (validateInput() && actionRunnable.run(propertiesFile, destinationDirectory, propertyKeyTextField.getText(), propertyValueTextArea.getText())) {
+        if (validateInput() && actionRunnable.run(selectedItem, destinationDirectory, propertyKeyTextField.getText(), propertyValueTextArea.getText())) {
             super.doOKAction();
         }
     }
@@ -187,8 +188,8 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
         public Component getListCellRendererComponent(JList jList, Object value, int index, boolean isSelected, boolean hasFocus) {
             if (value instanceof PropertiesFile) {
                 setText(((PropertiesFile) value).getName());
-            } else if (value instanceof PsiClass) {
-                setText(((PsiClass) value).getName() + "   [new]");
+            } else if (value instanceof NewPropertiesFileInfo) {
+                setText(((NewPropertiesFileInfo) value).getName() + "   [new]");
             } else {
                 setText("");
             }
@@ -196,7 +197,28 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
         }
     }
 
+    public static class NewPropertiesFileInfo {
+        private Constants.PropertiesType propertiesType;
+        private String name;
+
+        public NewPropertiesFileInfo(PsiClass componentClass, Constants.PropertiesType propertiesType) {
+            this.propertiesType = propertiesType;
+            this.name = WicketForgeUtil.getPropertiesFileName(componentClass, propertiesType);
+        }
+
+        public Constants.PropertiesType getPropertiesType() {
+            return propertiesType;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
     public static interface ActionRunnable {
-        boolean run(@Nullable PropertiesFile propertiesFile, @NotNull PsiDirectory destinationDirectory, @NotNull String key, @NotNull String value);
+        /**
+         * @param selectedItem PropertiesFile or NewPropertiesFileInfo
+         */
+        boolean run(@Nullable Object selectedItem, @NotNull PsiDirectory destinationDirectory, @NotNull String key, @NotNull String value);
     }
 }

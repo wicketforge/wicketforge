@@ -21,6 +21,10 @@
     <depends>com.intellij.properties</depends>
     <change-notes>
         <![CDATA[
+        <b><u>1.1.1</u></b><br>
+            <ul>
+                <li>Fixed: Support properties in XML format [Enhancement 32]</li>
+            </ul>
         <b><u>1.1.0</u></b><br>
             <ul>
                 <li>Fixed: IDEA 11.1 support (since-build of plugin is now 111.69, IDEA 11.0 and above)</li>

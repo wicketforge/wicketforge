@@ -25,6 +25,7 @@ public interface WicketTemplates
     @NonNls public static final String WICKET_PAGE_HTML = "WicketPage.html";
     @NonNls public static final String WICKET_PANEL_HTML = "WicketPanel.html";
     @NonNls public static final String WICKET_PROPERTIES = "WicketProperties.properties";
+    @NonNls public static final String WICKET_PROPERTIES_XML = "WicketProperties.properties.xml";
 
     @NonNls public static final String[] TEMPLATES = {
         WICKET_PAGE_HTML, WICKET_PANEL_HTML
