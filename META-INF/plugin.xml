@@ -14,6 +14,8 @@
             </ul>
         </p>
         <p>Thanks to Nick Heudecker starting this project.</p>
+        <p/>
+        <p>See also <a href="http://plugins.intellij.net/plugin/?idea&id=1475">AltN8</a>. Very useful to navigate between java, markup, properties and tests... </p>
         ]]>
     </description>
     <vendor url="http://code.google.com/p/wicketforge" logo="/icons/wicket.png">Minas Manthos</vendor>
