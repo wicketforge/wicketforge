@@ -288,8 +288,12 @@ public class WicketClassHierarchy {
                     }
                     // check if chaining-method returns wicketcomponent (issue 69)
                     if (expression instanceof PsiReferenceExpression) {
-                        PsiClass returnClass = getMethodReturnClass(methodCallExpression.resolveMethod());
-                        if (returnClass == null || !WicketForgeUtil.isWicketComponent(returnClass)) {
+                        PsiMethod method = methodCallExpression.resolveMethod();
+                        if (method == null) {
+                            return null;
+                        }
+                        PsiClass returnClass = getMethodReturnClass(method);
+                        if (returnClass == null || !WicketForgeUtil.isWicketComponent(returnClass) || "get".equals(method.getName())) {
                             return null;
                         }
                     }
