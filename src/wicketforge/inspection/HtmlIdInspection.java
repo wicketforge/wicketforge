@@ -43,7 +43,7 @@ public class HtmlIdInspection extends XmlSuppressableInspectionTool {
                 super.visitXmlAttribute(attribute);
                 if (Constants.WICKET_ID.equals(attribute.getName())) {
                     XmlAttributeValue attributeValue = attribute.getValueElement();
-                    if (attributeValue != null) {
+                    if (attributeValue != null && attributeValue.getTextLength() > 0) {
                         for (PsiReference reference : attributeValue.getReferences()) {
                             if (reference instanceof MarkupWicketIdReference && ((MarkupWicketIdReference) reference).multiResolve(false).length == 0) {
                                 holder.registerProblem(holder.getManager().createProblemDescriptor(attributeValue, "Wicket id reference problem",
