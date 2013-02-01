@@ -15,7 +15,10 @@
  */
 package wicketforge.visitor;
 
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import wicketforge.WicketForgeUtil;
 
 import java.util.ArrayList;
@@ -27,7 +30,6 @@ import java.util.List;
  */
 public class PropertyModelVisitor extends JavaRecursiveElementVisitor {
 
-    private PsiClass internalClass;
     private List<CompletionResult> results = new ArrayList<CompletionResult>();
 
     @Override
@@ -45,37 +47,36 @@ public class PropertyModelVisitor extends JavaRecursiveElementVisitor {
             return;
         }
 
-        PsiExpression obj = expressions[0];
-        if (obj instanceof PsiNewExpression) {
-            PsiNewExpression newExpression = (PsiNewExpression) obj;
-            PsiType type = newExpression.getType();
-            initInternalClass(type);
-        }
-        else if (obj instanceof PsiReferenceExpression) {
-            PsiReferenceExpression refexp = (PsiReferenceExpression) obj;
-            PsiType type = refexp.getType();
-            initInternalClass(type);
-        }
+        PsiExpression objectExpression = expressions[0];
+        PsiExpression propertyExpression = expressions[1];
 
-        initCompletions(expressions[1]);
+        if (objectExpression instanceof PsiNewExpression || objectExpression instanceof PsiReferenceExpression) {
+
+            PsiClass objectClass = getObjectClass(objectExpression.getType());
+
+            findMatches(objectClass, propertyExpression);
+        }
     }
 
-    private void initInternalClass(PsiType type) {
+    @Nullable
+    private PsiClass getObjectClass(@Nullable PsiType type) {
+        PsiClass result = null;
         if (type instanceof PsiClassType) {
             PsiClassType classType = (PsiClassType) type;
-            internalClass = classType.resolve();
-            if (internalClass != null && WicketForgeUtil.isWicketModel(internalClass)) {
+            result = classType.resolve();
+            if (result != null && WicketForgeUtil.isWicketModel(result)) {
                 PsiType[] parameters = classType.getParameters();
                 if (parameters.length == 1 && parameters[0] instanceof PsiClassType) {
                     PsiClassType paramClassType = (PsiClassType) parameters[0];
-                    internalClass = paramClassType.resolve();
+                    result = paramClassType.resolve();
                 }
             }
         }
+        return result;
     }
 
-    private void initCompletions(PsiExpression expression) {
-        if (internalClass == null || !(expression instanceof PsiLiteralExpression)) {
+    private void findMatches(@Nullable PsiClass objectClass, @Nullable PsiExpression expression) {
+        if (objectClass == null || !(expression instanceof PsiLiteralExpression)) {
             return;
         }
 
@@ -84,12 +85,12 @@ public class PropertyModelVisitor extends JavaRecursiveElementVisitor {
 
         String currentExpression = "";
 
-        PsiClass targetClass = internalClass;
+        PsiClass targetClass = objectClass;
         for (String element : expressionElements) {
             PsiMethod[] methods;
             if (element.equals(last)) {
                 methods = targetClass.getAllMethods();
-                findCompletions(element, methods, currentExpression);
+                findMatchingMethods(element, methods, currentExpression);
             }
             else {
                 methods = targetClass.findMethodsByName(propertyGetter(element), true);
@@ -103,7 +104,7 @@ public class PropertyModelVisitor extends JavaRecursiveElementVisitor {
                         }
 
                         if (currentExpression.length() > 0) {
-                            currentExpression = String.format("%s.%s", currentExpression, propertyName(method.getName()));
+                            currentExpression = currentExpression + "." + propertyName(method.getName());
                         } else {
                             currentExpression = propertyName(method.getName());
                         }
@@ -129,20 +130,19 @@ public class PropertyModelVisitor extends JavaRecursiveElementVisitor {
         return l;
     }
 
-    private void findCompletions(String element, PsiMethod[] methods, String currentExpression) {
+    private void findMatchingMethods(String element, PsiMethod[] methods, String currentExpression) {
         for (PsiMethod method : methods) {
             String methodName = method.getName();
             if (methodNameMatches(methodName, element)) {
-                results.add(new CompletionResult(getCompletionResultKey(currentExpression, propertyName(methodName)), String.format("%s:%s", methodName, method.getReturnTypeNoResolve().getCanonicalText())));
+                results.add(new CompletionResult(getCompletionResultKey(currentExpression, propertyName(methodName)), methodName + ":" + method.getReturnTypeNoResolve().getCanonicalText()));
             }
         }
     }
 
     private String getCompletionResultKey(String currentExpression, String property) {
         if (currentExpression.length() > 0) {
-            return String.format("%s.%s", currentExpression, property);
-        }
-        else {
+            return currentExpression + "." + property;
+        } else {
             return property;
         }
     }
@@ -157,28 +157,21 @@ public class PropertyModelVisitor extends JavaRecursiveElementVisitor {
 
     }
 
-    private String propertyGetter(String s) {
-        if (s == null || s.length() == 0) {
-            return "get";
-        }
-        return String.format("get%C%s", s.charAt(0), s.substring(1, s.length()));
+    private static String propertyGetter(String s) {
+        return s == null || s.length() == 0 ? "get" : "get" + StringUtil.capitalize(s);
     }
 
-    private String propertyIser(String s) {
-        if (s == null || s.length() == 0) {
-            return "is";
-        }
-        return String.format("is%C%s", s.charAt(0), s.substring(1, s.length()));
+    private static String propertyIser(String s) {
+        return s == null || s.length() == 0 ? "is" : "is" + StringUtil.capitalize(s);
     }
 
-    private String propertyName(String s) {
+    private String propertyName(@NotNull String s) {
         String property;
         if (s.startsWith("is")) {
-            property = s.substring(2, s.length());
+            property = s.substring(2);
+        } else {
+            property = s.substring(3);
         }
-        else {
-            property = s.substring(3, s.length());
-        }
-        return String.format("%c%s", Character.toLowerCase(property.charAt(0)), property.substring(1, property.length()));
+        return StringUtil.decapitalize(property);
     }
 }
