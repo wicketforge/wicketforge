@@ -34,8 +34,8 @@
 
         <completion.contributor language="HTML" implementationClass="wicketforge.completion.MarkupWicketIdCompletionContributor"/>
         <completion.contributor language="HTML" implementationClass="wicketforge.completion.PropertiesCompletionContributor"/>
-        <completion.contributor language="HTML" implementationClass="wicketforge.completion.WicketElementCompletionContributor"/>
-        <completion.contributor language="HTML" implementationClass="wicketforge.completion.WicketElementAttributeCompletionContributor"/>
+        <completion.contributor language="HTML" implementationClass="wicketforge.completion.WicketTagCompletionContributor"/>
+        <completion.contributor language="HTML" implementationClass="wicketforge.completion.WicketTagAttributeCompletionContributor"/>
 
         <codeInsight.lineMarkerProvider language="JAVA" implementationClass="wicketforge.codeInsight.WicketClassLineMarkerProvider"/>
         <codeInsight.lineMarkerProvider language="HTML" implementationClass="wicketforge.codeInsight.WicketMarkupLineMarkerProvider"/>        

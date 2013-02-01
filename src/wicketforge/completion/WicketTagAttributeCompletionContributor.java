@@ -34,7 +34,7 @@ import wicketforge.model.tags.WicketTagAttribute;
 
 /**
  */
-public class WicketElementAttributeCompletionContributor extends CompletionContributor {
+public class WicketTagAttributeCompletionContributor extends CompletionContributor {
 
     @Override
     public void fillCompletionVariants(final CompletionParameters p, final CompletionResultSet rs) {

@@ -30,7 +30,7 @@ import wicketforge.visitor.CompletionResult;
 
 /**
  */
-public class WicketElementCompletionContributor extends CompletionContributor {
+public class WicketTagCompletionContributor extends CompletionContributor {
 
     private static final CompletionResult[] WICKET_ELEMENTS = {
         new CompletionResult("wicket:panel", "Inserts a <wicket:panel> element."),
