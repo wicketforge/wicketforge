@@ -28,9 +28,6 @@ import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.psi.xml.XmlToken;
 import wicketforge.Constants;
-import wicketforge.model.WicketTagRegistry;
-import wicketforge.model.tags.WicketTag;
-import wicketforge.model.tags.WicketTagAttribute;
 
 /**
  */
@@ -55,18 +52,16 @@ public class WicketTagAttributeCompletionContributor extends CompletionContribut
     }
 
     private void addAttributeResults(XmlToken position, CompletionResultSet rs) {
-        WicketTag wicketTag = WicketTagRegistry.getTag(getParentElementName(position));
-        if (wicketTag == null || wicketTag.getAttributes() == null) {
-            return;
-        }
-
-        for (WicketTagAttribute attr : wicketTag.getAttributes()) {
-            LookupElementBuilder lookupElementBuilder =
-                    LookupElementBuilder.create(attr.getName() + "=\"\"")
-                            .setPresentableText(attr.getName())
-                            .setIcon(Constants.HTML_ICON)
-                            .setInsertHandler(new AttributeInsertHandler());
-            rs.addElement(lookupElementBuilder);
+        WicketTag wicketTag = WicketTag.of(getParentElementName(position));
+        if (wicketTag != null) {
+            for (String attr : wicketTag.getAttributes()) {
+                LookupElementBuilder lookupElementBuilder =
+                        LookupElementBuilder.create(attr + "=\"\"")
+                                .setPresentableText(attr)
+                                .setIcon(Constants.HTML_ICON)
+                                .setInsertHandler(new AttributeInsertHandler());
+                rs.addElement(lookupElementBuilder);
+            }
         }
     }
 
@@ -88,12 +83,10 @@ public class WicketTagAttributeCompletionContributor extends CompletionContribut
         return tag.getName();
     }
 
-    private class AttributeInsertHandler implements InsertHandler<LookupElement> {
-
+    private static class AttributeInsertHandler implements InsertHandler<LookupElement> {
         public void handleInsert(InsertionContext insertionContext, LookupElement lookupElement) {
             CaretModel caretModel = insertionContext.getEditor().getCaretModel();
             caretModel.moveToOffset(caretModel.getOffset()-1);
         }
     }
-
 }

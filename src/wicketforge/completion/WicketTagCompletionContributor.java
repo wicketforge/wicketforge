@@ -26,21 +26,10 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.html.HtmlTag;
 import com.intellij.psi.xml.XmlToken;
 import wicketforge.Constants;
-import wicketforge.visitor.CompletionResult;
 
 /**
  */
 public class WicketTagCompletionContributor extends CompletionContributor {
-
-    private static final CompletionResult[] WICKET_ELEMENTS = {
-        new CompletionResult("wicket:panel", "Inserts a <wicket:panel> element."),
-        new CompletionResult("wicket:head", "Inserts a <wicket:head> element."),
-        new CompletionResult("wicket:message", "Inserts a <wicket:message> element."),
-        new CompletionResult("wicket:label", "Inserts a <wicket:label> element."),
-        new CompletionResult("wicket:enclosure", "Inserts a <wicket:enclosure> element."),
-        new CompletionResult("wicket:container", "Inserts a <wicket:container> element."),
-        new CompletionResult("wicket:extend", "Inserts a <wicket:extend> element.")
-    };
 
     @Override
     public void fillCompletionVariants(final CompletionParameters p, final CompletionResultSet rs) {
@@ -61,11 +50,10 @@ public class WicketTagCompletionContributor extends CompletionContributor {
     }
 
     private void addElementResults(CompletionResultSet rs) {
-        for (CompletionResult res : WICKET_ELEMENTS) {
+        for (WicketTag wicketTag : WicketTag.TAGS) {
             LookupElementBuilder lookupElementBuilder =
-                    LookupElementBuilder.create(res.getKey())
-                            .setIcon(Constants.HTML_ICON)
-                            .setTailText("  " + res.getDescription(), true);
+                    LookupElementBuilder.create(wicketTag.getName())
+                            .setIcon(Constants.HTML_ICON);
             rs.addElement(lookupElementBuilder);
         }
     }
