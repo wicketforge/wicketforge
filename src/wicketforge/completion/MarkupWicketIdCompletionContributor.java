@@ -37,7 +37,7 @@ import wicketforge.psi.hierarchy.WicketClassHierarchy;
 
 /**
  */
-public class JavaCompletionContributor extends CompletionContributor {
+public class MarkupWicketIdCompletionContributor extends CompletionContributor {
 
     @Override
     public void fillCompletionVariants(final CompletionParameters p, final CompletionResultSet rs) {

@@ -32,7 +32,7 @@ import wicketforge.psi.hierarchy.WicketMarkupHierarchy;
 
 /**
  */
-public class HtmlCompletionContributor extends CompletionContributor {
+public class ClassWicketIdCompletionContributor extends CompletionContributor {
 
     @Override
     public void fillCompletionVariants(final CompletionParameters p, final CompletionResultSet rs) {
