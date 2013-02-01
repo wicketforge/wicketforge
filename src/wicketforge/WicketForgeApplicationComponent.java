@@ -19,9 +19,9 @@ import com.intellij.codeInspection.InspectionToolProvider;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.ServiceManager;
 import org.jetbrains.annotations.NotNull;
+import wicketforge.inspection.ClassWicketIdInspection;
 import wicketforge.inspection.EmptySrcAttributeInspection;
-import wicketforge.inspection.HtmlIdInspection;
-import wicketforge.inspection.JavaIdInspection;
+import wicketforge.inspection.MarkupWicketIdInspection;
 
 /**
  *
@@ -57,7 +57,7 @@ public class WicketForgeApplicationComponent implements ApplicationComponent, In
     }
 
     public Class[] getInspectionClasses() {
-        return new Class[]{HtmlIdInspection.class, JavaIdInspection.class, EmptySrcAttributeInspection.class};
+        return new Class[]{MarkupWicketIdInspection.class, ClassWicketIdInspection.class, EmptySrcAttributeInspection.class};
     }
 /*
     @Nls
