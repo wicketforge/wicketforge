@@ -15,6 +15,7 @@
  */
 package wicketforge.completion;
 
+import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
@@ -30,7 +31,7 @@ import java.util.List;
 
 /**
  */
-public class PropertyModelCompletionContributor extends AbstractJavaCompletionContributor {
+public class PropertyModelCompletionContributor extends CompletionContributor {
 
     @Override
     public void fillCompletionVariants(final CompletionParameters p, final CompletionResultSet rs) {
@@ -54,6 +55,29 @@ public class PropertyModelCompletionContributor extends AbstractJavaCompletionCo
                 }
             }
         });
+    }
+
+    private PsiNewExpression getElementNewExpression(PsiJavaToken position) {
+        if (!(position.getParent() instanceof PsiLiteralExpression)) {
+            return null;
+        }
+
+        PsiLiteralExpression expression = (PsiLiteralExpression) position.getParent();
+        if (!(expression.getParent() instanceof PsiExpressionList)) {
+            return null;
+        }
+
+        PsiExpressionList expressionList = (PsiExpressionList) expression.getParent();
+        if (!(expressionList.getParent() instanceof PsiNewExpression)) {
+            return null;
+        }
+
+        PsiNewExpression newExpression = (PsiNewExpression) expressionList.getParent();
+        PsiMethod constructor = newExpression.resolveConstructor();
+        if (constructor == null || !constructor.getContainingFile().isPhysical()) {
+            return null;
+        }
+        return newExpression;
     }
 
     private void addReferencesToResult(List<CompletionResult> references, CompletionResultSet rs) {
