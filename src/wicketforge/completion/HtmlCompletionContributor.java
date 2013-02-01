@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.WicketForgeUtil;
 import wicketforge.psi.hierarchy.AttributeItem;
-import wicketforge.psi.hierarchy.WicketClassHierarchy;
+import wicketforge.psi.hierarchy.HierarchyUtil;
 import wicketforge.psi.hierarchy.WicketMarkupHierarchy;
 
 /**
@@ -52,7 +52,7 @@ public class HtmlCompletionContributor extends CompletionContributor {
                                     PsiFile markup = WicketForgeUtil.getMarkupFile(psiClass);
                                     if (markup != null) {
                                         // ... before we search for our parent AttributeItem
-                                        String parentPath = WicketClassHierarchy.findPathOf(psiClass, wicketIdExpression, true, true);
+                                        String parentPath = HierarchyUtil.findPathOf(psiClass, wicketIdExpression, true, true);
                                         if (parentPath != null) {
                                             AttributeItem item = WicketMarkupHierarchy.create((XmlFile) markup).getWicketIdPathMap().get(parentPath);
                                             if (item != null) {

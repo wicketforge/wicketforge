@@ -24,7 +24,7 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.WicketForgeUtil;
 import wicketforge.psi.hierarchy.AttributeItem;
-import wicketforge.psi.hierarchy.WicketClassHierarchy;
+import wicketforge.psi.hierarchy.HierarchyUtil;
 import wicketforge.psi.hierarchy.WicketMarkupHierarchy;
 
 /**
@@ -51,7 +51,7 @@ public class ClassWicketIdReference implements PsiReference {
     public PsiElement resolve() {
         PsiFile markupFile = WicketForgeUtil.getMarkupFile(psiClass);
         if (markupFile != null) {
-            String path = WicketClassHierarchy.findPathOf(psiClass, wicketIdExpression, false, false);
+            String path = HierarchyUtil.findPathOf(psiClass, wicketIdExpression, false, false);
             if (path != null) {
                 WicketMarkupHierarchy hierarchy = WicketMarkupHierarchy.create((XmlFile) markupFile);
                 AttributeItem item = hierarchy.getWicketIdPathMap().get(path);

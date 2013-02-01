@@ -16,7 +16,6 @@
 package wicketforge.psi.hierarchy;
 
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.SmartList;
@@ -471,41 +470,6 @@ public class WicketClassHierarchy {
     @NotNull
     public ClassItem getRoot() {
         return root;
-    }
-
-    @Nullable
-    public static String findPathOf(@NotNull PsiClass psiClass, @NotNull PsiExpression wicketIdExpression, boolean parent, boolean incomplete) {
-        WicketClassHierarchy hierarchy = create(psiClass);
-        for (Map.Entry<String, ClassItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
-            for (ClassItem.NewComponentReference newComponentReference : entry.getValue().getReferences()) {
-                if (wicketIdExpression.equals(newComponentReference.getWicketIdExpression())) {
-                    String path = entry.getKey();
-                    return parent ? path.substring(0, path.lastIndexOf(Constants.HIERARCHYSEPARATOR)) : path;
-                }
-            }
-        }
-        if (incomplete) {
-            // ok, wicket expression is not added yet so we dont know hierarchy of our component
-            // lets try to find textual position in hierarchy, not best method but we have no other option
-            // If component gets added later, correct hierarchy gets checked...
-            final TextRange wicketIdTextRange = wicketIdExpression.getTextRange();
-            String bestPath = "";
-            TextRange bestTextRange = psiClass.getTextRange();
-            // go thru all new references
-            for (Map.Entry<String, ClassItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
-                for (ClassItem.NewComponentReference newComponentReference : entry.getValue().getReferences()) {
-                    TextRange textRange = newComponentReference.getNewExpression().getTextRange();
-                    // if wicketId is in new-references-textRange and this is inner of current best...
-                    if (textRange.contains(wicketIdTextRange) && bestTextRange.contains(textRange)) {
-                        // then we have a better candidate  
-                        bestTextRange = textRange;
-                        bestPath = entry.getKey();
-                    }
-                }
-            }
-            return parent ? bestPath : bestPath + Constants.HIERARCHYSEPARATOR + WicketForgeUtil.getWicketIdFromExpression(wicketIdExpression);
-        }
-        return null;
     }
 
     private static final class MarkupReferences {

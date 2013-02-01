@@ -16,13 +16,11 @@
 package wicketforge.psi.hierarchy;
 
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.XmlRecursiveElementVisitor;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlFile;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
 
 import java.util.HashMap;
@@ -93,20 +91,5 @@ public class WicketMarkupHierarchy {
     @NotNull
     public AttributeItem getRoot() {
         return root;
-    }
-
-    @Nullable
-    public static String findPathOf(@NotNull XmlAttributeValue attributeValue, boolean parent) {
-        PsiFile psiFile = attributeValue.getContainingFile();
-        if (psiFile instanceof XmlFile) {
-            WicketMarkupHierarchy hierarchy = create((XmlFile) psiFile);
-            for (Map.Entry<String, AttributeItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
-                if (attributeValue.equals(entry.getValue().getAttributeValue())) {
-                    String path = entry.getKey();
-                    return parent ? path.substring(0, path.lastIndexOf(Constants.HIERARCHYSEPARATOR)) : path;
-                }
-            }
-        }
-        return null;
     }
 }

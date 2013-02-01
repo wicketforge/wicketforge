@@ -32,8 +32,8 @@ import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
 import wicketforge.WicketForgeUtil;
 import wicketforge.psi.hierarchy.ClassItem;
+import wicketforge.psi.hierarchy.HierarchyUtil;
 import wicketforge.psi.hierarchy.WicketClassHierarchy;
-import wicketforge.psi.hierarchy.WicketMarkupHierarchy;
 
 /**
  */
@@ -53,7 +53,7 @@ public class JavaCompletionContributor extends CompletionContributor {
                             PsiClass clazz = WicketForgeUtil.getMarkupClass(f);
                             if (clazz != null) {
                                 // ... before we search for our parent AttributeItem
-                                String parentPath = WicketMarkupHierarchy.findPathOf(wicketIdAttribute, true);
+                                String parentPath = HierarchyUtil.findPathOf(wicketIdAttribute, true);
                                 if (parentPath != null) {
                                     ClassItem item = WicketClassHierarchy.create(clazz).getWicketIdPathMap().get(parentPath);
                                     if (item != null) {

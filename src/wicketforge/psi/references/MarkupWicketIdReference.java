@@ -23,8 +23,8 @@ import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.psi.hierarchy.ClassItem;
+import wicketforge.psi.hierarchy.HierarchyUtil;
 import wicketforge.psi.hierarchy.WicketClassHierarchy;
-import wicketforge.psi.hierarchy.WicketMarkupHierarchy;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class MarkupWicketIdReference implements PsiReference, PsiPolyVariantRefe
 
     @NotNull
     public ResolveResult[] multiResolve(boolean incompleteCode) {
-        String path = WicketMarkupHierarchy.findPathOf(attributeValue, false);
+        String path = HierarchyUtil.findPathOf(attributeValue, false);
         if (path != null) {
             WicketClassHierarchy hierarchy = WicketClassHierarchy.create(psiClass);
             ClassItem item = hierarchy.getWicketIdPathMap().get(path);
