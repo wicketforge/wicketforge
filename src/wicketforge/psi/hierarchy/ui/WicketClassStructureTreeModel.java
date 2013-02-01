@@ -21,6 +21,7 @@ import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
+import com.intellij.util.PsiNavigateUtil;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.psi.hierarchy.ClassItem;
 import wicketforge.psi.hierarchy.WicketClassHierarchy;
@@ -29,7 +30,7 @@ import java.util.List;
 
 /**
  */
-class WicketClassStructureTreeModel extends TextEditorBasedStructureViewModel {
+public class WicketClassStructureTreeModel extends TextEditorBasedStructureViewModel {
     private StructureViewTreeElement root;
 
     public WicketClassStructureTreeModel(@NotNull PsiFile psiFile, @NotNull PsiClass psiClass) {
@@ -58,6 +59,7 @@ class WicketClassStructureTreeModel extends TextEditorBasedStructureViewModel {
         public void navigate(boolean requestFocus) {
             // todo mm -> navigate (multiple choices on getReferences)
 //           PsiNavigateUtil.navigate(classItem.getReferences()...);
+            PsiNavigateUtil.navigate(classItem.getReferences().get(0).getWicketIdExpression());
         }
 
         public boolean canNavigate() {

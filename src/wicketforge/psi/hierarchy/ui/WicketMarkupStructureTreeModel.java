@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  */
-class WicketMarkupStructureTreeModel extends TextEditorBasedStructureViewModel {
+public class WicketMarkupStructureTreeModel extends TextEditorBasedStructureViewModel {
     private StructureViewTreeElement root;
 
     public WicketMarkupStructureTreeModel(@NotNull PsiFile psiFile) {

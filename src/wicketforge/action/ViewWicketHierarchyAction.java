@@ -15,16 +15,24 @@
  */
 package wicketforge.action;
 
+import com.intellij.ide.structureView.StructureView;
+import com.intellij.ide.structureView.StructureViewBuilder;
+import com.intellij.ide.structureView.StructureViewModel;
+import com.intellij.ide.util.FileStructurePopup;
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiJavaFile;
+import com.intellij.pom.Navigatable;
+import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlFile;
-import wicketforge.psi.hierarchy.ui.WicketHierarchyDialog;
+import com.intellij.ui.PlaceHolder;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import wicketforge.WicketForgeUtil;
+import wicketforge.psi.hierarchy.ui.WicketClassStructureTreeModel;
+import wicketforge.psi.hierarchy.ui.WicketMarkupStructureTreeModel;
 
 /**
  */
@@ -52,9 +60,48 @@ public class ViewWicketHierarchyAction extends AnAction {
         if (currentElement == null) {
             return;
         }
+        StructureViewModel viewModel = null;
+        if (psiFile instanceof XmlFile) {
+            viewModel = new WicketMarkupStructureTreeModel(psiFile);
+        } else if (psiFile instanceof PsiJavaFile) {
+            PsiClass psiClass = WicketForgeUtil.getParentWicketClass(currentElement);
+            if (psiClass != null) {
+                viewModel = new WicketClassStructureTreeModel(psiFile, psiClass);
+            }
+        }
+        final StructureViewBuilder structureViewBuilder = PlatformDataKeys.FILE_EDITOR.getData(dataContext).getStructureViewBuilder();
+        StructureView structureView = structureViewBuilder.createStructureView(PlatformDataKeys.FILE_EDITOR.getData(dataContext), project);
 
-        WicketHierarchyDialog.show(psiFile, editor, project, PlatformDataKeys.NAVIGATABLE.getData(dataContext), currentElement);
+        FileStructurePopup popup = createPopup(editor, project, PlatformDataKeys.NAVIGATABLE.getData(dataContext), viewModel, structureView);
+        if (popup != null) {
+          final VirtualFile virtualFile = psiFile.getVirtualFile();
+          if (virtualFile != null) {
+            popup.setTitle(virtualFile.getName());
+          }
+          popup.show();
+        }
     }
+
+    private static final String PLACE = "WicketViewPopup";
+
+    @Nullable
+    public static FileStructurePopup createPopup(final Editor editor, Project project, @Nullable Navigatable navigatable, StructureViewModel model,  StructureView structureView) {
+      if (model instanceof PlaceHolder) {
+        //noinspection unchecked
+        ((PlaceHolder)model).setPlace(PLACE);
+      }
+
+      return createStructureViewPopup(model, editor, project, navigatable, structureView);
+    }
+
+    public static FileStructurePopup createStructureViewPopup(final StructureViewModel structureViewModel,
+                                                                     final Editor editor,
+                                                                     final Project project,
+                                                                     final Navigatable navigatable,
+                                                                     final @NotNull Disposable alternativeDisposable) {
+      return new FileStructurePopup(structureViewModel, editor, project, alternativeDisposable, true);
+    }
+
 
     @Override
     public void update(AnActionEvent e) {

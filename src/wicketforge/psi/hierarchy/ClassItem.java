@@ -82,14 +82,12 @@ public final class ClassItem implements ItemPresentation {
     private String location;
     public String getLocationString() {
         if (location == null) {
-            boolean first = true;
             StringBuilder sb = new StringBuilder();
             for (NewComponentReference reference : references) {
-                if (!first) {
+                if (sb.length() > 0) {
                     sb.append(", ");
                 }
-                sb.append("new ").append(reference.getBaseClassToCreate().getName()).append("(...)");
-                first = false;
+                sb.append(reference.toString());
             }
             location = sb.toString();
         }
@@ -158,6 +156,11 @@ public final class ClassItem implements ItemPresentation {
         @NotNull
         public String getWicketId() {
             return wicketId;
+        }
+
+        @Override
+        public String toString() {
+            return "new " + getBaseClassToCreate().getName() + "(...)";
         }
 
         /**
