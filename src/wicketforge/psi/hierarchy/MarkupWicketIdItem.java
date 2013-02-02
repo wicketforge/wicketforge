@@ -28,26 +28,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public final class AttributeItem implements ItemPresentation {
+public final class MarkupWicketIdItem implements ItemPresentation {
     private String wicketId;
     private XmlAttribute attribute;
     private XmlAttributeValue attributeValue;
-    private List<AttributeItem> children;
+    private List<MarkupWicketIdItem> children;
 
     // for root
-    AttributeItem() {
+    MarkupWicketIdItem() {
         this.wicketId = "";
     }
 
-    AttributeItem(@NotNull String wicketId, @NotNull XmlAttribute attribute, @NotNull XmlAttributeValue attributeValue) {
+    MarkupWicketIdItem(@NotNull String wicketId, @NotNull XmlAttribute attribute, @NotNull XmlAttributeValue attributeValue) {
         this.wicketId = wicketId;
         this.attribute = attribute;
         this.attributeValue = attributeValue;
     }
 
-    void addChild(@NotNull AttributeItem child) {
+    void addChild(@NotNull MarkupWicketIdItem child) {
         if (children == null) {
-            children = new ArrayList<AttributeItem>();
+            children = new ArrayList<MarkupWicketIdItem>();
         }
         children.add(child);
     }
@@ -68,8 +68,8 @@ public final class AttributeItem implements ItemPresentation {
     }
 
     @NotNull
-    public List<AttributeItem> getChildren() {
-        return children == null ? Collections.<AttributeItem>emptyList() : children;
+    public List<MarkupWicketIdItem> getChildren() {
+        return children == null ? Collections.<MarkupWicketIdItem>emptyList() : children;
     }
 
     /* ItemPresentation*/

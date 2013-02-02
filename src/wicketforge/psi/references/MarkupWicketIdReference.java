@@ -22,9 +22,10 @@ import com.intellij.util.ArrayUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
-import wicketforge.psi.hierarchy.ClassItem;
+import wicketforge.psi.hierarchy.ClassWicketIdHierarchy;
+import wicketforge.psi.hierarchy.ClassWicketIdItem;
+import wicketforge.psi.hierarchy.ClassWicketIdNewComponentItem;
 import wicketforge.psi.hierarchy.HierarchyUtil;
-import wicketforge.psi.hierarchy.WicketClassHierarchy;
 
 import java.util.List;
 
@@ -46,12 +47,12 @@ public class MarkupWicketIdReference implements PsiReference, PsiPolyVariantRefe
     public ResolveResult[] multiResolve(boolean incompleteCode) {
         String path = HierarchyUtil.findPathOf(attributeValue, false);
         if (path != null) {
-            WicketClassHierarchy hierarchy = WicketClassHierarchy.create(psiClass);
-            ClassItem item = hierarchy.getWicketIdPathMap().get(path);
+            ClassWicketIdHierarchy hierarchy = ClassWicketIdHierarchy.create(psiClass);
+            ClassWicketIdItem item = hierarchy.getWicketIdPathMap().get(path);
             if (item != null) {
                 final List<PsiElementResolveResult> list = new SmartList<PsiElementResolveResult>();
-                for (ClassItem.NewComponentReference newComponentReference : item.getReferences()) {
-                    list.add(new PsiElementResolveResult(newComponentReference.getWicketIdExpression()));
+                for (ClassWicketIdNewComponentItem newComponentItem : item.getNewComponentItems()) {
+                    list.add(new PsiElementResolveResult(newComponentItem.getWicketIdExpression()));
                 }
                 if (!list.isEmpty()) {
                     return list.toArray(new ResolveResult[list.size()]);

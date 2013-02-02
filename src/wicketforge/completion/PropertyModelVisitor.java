@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicketforge.visitor;
+package wicketforge.completion;
 
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  *
  */
-public class PropertyModelVisitor extends JavaRecursiveElementVisitor {
+class PropertyModelVisitor extends JavaRecursiveElementVisitor {
     private List<PropertyExpression> results = new ArrayList<PropertyExpression>();
 
     @Override

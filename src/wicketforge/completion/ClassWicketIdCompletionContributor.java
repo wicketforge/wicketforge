@@ -26,9 +26,9 @@ import com.intellij.psi.xml.XmlFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.WicketForgeUtil;
-import wicketforge.psi.hierarchy.AttributeItem;
 import wicketforge.psi.hierarchy.HierarchyUtil;
-import wicketforge.psi.hierarchy.WicketMarkupHierarchy;
+import wicketforge.psi.hierarchy.MarkupWicketIdHierarchy;
+import wicketforge.psi.hierarchy.MarkupWicketIdItem;
 
 /**
  */
@@ -51,12 +51,12 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
                                 if (psiClass != null) {
                                     PsiFile markup = WicketForgeUtil.getMarkupFile(psiClass);
                                     if (markup != null) {
-                                        // ... before we search for our parent AttributeItem
+                                        // ... before we search for our parent Item
                                         String parentPath = HierarchyUtil.findPathOf(psiClass, wicketIdExpression, true, true);
                                         if (parentPath != null) {
-                                            AttributeItem item = WicketMarkupHierarchy.create((XmlFile) markup).getWicketIdPathMap().get(parentPath);
+                                            MarkupWicketIdItem item = MarkupWicketIdHierarchy.create((XmlFile) markup).getWicketIdPathMap().get(parentPath);
                                             if (item != null) {
-                                                for (AttributeItem child : item.getChildren()) {
+                                                for (MarkupWicketIdItem child : item.getChildren()) {
                                                     rs.addElement(LookupElementBuilder.create(child.getWicketId()).setIcon(child.getIcon()).setTypeText(".html").setTailText("  " + child.getLocationString(), true));
                                                 }
                                             }

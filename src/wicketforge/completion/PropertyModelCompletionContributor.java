@@ -24,7 +24,6 @@ import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.psi.*;
 import com.intellij.util.PlatformIcons;
 import wicketforge.WicketForgeUtil;
-import wicketforge.visitor.PropertyModelVisitor;
 
 /**
  */

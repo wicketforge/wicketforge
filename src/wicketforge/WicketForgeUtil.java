@@ -522,7 +522,7 @@ public final class WicketForgeUtil {
     }
 
     @Nullable
-    // todo mm -> check if we can deprecate this -> i think this one should be like WicketClassHierarchy -> resolveClassFromNewExpression
+    // todo mm -> check if we can deprecate this -> i think this one should be like wicketforge.psi.hierarchy.ClassWicketIdReferences -> resolveClassFromNewExpression
     public static PsiClass getClassFromNewExpression(@NotNull PsiNewExpression expression) {
         PsiMethod constructor = expression.resolveConstructor();
         if (constructor == null || !constructor.getContainingFile().isPhysical()) {
