@@ -23,8 +23,8 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.util.PsiNavigateUtil;
 import org.jetbrains.annotations.NotNull;
+import wicketforge.psi.hierarchy.MarkupWicketIdHierarchy;
 import wicketforge.psi.hierarchy.MarkupWicketIdItem;
-import wicketforge.psi.hierarchy.WicketMarkupHierarchy;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class WicketMarkupStructureTreeModel extends TextEditorBasedStructureView
 
     public WicketMarkupStructureTreeModel(@NotNull PsiFile psiFile) {
         super(psiFile);
-        WicketMarkupHierarchy hierarchy = WicketMarkupHierarchy.create((XmlFile) psiFile);
+        MarkupWicketIdHierarchy hierarchy = MarkupWicketIdHierarchy.create((XmlFile) psiFile);
         root = new MarkupTreeElement(hierarchy.getRoot());
     }
 

@@ -31,9 +31,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
 import wicketforge.WicketForgeUtil;
+import wicketforge.psi.hierarchy.ClassWicketIdHierarchy;
 import wicketforge.psi.hierarchy.ClassWicketIdItem;
 import wicketforge.psi.hierarchy.HierarchyUtil;
-import wicketforge.psi.hierarchy.WicketClassHierarchy;
 
 /**
  */
@@ -55,7 +55,7 @@ public class MarkupWicketIdCompletionContributor extends CompletionContributor {
                                 // ... before we search for our parent Item
                                 String parentPath = HierarchyUtil.findPathOf(wicketIdAttribute, true);
                                 if (parentPath != null) {
-                                    ClassWicketIdItem item = WicketClassHierarchy.create(clazz).getWicketIdPathMap().get(parentPath);
+                                    ClassWicketIdItem item = ClassWicketIdHierarchy.create(clazz).getWicketIdPathMap().get(parentPath);
                                     if (item != null) {
                                         for (ClassWicketIdItem child : item.getChildren()) {
                                             rs.addElement(LookupElementBuilder.create(child.getWicketId()).setIcon(child.getIcon()).setTypeText(".java").setTailText("  " + child.getLocationString(), true));

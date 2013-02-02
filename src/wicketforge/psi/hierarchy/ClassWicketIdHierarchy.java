@@ -29,18 +29,18 @@ import java.util.Map;
 
 /**
  */
-public class WicketClassHierarchy {
-    private static final Logger LOG = Logger.getInstance("#wicketforge.psi.hierarchy.WicketClassHierarchy");
+public class ClassWicketIdHierarchy {
+    private static final Logger LOG = Logger.getInstance("#wicketforge.psi.hierarchy.ClassWicketIdHierarchy");
 
     private Map<String, ClassWicketIdItem> wicketIdPathMap;
     private ClassWicketIdItem root;
 
     @NotNull
-    public static WicketClassHierarchy create(@NotNull PsiClass psiClass) {
-        return new WicketClassHierarchy(psiClass);
+    public static ClassWicketIdHierarchy create(@NotNull PsiClass psiClass) {
+        return new ClassWicketIdHierarchy(psiClass);
     }
 
-    private WicketClassHierarchy(@NotNull final PsiClass psiClass) {
+    private ClassWicketIdHierarchy(@NotNull final PsiClass psiClass) {
         this.wicketIdPathMap = new HashMap<String, ClassWicketIdItem>();
         this.root = new ClassWicketIdItem("");
         this.wicketIdPathMap.put("", root);

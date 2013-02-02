@@ -34,7 +34,7 @@ public final class HierarchyUtil {
 
     @Nullable
     public static String findPathOf(@NotNull PsiClass psiClass, @NotNull PsiExpression wicketIdExpression, boolean parent, boolean incomplete) {
-        WicketClassHierarchy hierarchy = WicketClassHierarchy.create(psiClass);
+        ClassWicketIdHierarchy hierarchy = ClassWicketIdHierarchy.create(psiClass);
         for (Map.Entry<String, ClassWicketIdItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
             for (NewComponentReference newComponentReference : entry.getValue().getReferences()) {
                 if (wicketIdExpression.equals(newComponentReference.getWicketIdExpression())) {
@@ -71,7 +71,7 @@ public final class HierarchyUtil {
     public static String findPathOf(@NotNull XmlAttributeValue attributeValue, boolean parent) {
         PsiFile psiFile = attributeValue.getContainingFile();
         if (psiFile instanceof XmlFile) {
-            WicketMarkupHierarchy hierarchy = WicketMarkupHierarchy.create((XmlFile) psiFile);
+            MarkupWicketIdHierarchy hierarchy = MarkupWicketIdHierarchy.create((XmlFile) psiFile);
             for (Map.Entry<String, MarkupWicketIdItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
                 if (attributeValue.equals(entry.getValue().getAttributeValue())) {
                     String path = entry.getKey();

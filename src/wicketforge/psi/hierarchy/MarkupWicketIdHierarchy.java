@@ -28,16 +28,16 @@ import java.util.Map;
 
 /**
  */
-public class WicketMarkupHierarchy {
+public class MarkupWicketIdHierarchy {
     private Map<String, MarkupWicketIdItem> wicketIdPathMap;
     private MarkupWicketIdItem root;
 
     @NotNull
-    public static WicketMarkupHierarchy create(@NotNull XmlFile xmlFile) {
-        return new WicketMarkupHierarchy(xmlFile);
+    public static MarkupWicketIdHierarchy create(@NotNull XmlFile xmlFile) {
+        return new MarkupWicketIdHierarchy(xmlFile);
     }
 
-    private WicketMarkupHierarchy(@NotNull final XmlFile xmlFile) {
+    private MarkupWicketIdHierarchy(@NotNull final XmlFile xmlFile) {
         this.wicketIdPathMap = new HashMap<String, MarkupWicketIdItem>();
         this.root = new MarkupWicketIdItem();
         this.wicketIdPathMap.put("", root);
