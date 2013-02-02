@@ -24,6 +24,7 @@ import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.psi.hierarchy.ClassItem;
 import wicketforge.psi.hierarchy.HierarchyUtil;
+import wicketforge.psi.hierarchy.NewComponentReference;
 import wicketforge.psi.hierarchy.WicketClassHierarchy;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class MarkupWicketIdReference implements PsiReference, PsiPolyVariantRefe
             ClassItem item = hierarchy.getWicketIdPathMap().get(path);
             if (item != null) {
                 final List<PsiElementResolveResult> list = new SmartList<PsiElementResolveResult>();
-                for (ClassItem.NewComponentReference newComponentReference : item.getReferences()) {
+                for (NewComponentReference newComponentReference : item.getReferences()) {
                     list.add(new PsiElementResolveResult(newComponentReference.getWicketIdExpression()));
                 }
                 if (!list.isEmpty()) {

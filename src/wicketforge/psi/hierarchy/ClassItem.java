@@ -17,12 +17,10 @@ package wicketforge.psi.hierarchy;
 
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
-import com.intellij.psi.*;
 import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
-import wicketforge.WicketForgeUtil;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -87,7 +85,7 @@ public final class ClassItem implements ItemPresentation {
                 if (sb.length() > 0) {
                     sb.append(", ");
                 }
-                sb.append(reference.toString());
+                sb.append(reference.getLocationString());
             }
             location = sb.toString();
         }
@@ -104,71 +102,5 @@ public final class ClassItem implements ItemPresentation {
 
     public TextAttributesKey getTextAttributesKey() {
         return null;
-    }
-
-    /**
-     *
-     */
-    public static final class NewComponentReference {
-        private PsiNewExpression newExpression;
-        private PsiExpression wicketIdExpression;
-        private String wicketId;
-        private PsiClass baseClassToCreate;
-
-        private NewComponentReference() {
-        }
-
-        @Nullable
-        static NewComponentReference create(@NotNull PsiNewExpression newExpression) {
-            NewComponentReference result = new NewComponentReference();
-
-            result.newExpression = newExpression;
-            result.wicketIdExpression = WicketForgeUtil.getWicketIdExpressionFromArguments(newExpression);
-            if (result.wicketIdExpression == null) {
-                return null;
-            }
-            result.wicketId = WicketForgeUtil.getWicketIdFromExpression(result.wicketIdExpression);
-            if (result.wicketId == null) {
-                return null;
-            }
-            PsiJavaCodeReferenceElement referenceElement = newExpression.getClassOrAnonymousClassReference();
-            if (referenceElement == null) {
-                return null;
-            }
-            PsiElement resolvedElement = referenceElement.resolve();
-            if (!(resolvedElement instanceof PsiClass)) {
-                return null;
-            }
-            result.baseClassToCreate = (PsiClass) resolvedElement;
-            return result;
-        }
-
-        @NotNull
-        public PsiNewExpression getNewExpression() {
-            return newExpression;
-        }
-
-        @NotNull
-        public PsiExpression getWicketIdExpression() {
-            return wicketIdExpression;
-        }
-
-        @NotNull
-        public String getWicketId() {
-            return wicketId;
-        }
-
-        @Override
-        public String toString() {
-            return "new " + getBaseClassToCreate().getName() + "(...)";
-        }
-
-        /**
-         * @return  Class to be created (base class on anonymous creation)
-         */
-        @NotNull
-        public PsiClass getBaseClassToCreate() {
-            return baseClassToCreate;
-        }
     }
 }

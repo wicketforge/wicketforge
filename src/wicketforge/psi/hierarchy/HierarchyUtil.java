@@ -36,7 +36,7 @@ public final class HierarchyUtil {
     public static String findPathOf(@NotNull PsiClass psiClass, @NotNull PsiExpression wicketIdExpression, boolean parent, boolean incomplete) {
         WicketClassHierarchy hierarchy = WicketClassHierarchy.create(psiClass);
         for (Map.Entry<String, ClassItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
-            for (ClassItem.NewComponentReference newComponentReference : entry.getValue().getReferences()) {
+            for (NewComponentReference newComponentReference : entry.getValue().getReferences()) {
                 if (wicketIdExpression.equals(newComponentReference.getWicketIdExpression())) {
                     String path = entry.getKey();
                     return parent ? path.substring(0, path.lastIndexOf(Constants.HIERARCHYSEPARATOR)) : path;
@@ -52,7 +52,7 @@ public final class HierarchyUtil {
             TextRange bestTextRange = psiClass.getTextRange();
             // go thru all new references
             for (Map.Entry<String, ClassItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
-                for (ClassItem.NewComponentReference newComponentReference : entry.getValue().getReferences()) {
+                for (NewComponentReference newComponentReference : entry.getValue().getReferences()) {
                     TextRange textRange = newComponentReference.getNewExpression().getTextRange();
                     // if wicketId is in new-references-textRange and this is inner of current best...
                     if (textRange.contains(wicketIdTextRange) && bestTextRange.contains(textRange)) {
