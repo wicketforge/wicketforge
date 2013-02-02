@@ -120,7 +120,11 @@ public class ToggleAction extends AnAction {
 
     @Nullable
     private PsiElement createMarkup(@NotNull Module module, @NotNull PsiFile psiFile, @NotNull PsiClass psiClass) {
-        PsiPackage psiPackage = JavaDirectoryService.getInstance().getPackage(psiFile.getContainingDirectory());
+        PsiDirectory psiDirectory = psiFile.getContainingDirectory();
+        if (psiDirectory == null) {
+            return null;
+        }
+        PsiPackage psiPackage = JavaDirectoryService.getInstance().getPackage(psiDirectory);
         if (psiPackage == null) {
             return null;
         }
@@ -134,7 +138,7 @@ public class ToggleAction extends AnAction {
         if (templateName != null &&
                 Messages.showYesNoDialog(module.getProject(),
                         String.format("Create a new markup for '%s'?", psiClass.getQualifiedName()),
-                        "Create markup",
+                        "Create Markup",
                         Messages.getQuestionIcon()) == 0
                 ) {
             PsiDirectory directory = WicketForgeUtil.selectTargetDirectory(psiPackage.getQualifiedName(), module.getProject(), module);

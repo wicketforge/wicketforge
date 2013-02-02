@@ -133,7 +133,11 @@ public class PropertyModelVisitor extends JavaRecursiveElementVisitor {
         for (PsiMethod method : methods) {
             String methodName = method.getName();
             if (methodNameMatches(methodName, element)) {
-                results.add(new PropertyExpression(getCompletionResultKey(currentExpression, propertyName(methodName)), methodName + ":" + method.getReturnTypeNoResolve().getCanonicalText()));
+                PsiType psiType = method.getReturnTypeNoResolve();
+                if (psiType != null) {
+                    methodName = methodName + ":" + psiType.getCanonicalText();
+                }
+                results.add(new PropertyExpression(getCompletionResultKey(currentExpression, propertyName(methodName)), methodName));
             }
         }
     }

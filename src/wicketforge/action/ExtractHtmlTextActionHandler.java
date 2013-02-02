@@ -82,6 +82,10 @@ public class ExtractHtmlTextActionHandler extends EditorWriteActionHandler {
             return;
         }
 
+        if (psiClass == null) {
+            return;
+        }
+
         SelectionModel selection = editor.getSelectionModel();
 
         String selectedText = selection.getSelectedText();
