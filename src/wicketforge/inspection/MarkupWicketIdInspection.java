@@ -33,7 +33,7 @@ import wicketforge.psi.references.MarkupWicketIdReference;
 
 /**
  */
-public class HtmlIdInspection extends XmlSuppressableInspectionTool {
+public class MarkupWicketIdInspection extends XmlSuppressableInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {

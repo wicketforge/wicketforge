@@ -22,6 +22,7 @@ import com.intellij.ide.util.FileStructurePopup;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.pom.Navigatable;
@@ -69,8 +70,15 @@ public class ViewWicketHierarchyAction extends AnAction {
                 viewModel = new WicketClassStructureTreeModel(psiFile, psiClass);
             }
         }
-        final StructureViewBuilder structureViewBuilder = PlatformDataKeys.FILE_EDITOR.getData(dataContext).getStructureViewBuilder();
-        StructureView structureView = structureViewBuilder.createStructureView(PlatformDataKeys.FILE_EDITOR.getData(dataContext), project);
+        FileEditor fileEditor = PlatformDataKeys.FILE_EDITOR.getData(dataContext);
+        if (fileEditor == null) {
+            return;
+        }
+        final StructureViewBuilder structureViewBuilder = fileEditor.getStructureViewBuilder();
+        if (structureViewBuilder == null) {
+            return;
+        }
+        StructureView structureView = structureViewBuilder.createStructureView(fileEditor, project);
 
         FileStructurePopup popup = createPopup(editor, project, PlatformDataKeys.NAVIGATABLE.getData(dataContext), viewModel, structureView);
         if (popup != null) {

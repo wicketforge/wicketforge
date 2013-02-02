@@ -19,24 +19,14 @@ import com.intellij.codeInspection.InspectionToolProvider;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.ServiceManager;
 import org.jetbrains.annotations.NotNull;
+import wicketforge.inspection.ClassWicketIdInspection;
 import wicketforge.inspection.EmptySrcAttributeInspection;
-import wicketforge.inspection.HtmlIdInspection;
-import wicketforge.inspection.JavaIdInspection;
+import wicketforge.inspection.MarkupWicketIdInspection;
 
 /**
  *
  */
-/*@State(name = "WicketForgeApplicationComponent", storages = {@Storage(id = "other", file = "$APP_CONFIG$/other.xml")})*/
-public class WicketForgeApplicationComponent implements ApplicationComponent, InspectionToolProvider/*, Configurable, PersistentStateComponent<WicketForgeApplicationComponent> */{
-    /*private transient WicketForgeConfigurationPanel panel;*/
-
-/*
-    // gutter Icons
-    public boolean showJavaToMarkup = true;
-    public boolean showJavaToComponents = true;
-    public boolean showMarkupToJava = true;
-    public boolean showMarkupToComponents = true;
-*/
+public class WicketForgeApplicationComponent implements ApplicationComponent, InspectionToolProvider {
 
     public static WicketForgeApplicationComponent get() {
       return ServiceManager.getService(WicketForgeApplicationComponent.class);
@@ -57,55 +47,6 @@ public class WicketForgeApplicationComponent implements ApplicationComponent, In
     }
 
     public Class[] getInspectionClasses() {
-        return new Class[]{HtmlIdInspection.class, JavaIdInspection.class, EmptySrcAttributeInspection.class};
+        return new Class[]{MarkupWicketIdInspection.class, ClassWicketIdInspection.class, EmptySrcAttributeInspection.class};
     }
-/*
-    @Nls
-    public String getDisplayName() {
-        return "WicketForge";
-    }
-
-    public Icon getIcon() {
-        return Constants.WICKET_ICON;
-    }
-
-    public String getHelpTopic() {
-        return null;
-    }
-
-    public JComponent createComponent() {
-        if (panel == null) {
-            panel = new WicketForgeConfigurationPanel();
-        }
-        return panel.contentRoot;
-    }
-
-    public boolean isModified() {
-        return panel != null && panel.isModified(this);
-    }
-
-    public void apply() throws ConfigurationException {
-        if (panel != null) {
-            panel.pushDataTo(this);
-        }
-    }
-
-    public void reset() {
-        if (panel != null) {
-            panel.pullDataFrom(this);
-        }
-    }
-
-    public void disposeUIResources() {
-        panel = null;
-    }
-
-    public WicketForgeApplicationComponent getState() {
-        return this;
-    }
-
-    public void loadState(WicketForgeApplicationComponent state) {
-        XmlSerializerUtil.copyBean(state, this);
-    }
-*/
 }

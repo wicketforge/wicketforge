@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 The WicketForge-Team
+ * Copyright 2013 The WicketForge-Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,39 +15,46 @@
  */
 package wicketforge.psi.hierarchy;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.SmartList;
 import com.intellij.util.containers.Stack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wicketforge.Constants;
 import wicketforge.WicketForgeUtil;
 
 import java.util.*;
 
-/**
- */
-public class WicketClassHierarchy {
-    private static final Logger LOG = Logger.getInstance("#wicketforge.psi.hierarchy.WicketClassHierarchy");
+class ClassWicketIdReferences {
+    private final Map<PsiElement, List<PsiNewExpression>> addMap;
+    private final Map<PsiNewExpression, ClassWicketIdNewComponentItem> newComponentItemMap;
 
-    private Map<String, ClassItem> wicketIdPathMap;
-    private ClassItem root;
-
-    @NotNull
-    public static WicketClassHierarchy create(@NotNull PsiClass psiClass) {
-        return new WicketClassHierarchy(psiClass);
+    private ClassWicketIdReferences(@NotNull Map<PsiElement, List<PsiNewExpression>> addMap, @NotNull Map<PsiNewExpression, ClassWicketIdNewComponentItem> newComponentItemMap) {
+        this.addMap = addMap;
+        this.newComponentItemMap = newComponentItemMap;
     }
 
-    private WicketClassHierarchy(@NotNull final PsiClass psiClass) {
-        this.wicketIdPathMap = new HashMap<String, ClassItem>();
-        this.root = new ClassItem("");
-        this.wicketIdPathMap.put("", root);
+    /**
+     * @param psiElement PsiClass or PsiNewExpression reference from a WicketMarkup component
+     * @return List with all added wicket components (PsiNewExpression)
+     */
+    @Nullable
+    public List<PsiNewExpression> getAdded(@Nullable PsiElement psiElement) {
+        return addMap.get(psiElement);
+    }
 
-        final Map<PsiElement, List<PsiNewExpression>> workMap = new HashMap<PsiElement, List<PsiNewExpression>>(); // Key: PsiClass or PsiNewExpression reference from a WicketMarkup component
-        final Map<PsiElement, List<PsiNewExpression>> workMapReplaceWith = new HashMap<PsiElement, List<PsiNewExpression>>();
+    /**
+     * @param newExpression
+     * @return
+     */
+    @Nullable
+    public ClassWicketIdNewComponentItem getNewComponentItem(@Nullable PsiNewExpression newExpression) {
+        return newComponentItemMap.get(newExpression);
+    }
+
+    public static ClassWicketIdReferences build(@NotNull final PsiClass psiClass) {
+        final Map<PsiElement, List<PsiNewExpression>> componentAddMap = new HashMap<PsiElement, List<PsiNewExpression>>(); // Key: PsiClass or PsiNewExpression reference from a WicketMarkup component
+        final Map<PsiElement, List<PsiNewExpression>> componentReplaceMap = new HashMap<PsiElement, List<PsiNewExpression>>();
         psiClass.accept(new JavaRecursiveElementVisitor() {
             private MarkupReferences markupReferences = new MarkupReferences();
 
@@ -102,7 +109,7 @@ public class WicketClassHierarchy {
 
             @Override
             public void visitCallExpression(PsiCallExpression callExpression) {
-                // first super, so assignement adds could be resolved, ex: add(link = new Link(...)) // todo mm -> check if super of other visits should be also called first 
+                // first super, so assignement adds could be resolved, ex: add(link = new Link(...)) // todo mm -> check if super of other visits should be also called first
                 super.visitCallExpression(callExpression);
 
                 if (!(callExpression instanceof PsiMethodCallExpression)) {
@@ -118,11 +125,11 @@ public class WicketClassHierarchy {
                 }
                 String methodName = method.getName();
 
-                Map<PsiElement, List<PsiNewExpression>> addMap;
+                Map<PsiElement, List<PsiNewExpression>> currentComponentMap;
                 if (("add".equals(methodName) || "addOrReplace".equals(methodName) || "autoAdd".equals(methodName) || "replace".equals(methodName)) && WicketForgeUtil.isMarkupContainer(methodCallClass)) {
-                    addMap = workMap;
+                    currentComponentMap = componentAddMap;
                 } else if ("replaceWith".equals(methodName) && WicketForgeUtil.isWicketComponent(methodCallClass)) {
-                    addMap = workMapReplaceWith;
+                    currentComponentMap = componentReplaceMap;
                 } else {
                     return;
                 }
@@ -137,8 +144,8 @@ public class WicketClassHierarchy {
                     element = ((PsiReferenceExpression) element).resolve();
                     if (element instanceof PsiVariable) {
                         markupReferenceList = new SmartList<PsiElement>(markupReferences.get((PsiVariable) element));
-                        if (addMap != workMapReplaceWith) {
-                            for (Iterator<? extends PsiElement> iterator = markupReferenceList.iterator(); iterator.hasNext();) {
+                        if (currentComponentMap != componentReplaceMap) {
+                            for (Iterator<? extends PsiElement> iterator = markupReferenceList.iterator(); iterator.hasNext(); ) {
                                 PsiElement markupReference = iterator.next();
                                 if (markupReference instanceof PsiNewExpression) { // check instanceOf,  markupReference can also be PsiClass (issue 67)
                                     // this one will be our markupReference
@@ -178,7 +185,7 @@ public class WicketClassHierarchy {
                 PsiExpressionList callExpressionList = callExpression.getArgumentList();
                 if (callExpressionList != null) {
                     for (PsiElement markupReference : markupReferenceList) {
-                        List<PsiNewExpression> addList = addMap.get(markupReference);
+                        List<PsiNewExpression> addList = currentComponentMap.get(markupReference);
                         for (PsiExpression callParameterExpression : callExpressionList.getExpressions()) {
                             // resolve expressions for new wicket component
                             List<PsiNewExpression> newExpressions = resolveExpressionNewWicketComponent(callParameterExpression);
@@ -186,7 +193,7 @@ public class WicketClassHierarchy {
                                 // and add to its
                                 if (addList == null) {
                                     addList = newExpressions;
-                                    addMap.put(markupReference, addList);
+                                    currentComponentMap.put(markupReference, addList);
                                 } else {
                                     addList.addAll(newExpressions);
                                 }
@@ -229,7 +236,7 @@ public class WicketClassHierarchy {
                 if (leftExpression instanceof PsiReference) {
                     PsiElement resolvedElement = ((PsiReference) leftExpression).resolve();
                     if (resolvedElement instanceof PsiVariable) {
-                        PsiExpression initializer  = expression.getRExpression();
+                        PsiExpression initializer = expression.getRExpression();
                         if (initializer != null) {
                             // put assigned expression to our var container
                             markupReferences.put((PsiVariable) resolvedElement, resolveExpressionNewWicketComponent(initializer));
@@ -241,7 +248,7 @@ public class WicketClassHierarchy {
             /**
              *
              * @param expression
-             * @return              referenced PsiNewExpression's (if they are Wicket Components) 
+             * @return referenced PsiNewExpression's (if they are Wicket Components)
              */
             @NotNull
             private List<PsiNewExpression> resolveExpressionNewWicketComponent(@Nullable PsiExpression expression) {
@@ -328,7 +335,7 @@ public class WicketClassHierarchy {
 
             /**
              * @param newExpression
-             * @return              PsiAnonymousClass or referenced PsiClass or null
+             * @return PsiAnonymousClass or referenced PsiClass or null
              *
              * This is *not* equal to PsiNewExpression.getClassOrAnonymousClassReference()
              */
@@ -348,15 +355,29 @@ public class WicketClassHierarchy {
                 }
                 return result;
             }
+
+            /**
+             * @return PsiClass of method return or null
+             */
+            @Nullable
+            private PsiClass getMethodReturnClass(@Nullable PsiMethod method) {
+                if (method != null) {
+                    PsiType type = method.getReturnType();
+                    if (type instanceof PsiClassType) {
+                        return ((PsiClassType) type).resolve();
+                    }
+                }
+                return null;
+            }
         });
 
-        // merge all workMapReplaceWith into WorkMap
-        for (Map.Entry<PsiElement, List<PsiNewExpression>> entry : workMapReplaceWith.entrySet()) {
+        // merge all componentReplaceMap into componentAddMap
+        for (Map.Entry<PsiElement, List<PsiNewExpression>> entry : componentReplaceMap.entrySet()) {
             // we need newExpression
             PsiElement key = entry.getKey();
             if (key instanceof PsiNewExpression) {
                 PsiNewExpression newExpression = (PsiNewExpression) key;
-                for (List<PsiNewExpression> list : workMap.values()) {
+                for (List<PsiNewExpression> list : componentAddMap.values()) {
                     if (list.contains(newExpression)) {
                         list.addAll(entry.getValue());
                     }
@@ -364,148 +385,20 @@ public class WicketClassHierarchy {
             }
         }
 
-        // put all new wicket component expressions to a list as NewComponentReference
-        Map<PsiNewExpression, ClassItem.NewComponentReference> newComponentReferenceMap = new HashMap<PsiNewExpression, ClassItem.NewComponentReference>();
-        for (List<PsiNewExpression> list : workMap.values()) {
+        // put all new wicket component expressions to a list as ClassWicketIdNewComponentItem
+        Map<PsiNewExpression, ClassWicketIdNewComponentItem> newComponentItemMap = new HashMap<PsiNewExpression, ClassWicketIdNewComponentItem>();
+        for (List<PsiNewExpression> list : componentAddMap.values()) {
             for (PsiNewExpression newExpression : list) {
-                if (!newComponentReferenceMap.containsKey(newExpression)) {
-                    ClassItem.NewComponentReference newComponentReference = ClassItem.NewComponentReference.create(newExpression);
-                    if (newComponentReference != null) {
-                        newComponentReferenceMap.put(newExpression, newComponentReference);
+                if (!newComponentItemMap.containsKey(newExpression)) {
+                    ClassWicketIdNewComponentItem newComponentItem = ClassWicketIdNewComponentItem.create(newExpression);
+                    if (newComponentItem != null) {
+                        newComponentItemMap.put(newExpression, newComponentItem);
                     }
                 }
             }
         }
 
-        List<PsiNewExpression> addedComponents = workMap.get(psiClass);
-        if (addedComponents != null) {
-            addRecursive(workMap, newComponentReferenceMap, new StringBuilder(), root, psiClass, addedComponents, 0);
-        }
-    }
-
-    private void addRecursive(@NotNull Map<PsiElement, List<PsiNewExpression>> workMap,
-                              @NotNull Map<PsiNewExpression, ClassItem.NewComponentReference> newComponentReferenceMap,
-                              @NotNull StringBuilder path,
-                              @NotNull ClassItem parent,
-                              @NotNull PsiElement parentElement,
-                              @Nullable List<PsiNewExpression> addedComponents,
-                              int depth) {
-        if (depth++ > 50) {
-            LOG.error("Deep addRecursive", path.toString());
-            return;
-        }
-        
-        if (addedComponents != null) {
-            for (PsiNewExpression newExpression : addedComponents) {
-                // fix issue 95: add the component to itself (no sense) but crash wicketforge
-                if (newExpression.equals(parentElement)) {
-                    continue;
-                }
-                ClassItem.NewComponentReference newComponentReference = newComponentReferenceMap.get(newExpression);
-                if (newComponentReference != null) {
-
-                    int length = path.length();
-                    try {
-                        path.append(Constants.HIERARCHYSEPARATOR).append(newComponentReference.getWicketId());
-
-                        ClassItem child = findOrCreateChild(path, parent, newComponentReference.getWicketId());
-
-                        child.getReferences().add(newComponentReference);
-
-                        addRecursive(workMap, newComponentReferenceMap, path, child, newExpression, workMap.get(newExpression), depth);
-                    } finally {
-                        path.setLength(length);
-                    }
-                }
-            }
-        }
-        // add also components of superclass (if any... ex: MyPage.java -> inner class MyMarkupContainer -> label myMarkupContainer )
-        PsiClass superClass = null;
-        if (parentElement instanceof PsiClass) {
-            superClass = ((PsiClass) parentElement).getSuperClass();
-        } else if (parentElement instanceof PsiNewExpression) {
-            PsiNewExpression newExpression = (PsiNewExpression) parentElement;
-            ClassItem.NewComponentReference newComponentReference = newComponentReferenceMap.get(newExpression);
-            if (newComponentReference != null) {
-                superClass = newComponentReference.getBaseClassToCreate();
-            }
-        }
-        if (superClass != null) {
-            List<PsiNewExpression> superAddedComponents = workMap.get(superClass);
-            if (superAddedComponents != null) {
-                addRecursive(workMap, newComponentReferenceMap, path, parent, superClass, superAddedComponents, depth);
-            }
-        }
-    }
-
-    @NotNull
-    private ClassItem findOrCreateChild(@NotNull StringBuilder path, @NotNull ClassItem parent, @NotNull String wicketId) {
-        ClassItem child = parent.findChild(wicketId);
-        if (child == null) {
-            child = new ClassItem(wicketId);
-            parent.addChild(child);
-            wicketIdPathMap.put(path.toString(), child);
-        }
-        return child;
-    }
-
-    /**
-     * @return PsiClass of method return or null
-     */
-    @Nullable
-    private PsiClass getMethodReturnClass(@Nullable PsiMethod method) {
-        if (method != null) {
-            PsiType type = method.getReturnType();
-            if (type instanceof PsiClassType) {
-                return ((PsiClassType) type).resolve();
-            }
-        }
-        return null;
-    }
-
-    @NotNull
-    public Map<String, ClassItem> getWicketIdPathMap() {
-        return wicketIdPathMap;
-    }
-
-    @NotNull
-    public ClassItem getRoot() {
-        return root;
-    }
-
-    @Nullable
-    public static String findPathOf(@NotNull PsiClass psiClass, @NotNull PsiExpression wicketIdExpression, boolean parent, boolean incomplete) {
-        WicketClassHierarchy hierarchy = create(psiClass);
-        for (Map.Entry<String, ClassItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
-            for (ClassItem.NewComponentReference newComponentReference : entry.getValue().getReferences()) {
-                if (wicketIdExpression.equals(newComponentReference.getWicketIdExpression())) {
-                    String path = entry.getKey();
-                    return parent ? path.substring(0, path.lastIndexOf(Constants.HIERARCHYSEPARATOR)) : path;
-                }
-            }
-        }
-        if (incomplete) {
-            // ok, wicket expression is not added yet so we dont know hierarchy of our component
-            // lets try to find textual position in hierarchy, not best method but we have no other option
-            // If component gets added later, correct hierarchy gets checked...
-            final TextRange wicketIdTextRange = wicketIdExpression.getTextRange();
-            String bestPath = "";
-            TextRange bestTextRange = psiClass.getTextRange();
-            // go thru all new references
-            for (Map.Entry<String, ClassItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
-                for (ClassItem.NewComponentReference newComponentReference : entry.getValue().getReferences()) {
-                    TextRange textRange = newComponentReference.getNewExpression().getTextRange();
-                    // if wicketId is in new-references-textRange and this is inner of current best...
-                    if (textRange.contains(wicketIdTextRange) && bestTextRange.contains(textRange)) {
-                        // then we have a better candidate  
-                        bestTextRange = textRange;
-                        bestPath = entry.getKey();
-                    }
-                }
-            }
-            return parent ? bestPath : bestPath + Constants.HIERARCHYSEPARATOR + WicketForgeUtil.getWicketIdFromExpression(wicketIdExpression);
-        }
-        return null;
+        return new ClassWicketIdReferences(componentAddMap, newComponentItemMap);
     }
 
     private static final class MarkupReferences {

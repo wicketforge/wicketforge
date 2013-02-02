@@ -28,7 +28,7 @@ import wicketforge.psi.references.ClassWicketIdReference;
 
 /**
  */
-public class JavaIdInspection extends BaseJavaLocalInspectionTool {
+public class ClassWicketIdInspection extends BaseJavaLocalInspectionTool {
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {

@@ -28,10 +28,6 @@ import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlToken;
 import wicketforge.WicketForgeUtil;
-import wicketforge.visitor.CompletionResult;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  */
@@ -54,8 +50,7 @@ public class PropertiesCompletionContributor extends CompletionContributor {
                             }
                         }
                     }
-                }
-                else if (f.getFileType() == StdFileTypes.HTML) {
+                } else if (f.getFileType() == StdFileTypes.HTML) {
                     PsiElement psiElement = p.getPosition();
                     if (psiElement instanceof XmlToken) {
                         XmlToken position = (XmlToken) psiElement;
@@ -74,27 +69,17 @@ public class PropertiesCompletionContributor extends CompletionContributor {
     private void addPropertiesToResult(PsiClass c, CompletionResultSet rs) {
         PropertiesFile properties = WicketForgeUtil.getPropertiesFile(c);
         if (properties != null) {
-            List<CompletionResult> references = new ArrayList<CompletionResult>();
             for (IProperty property : properties.getProperties()) {
-                references.add(new CompletionResult(property.getKey(), property.getValue()));
-            }
-
-            addReferencesToResult(references, rs);
-            if (references.size() > 0) {
-                rs.stopHere();
-            }
-        }
-    }
-
-    private void addReferencesToResult(List<CompletionResult> references, CompletionResultSet rs) {
-        if (references != null && !references.isEmpty()) {
-            for (CompletionResult s : references) {
-                LookupElementBuilder lookupElementBuilder =
-                        LookupElementBuilder.create(s.getKey())
-                                .setIcon(StdFileTypes.PROPERTIES.getIcon())
-                                .setTypeText(".properties")
-                                .setTailText("  " + s.getDescription(), true);
-                rs.addElement(lookupElementBuilder);
+                String propertyKey = property.getKey();
+                if (propertyKey != null) {
+                    LookupElementBuilder lookupElementBuilder =
+                            LookupElementBuilder.create(propertyKey)
+                                    .setIcon(StdFileTypes.PROPERTIES.getIcon())
+                                    .setTypeText(".properties")
+                                    .setTailText("  " + property.getValue(), true);
+                    rs.addElement(lookupElementBuilder);
+                    rs.stopHere();
+                }
             }
         }
     }
@@ -116,7 +101,7 @@ public class PropertiesCompletionContributor extends CompletionContributor {
 
         PsiNewExpression newExpression = (PsiNewExpression) expressionList.getParent();
         PsiMethod constructor = newExpression.resolveConstructor();
-        if (constructor == null || constructor.getContainingFile().isPhysical()) {
+        if (constructor == null /*|| constructor.getContainingFile().isPhysical()*/) {
             return false;
         }
 

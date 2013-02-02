@@ -28,13 +28,14 @@
         <framework.detector implementation="wicketforge.facet.WicketForgeFacetType$WicketForgeFacetDetector"/>
         <fileTemplateGroup implementation="wicketforge.templates.WicketFileTemplateGroupFactory"/>
 
-        <completion.contributor language="JAVA" implementationClass="wicketforge.completion.HtmlCompletionContributor"/>
+        <completion.contributor language="JAVA" implementationClass="wicketforge.completion.ClassWicketIdCompletionContributor"/>
         <completion.contributor language="JAVA" implementationClass="wicketforge.completion.PropertyModelCompletionContributor"/>
-        <completion.contributor language="HTML" implementationClass="wicketforge.completion.JavaCompletionContributor"/>
         <completion.contributor language="JAVA" implementationClass="wicketforge.completion.PropertiesCompletionContributor"/>
+
+        <completion.contributor language="HTML" implementationClass="wicketforge.completion.MarkupWicketIdCompletionContributor"/>
         <completion.contributor language="HTML" implementationClass="wicketforge.completion.PropertiesCompletionContributor"/>
-        <completion.contributor language="HTML" implementationClass="wicketforge.completion.WicketElementCompletionContributor"/>
-        <completion.contributor language="HTML" implementationClass="wicketforge.completion.WicketElementAttributeCompletionContributor"/>
+        <completion.contributor language="HTML" implementationClass="wicketforge.completion.WicketTagCompletionContributor"/>
+        <completion.contributor language="HTML" implementationClass="wicketforge.completion.WicketTagAttributeCompletionContributor"/>
 
         <codeInsight.lineMarkerProvider language="JAVA" implementationClass="wicketforge.codeInsight.WicketClassLineMarkerProvider"/>
         <codeInsight.lineMarkerProvider language="HTML" implementationClass="wicketforge.codeInsight.WicketMarkupLineMarkerProvider"/>        
