@@ -24,10 +24,7 @@ import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.psi.*;
 import com.intellij.util.PlatformIcons;
 import wicketforge.WicketForgeUtil;
-import wicketforge.visitor.CompletionResult;
 import wicketforge.visitor.PropertyModelVisitor;
-
-import java.util.List;
 
 /**
  */
@@ -45,9 +42,14 @@ public class PropertyModelCompletionContributor extends CompletionContributor {
                         if (isWicketPropertyModel(position)) {
                             PropertyModelVisitor visitor = new PropertyModelVisitor();
                             visitor.visitNewExpression(getElementNewExpression(position));
-                            List<CompletionResult> results = visitor.getResults();
-                            addReferencesToResult(results, rs);
-                            if (results != null && results.size() > 0) {
+
+                            for (PropertyModelVisitor.PropertyExpression propertyExpression : visitor.getResults()) {
+                                LookupElementBuilder lookupElementBuilder =
+                                        LookupElementBuilder.create(propertyExpression.getExpression())
+                                                .setIcon(PlatformIcons.METHOD_ICON)
+                                                .setTypeText(".java")
+                                                .setTailText("  " + propertyExpression.getMethodName(), true);
+                                rs.addElement(lookupElementBuilder);
                                 rs.stopHere();
                             }
                         }
@@ -80,25 +82,12 @@ public class PropertyModelCompletionContributor extends CompletionContributor {
         return newExpression;
     }
 
-    private void addReferencesToResult(List<CompletionResult> references, CompletionResultSet rs) {
-        if (references != null && !references.isEmpty()) {
-            for (CompletionResult s : references) {
-                LookupElementBuilder lookupElementBuilder =
-                        LookupElementBuilder.create(s.getKey())
-                                .setIcon(PlatformIcons.METHOD_ICON)
-                                .setTypeText(".java")
-                                .setTailText("  " + s.getDescription(), true);
-                rs.addElement(lookupElementBuilder);
-            }
-        }
-    }
-
     private boolean isWicketPropertyModel(PsiJavaToken position) {
         PsiNewExpression newExpression = getElementNewExpression(position);
         if (newExpression == null) {
             return false;
         }
-        
+
         PsiMethod constructor = newExpression.resolveConstructor();
         if (constructor == null) {
             return false;

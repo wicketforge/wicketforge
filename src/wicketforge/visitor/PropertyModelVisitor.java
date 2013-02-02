@@ -29,8 +29,7 @@ import java.util.List;
  *
  */
 public class PropertyModelVisitor extends JavaRecursiveElementVisitor {
-
-    private List<CompletionResult> results = new ArrayList<CompletionResult>();
+    private List<PropertyExpression> results = new ArrayList<PropertyExpression>();
 
     @Override
     public void visitNewExpression(PsiNewExpression expression) {
@@ -134,7 +133,7 @@ public class PropertyModelVisitor extends JavaRecursiveElementVisitor {
         for (PsiMethod method : methods) {
             String methodName = method.getName();
             if (methodNameMatches(methodName, element)) {
-                results.add(new CompletionResult(getCompletionResultKey(currentExpression, propertyName(methodName)), methodName + ":" + method.getReturnTypeNoResolve().getCanonicalText()));
+                results.add(new PropertyExpression(getCompletionResultKey(currentExpression, propertyName(methodName)), methodName + ":" + method.getReturnTypeNoResolve().getCanonicalText()));
             }
         }
     }
@@ -147,7 +146,8 @@ public class PropertyModelVisitor extends JavaRecursiveElementVisitor {
         }
     }
 
-    public List<CompletionResult> getResults() {
+    @NotNull
+    public List<PropertyExpression> getResults() {
         return results;
     }
 
@@ -173,5 +173,28 @@ public class PropertyModelVisitor extends JavaRecursiveElementVisitor {
             property = s.substring(3);
         }
         return StringUtil.decapitalize(property);
+    }
+
+    /**
+     * Visitor result
+     */
+    public static class PropertyExpression {
+        private String expression;
+        private String methodName;
+
+        private PropertyExpression(@NotNull String expression, @NotNull String methodName) {
+            this.expression = expression;
+            this.methodName = methodName;
+        }
+
+        @NotNull
+        public String getExpression() {
+            return expression;
+        }
+
+        @NotNull
+        public String getMethodName() {
+            return methodName;
+        }
     }
 }
