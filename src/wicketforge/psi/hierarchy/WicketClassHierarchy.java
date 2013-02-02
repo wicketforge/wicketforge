@@ -32,8 +32,8 @@ import java.util.Map;
 public class WicketClassHierarchy {
     private static final Logger LOG = Logger.getInstance("#wicketforge.psi.hierarchy.WicketClassHierarchy");
 
-    private Map<String, ClassItem> wicketIdPathMap;
-    private ClassItem root;
+    private Map<String, ClassWicketIdItem> wicketIdPathMap;
+    private ClassWicketIdItem root;
 
     @NotNull
     public static WicketClassHierarchy create(@NotNull PsiClass psiClass) {
@@ -41,8 +41,8 @@ public class WicketClassHierarchy {
     }
 
     private WicketClassHierarchy(@NotNull final PsiClass psiClass) {
-        this.wicketIdPathMap = new HashMap<String, ClassItem>();
-        this.root = new ClassItem("");
+        this.wicketIdPathMap = new HashMap<String, ClassWicketIdItem>();
+        this.root = new ClassWicketIdItem("");
         this.wicketIdPathMap.put("", root);
 
         ClassWicketIdReferences classWicketIdReferences = ClassWicketIdReferences.build(psiClass);
@@ -55,7 +55,7 @@ public class WicketClassHierarchy {
 
     private void addRecursive(@NotNull ClassWicketIdReferences classWicketIdReferences,
                               @NotNull StringBuilder path,
-                              @NotNull ClassItem parent,
+                              @NotNull ClassWicketIdItem parent,
                               @NotNull PsiElement parentElement,
                               @Nullable List<PsiNewExpression> addedComponents,
                               int depth) {
@@ -77,7 +77,7 @@ public class WicketClassHierarchy {
                     try {
                         path.append(Constants.HIERARCHYSEPARATOR).append(newComponentReference.getWicketId());
 
-                        ClassItem child = findOrCreateChild(path, parent, newComponentReference.getWicketId());
+                        ClassWicketIdItem child = findOrCreateChild(path, parent, newComponentReference.getWicketId());
 
                         child.getReferences().add(newComponentReference);
 
@@ -108,10 +108,10 @@ public class WicketClassHierarchy {
     }
 
     @NotNull
-    private ClassItem findOrCreateChild(@NotNull StringBuilder path, @NotNull ClassItem parent, @NotNull String wicketId) {
-        ClassItem child = parent.findChild(wicketId);
+    private ClassWicketIdItem findOrCreateChild(@NotNull StringBuilder path, @NotNull ClassWicketIdItem parent, @NotNull String wicketId) {
+        ClassWicketIdItem child = parent.findChild(wicketId);
         if (child == null) {
-            child = new ClassItem(wicketId);
+            child = new ClassWicketIdItem(wicketId);
             parent.addChild(child);
             wicketIdPathMap.put(path.toString(), child);
         }
@@ -119,12 +119,12 @@ public class WicketClassHierarchy {
     }
 
     @NotNull
-    public Map<String, ClassItem> getWicketIdPathMap() {
+    public Map<String, ClassWicketIdItem> getWicketIdPathMap() {
         return wicketIdPathMap;
     }
 
     @NotNull
-    public ClassItem getRoot() {
+    public ClassWicketIdItem getRoot() {
         return root;
     }
 }

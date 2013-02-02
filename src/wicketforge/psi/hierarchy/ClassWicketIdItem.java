@@ -27,20 +27,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public final class ClassItem implements ItemPresentation {
+public final class ClassWicketIdItem implements ItemPresentation {
     private String wicketId;
     private List<NewComponentReference> references;
-    private List<ClassItem> children;
+    private List<ClassWicketIdItem> children;
 
-    ClassItem(@NotNull String wicketId) {
+    ClassWicketIdItem(@NotNull String wicketId) {
         this.wicketId = wicketId;
         this.references = new SmartList<NewComponentReference>();
     }
 
     @Nullable
-    ClassItem findChild(@NotNull String wicketId) {
+    ClassWicketIdItem findChild(@NotNull String wicketId) {
         if (children != null) {
-            for (ClassItem child : children) {
+            for (ClassWicketIdItem child : children) {
                 if (wicketId.equals(child.wicketId)) {
                     return child;
                 }
@@ -49,9 +49,9 @@ public final class ClassItem implements ItemPresentation {
         return null;
     }
 
-    void addChild(@NotNull ClassItem child) {
+    void addChild(@NotNull ClassWicketIdItem child) {
         if (children == null) {
-            children = new ArrayList<ClassItem>();
+            children = new ArrayList<ClassWicketIdItem>();
         }
         children.add(child);
     }
@@ -67,8 +67,8 @@ public final class ClassItem implements ItemPresentation {
     }
 
     @NotNull
-    public List<ClassItem> getChildren() {
-        return children == null ? Collections.<ClassItem>emptyList() : children;
+    public List<ClassWicketIdItem> getChildren() {
+        return children == null ? Collections.<ClassWicketIdItem>emptyList() : children;
     }
 
     /* ItemPresentation */

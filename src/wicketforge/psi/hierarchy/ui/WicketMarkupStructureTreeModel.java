@@ -23,7 +23,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.util.PsiNavigateUtil;
 import org.jetbrains.annotations.NotNull;
-import wicketforge.psi.hierarchy.AttributeItem;
+import wicketforge.psi.hierarchy.MarkupWicketIdItem;
 import wicketforge.psi.hierarchy.WicketMarkupHierarchy;
 
 import java.util.List;
@@ -45,19 +45,19 @@ public class WicketMarkupStructureTreeModel extends TextEditorBasedStructureView
     }
 
     private static class MarkupTreeElement implements StructureViewTreeElement {
-        private AttributeItem attributeItem;
+        private MarkupWicketIdItem markupWicketIdItem;
         private TreeElement[] children;
 
-        private MarkupTreeElement(AttributeItem attributeItem) {
-            this.attributeItem = attributeItem;
+        private MarkupTreeElement(MarkupWicketIdItem markupWicketIdItem) {
+            this.markupWicketIdItem = markupWicketIdItem;
         }
 
         public Object getValue() {
-            return attributeItem;
+            return markupWicketIdItem;
         }
 
         public void navigate(boolean requestFocus) {
-            PsiNavigateUtil.navigate(attributeItem.getAttributeValue());
+            PsiNavigateUtil.navigate(markupWicketIdItem.getAttributeValue());
         }
 
         public boolean canNavigate() {
@@ -69,15 +69,15 @@ public class WicketMarkupStructureTreeModel extends TextEditorBasedStructureView
         }
 
         public ItemPresentation getPresentation() {
-            return attributeItem;
+            return markupWicketIdItem;
         }
 
         public TreeElement[] getChildren() {
             if (children == null) {
-                children = new TreeElement[attributeItem.getChildren().size()];
-                List<AttributeItem> attributeItemChildren = attributeItem.getChildren();
-                for (int i = 0, n = attributeItemChildren.size(); i < n; i++) {
-                    children[i] = new MarkupTreeElement(attributeItemChildren.get(i));
+                List<MarkupWicketIdItem> markupWicketIdItemChildren = markupWicketIdItem.getChildren();
+                children = new TreeElement[markupWicketIdItemChildren.size()];
+                for (int i = 0, n = markupWicketIdItemChildren.size(); i < n; i++) {
+                    children[i] = new MarkupTreeElement(markupWicketIdItemChildren.get(i));
                 }
             }
             return children;

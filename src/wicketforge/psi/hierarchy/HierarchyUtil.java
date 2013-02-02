@@ -35,7 +35,7 @@ public final class HierarchyUtil {
     @Nullable
     public static String findPathOf(@NotNull PsiClass psiClass, @NotNull PsiExpression wicketIdExpression, boolean parent, boolean incomplete) {
         WicketClassHierarchy hierarchy = WicketClassHierarchy.create(psiClass);
-        for (Map.Entry<String, ClassItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
+        for (Map.Entry<String, ClassWicketIdItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
             for (NewComponentReference newComponentReference : entry.getValue().getReferences()) {
                 if (wicketIdExpression.equals(newComponentReference.getWicketIdExpression())) {
                     String path = entry.getKey();
@@ -51,7 +51,7 @@ public final class HierarchyUtil {
             String bestPath = "";
             TextRange bestTextRange = psiClass.getTextRange();
             // go thru all new references
-            for (Map.Entry<String, ClassItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
+            for (Map.Entry<String, ClassWicketIdItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
                 for (NewComponentReference newComponentReference : entry.getValue().getReferences()) {
                     TextRange textRange = newComponentReference.getNewExpression().getTextRange();
                     // if wicketId is in new-references-textRange and this is inner of current best...
@@ -72,7 +72,7 @@ public final class HierarchyUtil {
         PsiFile psiFile = attributeValue.getContainingFile();
         if (psiFile instanceof XmlFile) {
             WicketMarkupHierarchy hierarchy = WicketMarkupHierarchy.create((XmlFile) psiFile);
-            for (Map.Entry<String, AttributeItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
+            for (Map.Entry<String, MarkupWicketIdItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
                 if (attributeValue.equals(entry.getValue().getAttributeValue())) {
                     String path = entry.getKey();
                     return parent ? path.substring(0, path.lastIndexOf(Constants.HIERARCHYSEPARATOR)) : path;

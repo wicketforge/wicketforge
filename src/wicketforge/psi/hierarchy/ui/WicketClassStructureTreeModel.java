@@ -23,7 +23,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.PsiNavigateUtil;
 import org.jetbrains.annotations.NotNull;
-import wicketforge.psi.hierarchy.ClassItem;
+import wicketforge.psi.hierarchy.ClassWicketIdItem;
 import wicketforge.psi.hierarchy.WicketClassHierarchy;
 
 import java.util.List;
@@ -45,21 +45,21 @@ public class WicketClassStructureTreeModel extends TextEditorBasedStructureViewM
     }
 
     private class ClassTreeElement implements StructureViewTreeElement {
-        private ClassItem classItem;
+        private ClassWicketIdItem classWicketIdItem;
         private TreeElement[] children;
 
-        private ClassTreeElement(ClassItem classItem) {
-            this.classItem = classItem;
+        private ClassTreeElement(ClassWicketIdItem classWicketIdItem) {
+            this.classWicketIdItem = classWicketIdItem;
         }
 
         public Object getValue() {
-            return classItem;
+            return classWicketIdItem;
         }
 
         public void navigate(boolean requestFocus) {
             // todo mm -> navigate (multiple choices on getReferences)
-//           PsiNavigateUtil.navigate(classItem.getReferences()...);
-            PsiNavigateUtil.navigate(classItem.getReferences().get(0).getWicketIdExpression());
+//           PsiNavigateUtil.navigate(classWicketIdItem.getReferences()...);
+            PsiNavigateUtil.navigate(classWicketIdItem.getReferences().get(0).getWicketIdExpression());
         }
 
         public boolean canNavigate() {
@@ -71,15 +71,15 @@ public class WicketClassStructureTreeModel extends TextEditorBasedStructureViewM
         }
 
         public ItemPresentation getPresentation() {
-            return classItem;
+            return classWicketIdItem;
         }
 
         public TreeElement[] getChildren() {
             if (children == null) {
-                children = new TreeElement[classItem.getChildren().size()];
-                List<ClassItem> classItemChildren = classItem.getChildren();
-                for (int i = 0, n = classItemChildren.size(); i < n; i++) {
-                    children[i] = new ClassTreeElement(classItemChildren.get(i));
+                List<ClassWicketIdItem> classWicketIdItemChildren = classWicketIdItem.getChildren();
+                children = new TreeElement[classWicketIdItemChildren.size()];
+                for (int i = 0, n = classWicketIdItemChildren.size(); i < n; i++) {
+                    children[i] = new ClassTreeElement(classWicketIdItemChildren.get(i));
                 }
             }
             return children;

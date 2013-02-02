@@ -29,8 +29,8 @@ import java.util.Map;
 /**
  */
 public class WicketMarkupHierarchy {
-    private Map<String, AttributeItem> wicketIdPathMap;
-    private AttributeItem root;
+    private Map<String, MarkupWicketIdItem> wicketIdPathMap;
+    private MarkupWicketIdItem root;
 
     @NotNull
     public static WicketMarkupHierarchy create(@NotNull XmlFile xmlFile) {
@@ -38,19 +38,19 @@ public class WicketMarkupHierarchy {
     }
 
     private WicketMarkupHierarchy(@NotNull final XmlFile xmlFile) {
-        this.wicketIdPathMap = new HashMap<String, AttributeItem>();
-        this.root = new AttributeItem();
+        this.wicketIdPathMap = new HashMap<String, MarkupWicketIdItem>();
+        this.root = new MarkupWicketIdItem();
         this.wicketIdPathMap.put("", root);
 
         xmlFile.accept(new XmlRecursiveElementVisitor() {
             private StringBuilder sb = new StringBuilder();
-            private AttributeItem current = root;
+            private MarkupWicketIdItem current = root;
 
             @Override
             public void visitElement(PsiElement element) {
                 // save
                 int i = sb.length();
-                AttributeItem item = current;
+                MarkupWicketIdItem item = current;
                 try {
                     // visit
                     super.visitElement(element);
@@ -70,7 +70,7 @@ public class WicketMarkupHierarchy {
                     if (attributeValue != null) {
                         String wicketId = attributeValue.getValue();
                         if (wicketId != null) {
-                            AttributeItem item = new AttributeItem(wicketId, attribute, attributeValue);
+                            MarkupWicketIdItem item = new MarkupWicketIdItem(wicketId, attribute, attributeValue);
                             current.addChild(item);
                             sb.append(Constants.HIERARCHYSEPARATOR).append(wicketId);
                             wicketIdPathMap.put(sb.toString(), item);
@@ -84,12 +84,12 @@ public class WicketMarkupHierarchy {
     }
 
     @NotNull
-    public Map<String, AttributeItem> getWicketIdPathMap() {
+    public Map<String, MarkupWicketIdItem> getWicketIdPathMap() {
         return wicketIdPathMap;
     }
 
     @NotNull
-    public AttributeItem getRoot() {
+    public MarkupWicketIdItem getRoot() {
         return root;
     }
 }
