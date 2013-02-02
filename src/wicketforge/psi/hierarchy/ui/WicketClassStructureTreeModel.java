@@ -59,7 +59,7 @@ public class WicketClassStructureTreeModel extends TextEditorBasedStructureViewM
         public void navigate(boolean requestFocus) {
             // todo mm -> navigate (multiple choices on getReferences)
 //           PsiNavigateUtil.navigate(classWicketIdItem.getReferences()...);
-            PsiNavigateUtil.navigate(classWicketIdItem.getReferences().get(0).getWicketIdExpression());
+            PsiNavigateUtil.navigate(classWicketIdItem.getNewComponentItems().get(0).getWicketIdExpression());
         }
 
         public boolean canNavigate() {

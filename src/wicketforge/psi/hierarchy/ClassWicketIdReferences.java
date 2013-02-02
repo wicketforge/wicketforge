@@ -27,11 +27,11 @@ import java.util.*;
 
 class ClassWicketIdReferences {
     private final Map<PsiElement, List<PsiNewExpression>> addMap;
-    private final Map<PsiNewExpression, NewComponentReference> newComponentReferenceMap;
+    private final Map<PsiNewExpression, ClassWicketIdNewComponentItem> newComponentItemMap;
 
-    private ClassWicketIdReferences(@NotNull Map<PsiElement, List<PsiNewExpression>> addMap, @NotNull Map<PsiNewExpression, NewComponentReference> newComponentReferenceMap) {
+    private ClassWicketIdReferences(@NotNull Map<PsiElement, List<PsiNewExpression>> addMap, @NotNull Map<PsiNewExpression, ClassWicketIdNewComponentItem> newComponentItemMap) {
         this.addMap = addMap;
-        this.newComponentReferenceMap = newComponentReferenceMap;
+        this.newComponentItemMap = newComponentItemMap;
     }
 
     /**
@@ -48,8 +48,8 @@ class ClassWicketIdReferences {
      * @return
      */
     @Nullable
-    public NewComponentReference getNewComponentReference(@Nullable PsiNewExpression newExpression) {
-        return newComponentReferenceMap.get(newExpression);
+    public ClassWicketIdNewComponentItem getNewComponentItem(@Nullable PsiNewExpression newExpression) {
+        return newComponentItemMap.get(newExpression);
     }
 
     public static ClassWicketIdReferences build(@NotNull final PsiClass psiClass) {
@@ -385,20 +385,20 @@ class ClassWicketIdReferences {
             }
         }
 
-        // put all new wicket component expressions to a list as NewComponentReference
-        Map<PsiNewExpression, NewComponentReference> newComponentReferenceMap = new HashMap<PsiNewExpression, NewComponentReference>();
+        // put all new wicket component expressions to a list as ClassWicketIdNewComponentItem
+        Map<PsiNewExpression, ClassWicketIdNewComponentItem> newComponentItemMap = new HashMap<PsiNewExpression, ClassWicketIdNewComponentItem>();
         for (List<PsiNewExpression> list : componentAddMap.values()) {
             for (PsiNewExpression newExpression : list) {
-                if (!newComponentReferenceMap.containsKey(newExpression)) {
-                    NewComponentReference newComponentReference = NewComponentReference.create(newExpression);
-                    if (newComponentReference != null) {
-                        newComponentReferenceMap.put(newExpression, newComponentReference);
+                if (!newComponentItemMap.containsKey(newExpression)) {
+                    ClassWicketIdNewComponentItem newComponentItem = ClassWicketIdNewComponentItem.create(newExpression);
+                    if (newComponentItem != null) {
+                        newComponentItemMap.put(newExpression, newComponentItem);
                     }
                 }
             }
         }
 
-        return new ClassWicketIdReferences(componentAddMap, newComponentReferenceMap);
+        return new ClassWicketIdReferences(componentAddMap, newComponentItemMap);
     }
 
     private static final class MarkupReferences {

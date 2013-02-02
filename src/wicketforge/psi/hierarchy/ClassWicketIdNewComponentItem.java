@@ -24,18 +24,18 @@ import wicketforge.WicketForgeUtil;
 
 import javax.swing.*;
 
-public final class NewComponentReference implements ItemPresentation {
+public final class ClassWicketIdNewComponentItem implements ItemPresentation {
     private PsiNewExpression newExpression;
     private PsiExpression wicketIdExpression;
     private String wicketId;
     private PsiClass baseClassToCreate;
 
-    private NewComponentReference() {
+    private ClassWicketIdNewComponentItem() {
     }
 
     @Nullable
-    static NewComponentReference create(@NotNull PsiNewExpression newExpression) {
-        NewComponentReference result = new NewComponentReference();
+    static ClassWicketIdNewComponentItem create(@NotNull PsiNewExpression newExpression) {
+        ClassWicketIdNewComponentItem result = new ClassWicketIdNewComponentItem();
 
         result.newExpression = newExpression;
         result.wicketIdExpression = WicketForgeUtil.getWicketIdExpressionFromArguments(newExpression);

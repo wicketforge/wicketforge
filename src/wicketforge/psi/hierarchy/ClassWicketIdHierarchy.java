@@ -70,16 +70,16 @@ public class ClassWicketIdHierarchy {
                 if (newExpression.equals(parentElement)) {
                     continue;
                 }
-                NewComponentReference newComponentReference = classWicketIdReferences.getNewComponentReference(newExpression);
-                if (newComponentReference != null) {
+                ClassWicketIdNewComponentItem newComponentItem = classWicketIdReferences.getNewComponentItem(newExpression);
+                if (newComponentItem != null) {
 
                     int length = path.length();
                     try {
-                        path.append(Constants.HIERARCHYSEPARATOR).append(newComponentReference.getWicketId());
+                        path.append(Constants.HIERARCHYSEPARATOR).append(newComponentItem.getWicketId());
 
-                        ClassWicketIdItem child = findOrCreateChild(path, parent, newComponentReference.getWicketId());
+                        ClassWicketIdItem child = findOrCreateChild(path, parent, newComponentItem.getWicketId());
 
-                        child.getReferences().add(newComponentReference);
+                        child.getNewComponentItems().add(newComponentItem);
 
                         addRecursive(classWicketIdReferences, path, child, newExpression, classWicketIdReferences.getAdded(newExpression), depth);
                     } finally {
@@ -94,9 +94,9 @@ public class ClassWicketIdHierarchy {
             superClass = ((PsiClass) parentElement).getSuperClass();
         } else if (parentElement instanceof PsiNewExpression) {
             PsiNewExpression newExpression = (PsiNewExpression) parentElement;
-            NewComponentReference newComponentReference = classWicketIdReferences.getNewComponentReference(newExpression);
-            if (newComponentReference != null) {
-                superClass = newComponentReference.getBaseClassToCreate();
+            ClassWicketIdNewComponentItem newComponentItem = classWicketIdReferences.getNewComponentItem(newExpression);
+            if (newComponentItem != null) {
+                superClass = newComponentItem.getBaseClassToCreate();
             }
         }
         if (superClass != null) {

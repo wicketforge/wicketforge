@@ -29,12 +29,12 @@ import java.util.List;
 
 public final class ClassWicketIdItem implements ItemPresentation {
     private String wicketId;
-    private List<NewComponentReference> references;
+    private List<ClassWicketIdNewComponentItem> newComponentItems;
     private List<ClassWicketIdItem> children;
 
     ClassWicketIdItem(@NotNull String wicketId) {
         this.wicketId = wicketId;
-        this.references = new SmartList<NewComponentReference>();
+        this.newComponentItems = new SmartList<ClassWicketIdNewComponentItem>();
     }
 
     @Nullable
@@ -62,8 +62,8 @@ public final class ClassWicketIdItem implements ItemPresentation {
     }
 
     @NotNull
-    public List<NewComponentReference> getReferences() {
-        return references;
+    public List<ClassWicketIdNewComponentItem> getNewComponentItems() {
+        return newComponentItems;
     }
 
     @NotNull
@@ -81,11 +81,11 @@ public final class ClassWicketIdItem implements ItemPresentation {
     public String getLocationString() {
         if (location == null) {
             StringBuilder sb = new StringBuilder();
-            for (NewComponentReference reference : references) {
+            for (ClassWicketIdNewComponentItem newComponentItem : newComponentItems) {
                 if (sb.length() > 0) {
                     sb.append(", ");
                 }
-                sb.append(reference.getLocationString());
+                sb.append(newComponentItem.getLocationString());
             }
             location = sb.toString();
         }
