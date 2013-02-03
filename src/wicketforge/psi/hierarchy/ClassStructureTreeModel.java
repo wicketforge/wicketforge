@@ -46,6 +46,14 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
         return root;
     }
 
+    @Override
+    protected boolean isSuitable(PsiElement element) {
+        if (element instanceof PsiNewExpression) {
+            return classWicketIdReferences.getNewComponentItem((PsiNewExpression) element) != null;
+        }
+        return super.isSuitable(element);
+    }
+
     private static final ItemPresentation EMPTY_PRESENTATION = new ItemPresentation() {
         @Override
         public String getPresentableText() {
