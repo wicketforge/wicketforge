@@ -88,7 +88,7 @@ public final class ClassWicketIdNewComponentItem implements ItemPresentation {
 
     @Override
     public String getLocationString() {
-        return "new " + getBaseClassToCreate().getName() + "(...)";
+        return /*"new " + */getBaseClassToCreate().getName()/* + "(...)"*/;
     }
 
     @Override

@@ -81,7 +81,7 @@ public final class MarkupWicketIdItem implements ItemPresentation {
     private String location;
     public String getLocationString() {
         if (attribute != null && location == null) {
-            location = "<" + attribute.getParent().getName() + ">";
+            location = /*"<" + */attribute.getParent().getName()/* + ">"*/;
         }
         return location;
     }
