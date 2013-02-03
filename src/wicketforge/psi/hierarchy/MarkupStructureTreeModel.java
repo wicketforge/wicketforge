@@ -21,12 +21,10 @@ import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.PsiNavigateUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -51,18 +49,12 @@ public class MarkupStructureTreeModel extends TextEditorBasedStructureViewModel 
     protected boolean isSuitable(PsiElement element) {
         if (element instanceof XmlTag) {
             for (MarkupWicketIdItem markupWicketIdItem : hierarchy.getWicketIdPathMap().values()) {
-                if (element.equals(getTagFromMarkupWicketIdItem(markupWicketIdItem))) {
+                if (element.equals(markupWicketIdItem.getTag())) {
                     return true;
                 }
             }
         }
         return super.isSuitable(element);
-    }
-
-    @Nullable
-    private static XmlTag getTagFromMarkupWicketIdItem(@NotNull MarkupWicketIdItem markupWicketIdItem) {
-        XmlAttribute attribute = markupWicketIdItem.getAttribute();
-        return attribute != null ? attribute.getParent() : null;
     }
 
     private static class MarkupTreeElement implements StructureViewTreeElement {
@@ -74,7 +66,7 @@ public class MarkupStructureTreeModel extends TextEditorBasedStructureViewModel 
         }
 
         public Object getValue() {
-            return getTagFromMarkupWicketIdItem(markupWicketIdItem);
+            return markupWicketIdItem.getTag();
         }
 
         public void navigate(boolean requestFocus) {

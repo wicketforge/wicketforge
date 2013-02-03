@@ -16,9 +16,9 @@
 package wicketforge.psi.hierarchy;
 
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
+import com.intellij.psi.xml.XmlTag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
@@ -58,8 +58,8 @@ public final class MarkupWicketIdItem implements ItemPresentation {
     }
 
     @Nullable
-    public XmlAttribute getAttribute() {
-        return attribute;
+    public XmlTag getTag() {
+        return attribute != null ? attribute.getParent() : null;
     }
 
     @Nullable
@@ -78,12 +78,9 @@ public final class MarkupWicketIdItem implements ItemPresentation {
         return wicketId;
     }
 
-    private String location;
     public String getLocationString() {
-        if (attribute != null && location == null) {
-            location = /*"<" + */attribute.getParent().getName()/* + ">"*/;
-        }
-        return location;
+        XmlTag tag = getTag();
+        return tag != null ? tag.getName() : null;
     }
 
     public Icon getIcon() {
@@ -92,9 +89,5 @@ public final class MarkupWicketIdItem implements ItemPresentation {
 
     public Icon getIcon(boolean open) {
         return Constants.WICKET_COMPONENT_ICON;
-    }
-
-    public TextAttributesKey getTextAttributesKey() {
-        return null;
     }
 }

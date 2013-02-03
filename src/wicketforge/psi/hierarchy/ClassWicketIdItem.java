@@ -16,7 +16,6 @@
 package wicketforge.psi.hierarchy;
 
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -98,9 +97,5 @@ public final class ClassWicketIdItem implements ItemPresentation {
 
     public Icon getIcon(boolean open) {
         return Constants.WICKET_COMPONENT_ICON;
-    }
-
-    public TextAttributesKey getTextAttributesKey() {
-        return null;
     }
 }
