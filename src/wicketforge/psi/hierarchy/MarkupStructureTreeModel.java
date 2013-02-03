@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicketforge.psi.hierarchy.ui;
+package wicketforge.psi.hierarchy;
 
 import com.intellij.ide.structureView.StructureViewTreeElement;
 import com.intellij.ide.structureView.TextEditorBasedStructureViewModel;
@@ -23,17 +23,15 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.util.PsiNavigateUtil;
 import org.jetbrains.annotations.NotNull;
-import wicketforge.psi.hierarchy.MarkupWicketIdHierarchy;
-import wicketforge.psi.hierarchy.MarkupWicketIdItem;
 
 import java.util.List;
 
 /**
  */
-public class WicketMarkupStructureTreeModel extends TextEditorBasedStructureViewModel {
+public class MarkupStructureTreeModel extends TextEditorBasedStructureViewModel {
     private StructureViewTreeElement root;
 
-    public WicketMarkupStructureTreeModel(@NotNull PsiFile psiFile) {
+    public MarkupStructureTreeModel(@NotNull PsiFile psiFile) {
         super(psiFile);
         MarkupWicketIdHierarchy hierarchy = MarkupWicketIdHierarchy.create((XmlFile) psiFile);
         root = new MarkupTreeElement(hierarchy.getRoot());
