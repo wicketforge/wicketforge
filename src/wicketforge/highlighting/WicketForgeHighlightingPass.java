@@ -68,7 +68,7 @@ public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
                     if (Constants.WICKET_ID.equals(attribute.getName())) {
                         XmlAttributeValue attributeValue = attribute.getValueElement();
                         if (attributeValue != null && hasReference(attributeValue, MarkupWicketIdReference.class)) {
-                            highlights.add(new WicketIdHighlightInfo(WicketForgeColorSettingsPage.HIGHLIGHT_MARKUPWICKETID, attributeValue.getTextRange()));
+                            highlights.add(createHighlightInfo(WicketForgeColorSettingsPage.HIGHLIGHT_MARKUPWICKETID, attributeValue.getTextRange()));
                         }
                     }
                 }
@@ -89,7 +89,7 @@ public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
                                 PsiExpression wicketIdExpression = WicketForgeUtil.getWicketIdExpressionFromArguments(expression);
                                 if (wicketIdExpression != null) {
                                     // only PsiLiteralExpression are resolvable wicketIds
-                                    highlights.add(new WicketIdHighlightInfo(
+                                    highlights.add(createHighlightInfo(
                                             hasReference(wicketIdExpression, ClassWicketIdReference.class) ?
                                                     WicketForgeColorSettingsPage.HIGHLIGHT_JAVAWICKETID :
                                                     WicketForgeColorSettingsPage.HIGHLIGHT_JAVAWICKETID_NOTRESOLVABLE,
@@ -101,7 +101,7 @@ public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
                             // highlight new component
                             PsiJavaCodeReferenceElement clazzReference = expression.getClassOrAnonymousClassReference();
                             if (clazzReference != null) {
-                                highlights.add(new WicketIdHighlightInfo(WicketForgeColorSettingsPage.HIGHLIGHT_JAVANEWWICKETCOMPONENT, clazzReference.getTextRange()));
+                                highlights.add(createHighlightInfo(WicketForgeColorSettingsPage.HIGHLIGHT_JAVANEWWICKETCOMPONENT, clazzReference.getTextRange()));
                             }
                             */
                         }
@@ -126,9 +126,7 @@ public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
         UpdateHighlightersUtil.setHighlightersToEditor(myProject, myDocument, startOffset, endOffset, highlights, getColorsScheme(), getId());
     }
 
-    private static class WicketIdHighlightInfo extends HighlightInfo {
-        private WicketIdHighlightInfo(HighlightInfoType type, TextRange textRange) {
-            super(type, textRange.getStartOffset(), textRange.getEndOffset(), null, null);
-        }
+    private static HighlightInfo createHighlightInfo(HighlightInfoType type, TextRange textRange) {
+        return HighlightInfo.createHighlightInfo(type, textRange, null); // deprecated in 12.1 -> need to create via builder in IDEA 13 (see http://devnet.jetbrains.com/thread/442020)
     }
 }
