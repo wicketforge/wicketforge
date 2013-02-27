@@ -16,12 +16,20 @@
 package wicketforge.action.ui;
 
 import com.intellij.ide.IdeBundle;
+import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.ide.util.TreeClassChooser;
+import com.intellij.ide.util.TreeClassChooserFactory;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.psi.*;
-import com.intellij.psi.search.searches.ClassInheritorsSearch;
+import com.intellij.psi.JavaDirectoryService;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiPackage;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.ui.RecentsManager;
+import com.intellij.ui.ReferenceEditorComboWithBrowseButton;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.WicketForgeUtil;
@@ -29,25 +37,34 @@ import wicketforge.WicketForgeUtil;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 public abstract class AbstractCreateDialog extends DialogWrapper {
     private JTextField classNameTextField;
-    private JComboBox extendsComboBox;
     private JCheckBox createAssociatedMarkupFileCheckBox;
     private JPanel contentPane;
     private JPanel chooseDifferentDestinationFolderPanel;
     private JCheckBox chooseDifferentDestinationFolderCheckBox;
+    private JPanel extendsClassPanel;
 
     private ActionRunnable actionRunnable;
     private Project project;
     private Module module;
     private PsiDirectory markupDirectory;
     private PsiPackage psiPackage;
+    private ReferenceEditorComboWithBrowseButton extendClassEditor;
+
+    private final String storeKey;
+    private final static String RECENT_EXTENDCLASS_KEY = "RECENT_EXTENDCLASS_KEY";
+    private final static String CREATE_MARKUP_KEY = "CREATE_MARKUP_KEY";
+    private final static String CHOOSE_DIFFERENT_DESTINATION_KEY = "CHOOSE_DIFFERENT_DESTINATION_KEY";
 
     AbstractCreateDialog(@NotNull Project project, @NotNull ActionRunnable actionRunnable, @NotNull String title, @NotNull PsiDirectory directory) {
         super(project, false);
+
+        this.storeKey = "wicketforge." + getClass().getSimpleName() + ".";
 
         this.actionRunnable = actionRunnable;
         this.project = project;
@@ -59,16 +76,29 @@ public abstract class AbstractCreateDialog extends DialogWrapper {
         setTitle(title);
     }
 
+    @NotNull
+    private String getStoreKey(@NotNull String key) {
+        return storeKey + key;
+    }
+
     protected void init() {
         super.init();
 
         setResizable(true);
         setModal(true);
 
-        PsiClass psiClass = getDefaultClass(project);
-        if (psiClass != null) {
-            extendsComboBox.setModel(new PsiClassListModel(psiClass, ClassInheritorsSearch.search(psiClass).findAll()));
+        RecentsManager recentsManager = RecentsManager.getInstance(project);
+        List<String> recentList = recentsManager.getRecentEntries(getStoreKey(RECENT_EXTENDCLASS_KEY));
+        if (recentList == null || recentList.isEmpty()) { // we dont have recent entries yet -> just add defaultClass (WebPage/Panel)
+            PsiClass psiClass = getDefaultClass(project);
+            if (psiClass != null) {
+                recentsManager.registerRecentEntry(getStoreKey(RECENT_EXTENDCLASS_KEY), psiClass.getQualifiedName());
+            }
         }
+        PropertiesComponent propertiesComponent = PropertiesComponent.getInstance(project);
+        // restore last used options
+        createAssociatedMarkupFileCheckBox.setSelected(propertiesComponent.getBoolean(getStoreKey(CREATE_MARKUP_KEY), false));
+        chooseDifferentDestinationFolderCheckBox.setSelected(propertiesComponent.getBoolean(getStoreKey(CHOOSE_DIFFERENT_DESTINATION_KEY), true));
 
         // if we have only 1 destination, we dont offer a different folder selection
         if (WicketForgeUtil.getResourceRoots(module).length < 2) {
@@ -81,6 +111,23 @@ public abstract class AbstractCreateDialog extends DialogWrapper {
             });
             chooseDifferentDestinationFolderCheckBox.setEnabled(createAssociatedMarkupFileCheckBox.isSelected());
         }
+
+        extendClassEditor = new ReferenceEditorComboWithBrowseButton(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PsiClass psiClass = getDefaultClass(project);
+
+                TreeClassChooser chooser = TreeClassChooserFactory.getInstance(project).createInheritanceClassChooser(
+                        "Choose Class to extend", GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module), psiClass, null);
+
+                chooser.showDialog();
+                PsiClass aClass = chooser.getSelected();
+                if (aClass != null) {
+                    extendClassEditor.setText(aClass.getQualifiedName());
+                }
+            }
+        }, "", project, true, getStoreKey(RECENT_EXTENDCLASS_KEY));
+        extendsClassPanel.add(extendClassEditor);
     }
 
     @Nullable
@@ -90,10 +137,11 @@ public abstract class AbstractCreateDialog extends DialogWrapper {
 
     protected void doOKAction() {
         String inputString = classNameTextField.getText().trim();
-        String extendsClass = extendsComboBox.getSelectedItem() instanceof String ? (String) extendsComboBox.getSelectedItem() : "";
+        String extendsClass = extendClassEditor.getText();
         boolean createMarkup = createAssociatedMarkupFileCheckBox.isSelected();
+        boolean chooseDifferentDestination = chooseDifferentDestinationFolderCheckBox.isSelected();
 
-        if (module != null && psiPackage != null && createMarkup && chooseDifferentDestinationFolderCheckBox.isSelected()) {
+        if (module != null && psiPackage != null && createMarkup && chooseDifferentDestination) {
             PsiDirectory directory = WicketForgeUtil.selectTargetDirectory(psiPackage.getQualifiedName(), project, module);
             if (directory == null) {
                 return; // aborted
@@ -102,6 +150,13 @@ public abstract class AbstractCreateDialog extends DialogWrapper {
         }
 
         if (validateInput(inputString, extendsClass) && actionRunnable.run(inputString, extendsClass, createMarkup, markupDirectory)) {
+
+            // remember last extended class and options
+            RecentsManager.getInstance(project).registerRecentEntry(getStoreKey(RECENT_EXTENDCLASS_KEY), extendsClass);
+            PropertiesComponent propertiesComponent = PropertiesComponent.getInstance(project);
+            propertiesComponent.setValue(getStoreKey(CREATE_MARKUP_KEY), Boolean.toString(createMarkup));
+            propertiesComponent.setValue(getStoreKey(CHOOSE_DIFFERENT_DESTINATION_KEY), Boolean.toString(chooseDifferentDestination));
+
             super.doOKAction();
         }
     }
@@ -127,40 +182,6 @@ public abstract class AbstractCreateDialog extends DialogWrapper {
 
     @Nullable
     protected abstract PsiClass getDefaultClass(@NotNull final Project project);
-
-    private static class PsiClassListModel extends AbstractListModel implements ComboBoxModel {
-        private String selectedClassName;
-        private ArrayList<String> classNames;
-
-        PsiClassListModel(@NotNull PsiClass defaultClass, @NotNull Collection<PsiClass> classes) {
-            classNames = new ArrayList<String>();
-
-            for (PsiClass clazz : classes) {
-                if (!clazz.hasModifierProperty(PsiModifier.FINAL)) {
-                    classNames.add(clazz.getQualifiedName());
-                }
-            }
-
-            selectedClassName = defaultClass.getQualifiedName();
-        }
-
-        public int getSize() {
-            return classNames.size();
-        }
-
-        public Object getElementAt(int i) {
-            return classNames.get(i);
-        }
-
-        public void setSelectedItem(Object o) {
-            selectedClassName = (String) o;
-            fireContentsChanged(this, 0, getSize());
-        }
-
-        public Object getSelectedItem() {
-            return selectedClassName;
-        }
-    }
 
     public static interface ActionRunnable {
         boolean run(@NotNull String inputString, @NotNull String extendsClass, boolean hasMarkup, @NotNull PsiDirectory markupDirectory);
