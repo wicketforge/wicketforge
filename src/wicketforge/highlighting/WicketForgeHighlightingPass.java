@@ -28,6 +28,7 @@ import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
 import wicketforge.WicketForgeUtil;
 import wicketforge.facet.WicketForgeFacet;
@@ -60,7 +61,10 @@ public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
             return;
         }
         if (file instanceof XmlFile) {
-            final List<HighlightInfo> highlights = new SmartList<HighlightInfo>();
+
+            // Markup
+
+            final List<HighlightInfo> workList = new SmartList<HighlightInfo>();
             file.accept(new XmlRecursiveElementVisitor() {
                 @Override
                 public void visitXmlAttribute(XmlAttribute attribute) {
@@ -68,14 +72,21 @@ public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
                     if (Constants.WICKET_ID.equals(attribute.getName())) {
                         XmlAttributeValue attributeValue = attribute.getValueElement();
                         if (attributeValue != null && hasReference(attributeValue, MarkupWicketIdReference.class)) {
-                            highlights.add(createHighlightInfo(WicketForgeColorSettingsPage.HIGHLIGHT_MARKUPWICKETID, attributeValue.getTextRange()));
+                            HighlightInfo highlightInfo = createHighlightInfo(WicketForgeColorSettingsPage.HIGHLIGHT_MARKUPWICKETID, attributeValue.getTextRange());
+                            if (highlightInfo != null) {
+                                workList.add(highlightInfo);
+                            }
                         }
                     }
                 }
             });
-            this.highlights = highlights;
+            highlights = workList;
+
         } else if (file instanceof PsiJavaFile) {
-            final List<HighlightInfo> highlights = new SmartList<HighlightInfo>();
+
+            // Class
+
+            final List<HighlightInfo> workList = new SmartList<HighlightInfo>();
             for (PsiClass psiClass : ((PsiJavaFile) file).getClasses()) {
                 psiClass.accept(new JavaRecursiveElementVisitor() {
                     @Override
@@ -89,26 +100,20 @@ public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
                                 PsiExpression wicketIdExpression = WicketForgeUtil.getWicketIdExpressionFromArguments(expression);
                                 if (wicketIdExpression != null) {
                                     // only PsiLiteralExpression are resolvable wicketIds
-                                    highlights.add(createHighlightInfo(
-                                            hasReference(wicketIdExpression, ClassWicketIdReference.class) ?
-                                                    WicketForgeColorSettingsPage.HIGHLIGHT_JAVAWICKETID :
-                                                    WicketForgeColorSettingsPage.HIGHLIGHT_JAVAWICKETID_NOTRESOLVABLE,
-                                            wicketIdExpression.getTextRange())
-                                    );
+                                    HighlightInfo highlightInfo = createHighlightInfo(
+                                            hasReference(wicketIdExpression, ClassWicketIdReference.class) ? WicketForgeColorSettingsPage.HIGHLIGHT_JAVAWICKETID : WicketForgeColorSettingsPage.HIGHLIGHT_JAVAWICKETID_NOTRESOLVABLE,
+                                            wicketIdExpression.getTextRange());
+                                    if (highlightInfo != null) {
+                                        workList.add(highlightInfo);
+                                    }
                                 }
                             }
-                            /*
-                            // highlight new component
-                            PsiJavaCodeReferenceElement clazzReference = expression.getClassOrAnonymousClassReference();
-                            if (clazzReference != null) {
-                                highlights.add(createHighlightInfo(WicketForgeColorSettingsPage.HIGHLIGHT_JAVANEWWICKETCOMPONENT, clazzReference.getTextRange()));
-                            }
-                            */
                         }
                     }
                 });
             }
-            this.highlights = highlights;
+            highlights = workList;
+
         }
     }
 
@@ -126,6 +131,7 @@ public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
         UpdateHighlightersUtil.setHighlightersToEditor(myProject, myDocument, startOffset, endOffset, highlights, getColorsScheme(), getId());
     }
 
+    @Nullable
     private static HighlightInfo createHighlightInfo(HighlightInfoType type, TextRange textRange) {
         return HighlightInfo.createHighlightInfo(type, textRange, null); // deprecated in 12.1 -> need to create via builder in IDEA 13 (see http://devnet.jetbrains.com/thread/442020)
     }
