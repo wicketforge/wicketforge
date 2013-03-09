@@ -52,7 +52,7 @@ public enum WicketVersion {
     ),
     WICKET_1_5("1.5", "http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd", // at the moment there is no 1.5 dtd...
             "properties.xml",
-            new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket", Release.V1_5, "org.apache.wicket.Application"), createSubMavenJarInfo("org/slf4j", "slf4j-api", "1.6.1", "org.slf4j.Logger")},
+            new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket-core", Release.V1_5, "org.apache.wicket.Application"), createSubMavenJarInfo("org/slf4j", "slf4j-api", "1.6.1", "org.slf4j.Logger")},
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket-datetime", Release.V1_5, "org.apache.wicket.datetime.DateConverter")},
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket-extensions", Release.V1_5, "org.apache.wicket.extensions.Initializer")},
             new LibraryInfo[]{createSubMavenJarInfo("org/apache/wicket", "wicket-velocity", Release.V1_5, "org.apache.wicket.velocity.Initializer")},
