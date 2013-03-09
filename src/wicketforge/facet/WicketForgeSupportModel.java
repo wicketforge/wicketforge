@@ -28,8 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * @deprecated via WicketLibraryType LibrariesDownloadAssistant etc...
  */
+@Deprecated
 public class WicketForgeSupportModel {
     private WicketVersion version;
     private boolean dateTime;
@@ -44,6 +45,7 @@ public class WicketForgeSupportModel {
     private WicketForgeSupportModel() { }
 
     @NotNull
+    @Deprecated // see class
     public static WicketForgeSupportModel createModel(@NotNull Module module) {
         WicketForgeSupportModel model = new WicketForgeSupportModel();
 
