@@ -37,6 +37,7 @@ public interface Constants {
     public static final char HIERARCHYSEPARATOR = '#';
 
     // wicket classes
+    public static final String WICKET_APPLICATION = "org.apache.wicket.Application";
     public static final String WICKET_COMPONENT = "org.apache.wicket.Component";
     public static final String WICKET_PAGE = "org.apache.wicket.Page";
     public static final String WICKET_PANEL = "org.apache.wicket.markup.html.panel.Panel";
