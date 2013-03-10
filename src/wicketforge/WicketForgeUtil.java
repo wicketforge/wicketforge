@@ -52,8 +52,6 @@ import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.facet.WicketForgeFacet;
-import wicketforge.facet.WicketForgeSupportModel;
-import wicketforge.facet.ui.WicketVersion;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -337,17 +335,11 @@ public final class WicketForgeUtil {
     @NotNull
     public static String getPropertiesFileName(@NotNull PsiClass clazz, @NotNull Constants.PropertiesType propertiesType) {
         switch (propertiesType) {
-            case PROPERTIES: return getResourceFileName(clazz) + "." + Constants.PROPERTIES;
+            case PROPERTIES:
+                return getResourceFileName(clazz) + "." + Constants.PROPERTIES;
             case XML:
-                WicketVersion wicketVersion = null;
                 Module module = ModuleUtil.findModuleForPsiElement(clazz);
-                if (module != null) {
-                    wicketVersion = WicketForgeSupportModel.createModel(module).getVersion();
-                }
-                if (wicketVersion == null) {
-                    wicketVersion = WicketVersion.HIGHEST_STABLE;
-                }
-                return getResourceFileName(clazz) + "." + wicketVersion.getXmlPropertiesFileExtension();
+                return getResourceFileName(clazz) + "." + WicketVersion.getVersion(module).getXmlPropertiesFileExtension();
             default:
                 throw new IllegalArgumentException("Unsupported PropertiesType " + propertiesType);
         }
@@ -515,10 +507,7 @@ public final class WicketForgeUtil {
 
     private static void fillWicketProperties(@NotNull PsiElement psiElement, @NotNull Properties props) {
         Module module = ModuleUtil.findModuleForPsiElement(psiElement);
-        if (module != null) {
-            WicketVersion version = WicketForgeSupportModel.createModel(module).getVersion();
-            props.put(Constants.PROP_WICKET_DTD, version == null ? Constants.PROP_WICKET_DTD_UNDEFINED : version.getDtd());
-        }
+        props.put(Constants.PROP_WICKET_DTD, WicketVersion.getVersion(module).getDtd());
     }
 
     @Nullable

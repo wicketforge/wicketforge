@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicketforge.facet;
+package wicketforge;
 
 import com.intellij.openapi.module.Module;
 import com.intellij.psi.JavaPsiFacade;
@@ -22,39 +22,48 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wicketforge.facet.ui.WicketVersion;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @deprecated via WicketLibraryType LibrariesDownloadAssistant etc...
+ *
  */
-@Deprecated
-public class WicketForgeSupportModel {
-    private WicketVersion version;
+// TODO think about to remove WicketVersion and implement getDtd and getXmlPropertiesFileExtension in other way...
+enum WicketVersion {
+    WICKET_1_3("http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd", "xml"),
+    WICKET_1_4("http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd", "xml"),
+    WICKET_1_5("http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd", "properties.xml"); // at the moment there is no 1.5 nor 6.0 dtd...
 
-    private WicketForgeSupportModel() { }
+    private String dtd;
+    private String xmlPropertiesFileExtension;
+
+    private WicketVersion(@NotNull String dtd, @NotNull String xmlPropertiesFileExtension) {
+        this.dtd = dtd;
+        this.xmlPropertiesFileExtension = xmlPropertiesFileExtension;
+    }
 
     @NotNull
-    @Deprecated // see class
-    public static WicketForgeSupportModel createModel(@NotNull Module module) {
-        WicketForgeSupportModel model = new WicketForgeSupportModel();
+    public String getXmlPropertiesFileExtension() {
+        return xmlPropertiesFileExtension;
+    }
 
+    @NotNull
+    public String getDtd() {
+        return dtd;
+    }
+
+    @NotNull
+    public static WicketVersion getVersion(@Nullable Module module) {
+        if (module == null) {
+            return WICKET_1_5;
+        }
         JavaPsiFacade psiFacade = JavaPsiFacade.getInstance(module.getProject());
         GlobalSearchScope scope = GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module);
 
-        if (psiFacade.findClass("org.apache.wicket.Application", scope) != null) {
-            model.version = evaluateVersion(psiFacade, scope);
-        }
-
-        return model;
-    }
-
-    private static WicketVersion evaluateVersion(JavaPsiFacade psiFacade, GlobalSearchScope scope) {
         PsiClass c = psiFacade.findClass("org.apache.wicket.Component", scope);
         if (c == null) {
-            return null;
+            return WICKET_1_5;
         }
 
         List<String> methods = new ArrayList<String>();
@@ -62,15 +71,11 @@ public class WicketForgeSupportModel {
             methods.add(m.getName());
         }
         if (methods.contains("getMarkup")) {
-            return WicketVersion.WICKET_1_5;
+            return WICKET_1_5;
         } else if (methods.contains("getDefaultModel")) {
-            return WicketVersion.WICKET_1_4;
+            return WICKET_1_4;
         }
-        return WicketVersion.WICKET_1_3;
-    }
+        return WICKET_1_3;
 
-    @Nullable
-    public WicketVersion getVersion() {
-        return version;
     }
 }

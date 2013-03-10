@@ -52,7 +52,6 @@ public interface Constants {
 
     // fileTemplate vars
     public static final String PROP_WICKET_DTD = "WICKET_DTD";
-    public static final String PROP_WICKET_DTD_UNDEFINED = "http://wicket.apache.org/";
 
     // icons
     public static final Icon WICKET_ICON = IconLoader.findIcon("/icons/wicket.png");
