@@ -63,8 +63,8 @@
     <actions>
             <action id="wicketforge.action.ToggleAction"
                     class="wicketforge.action.ToggleAction"
-                    text="Wicket Java/HTML Toggle"
-                    description="Toggles between Wicket HTML and Java files">
+                    text="Wicket Java Markup Toggle"
+                    description="Toggles between Wicket Java and Markup files">
                 <keyboard-shortcut keymap="$default" first-keystroke="alt shift W"/>
                 <keyboard-shortcut keymap="Mac OS X" first-keystroke="control shift W"/>
                 <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift W"/>
