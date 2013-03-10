@@ -16,14 +16,15 @@
 package wicketforge.facet;
 
 import com.intellij.facet.FacetConfiguration;
+import com.intellij.facet.impl.ui.FacetEditorsFactoryImpl;
 import com.intellij.facet.ui.FacetEditorContext;
 import com.intellij.facet.ui.FacetEditorTab;
-import com.intellij.facet.ui.FacetEditorsFactory;
 import com.intellij.facet.ui.FacetValidatorsManager;
-import com.intellij.facet.ui.libraries.FacetLibrariesValidator;
-import com.intellij.facet.ui.libraries.LibraryInfo;
+import com.intellij.facet.ui.libraries.FrameworkLibraryValidator;
+import com.intellij.framework.library.DownloadableLibraryService;
 import org.jdom.Element;
 import wicketforge.facet.ui.WicketFeaturesEditor;
+import wicketforge.library.WicketLibraryType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +40,14 @@ public class WicketForgeFacetConfiguration implements FacetConfiguration {
     List<String> resourceUrls = new ArrayList<String>();
 
     public FacetEditorTab[] createEditorTabs(FacetEditorContext editorContext, FacetValidatorsManager validatorsManager) {
-        FacetLibrariesValidator validator = FacetEditorsFactory.getInstance().createLibrariesValidator(LibraryInfo.EMPTY_ARRAY,
-                        new WicketLibrariesValidatorDescription(), editorContext, validatorsManager);
-
+        FrameworkLibraryValidator validator =  FacetEditorsFactoryImpl.getInstanceImpl().createLibraryValidator(
+                DownloadableLibraryService.getInstance().createDescriptionForType(WicketLibraryType.class),
+                editorContext,
+                validatorsManager,
+                "wicket"
+        );
         validatorsManager.registerValidator(validator);
-
-        return new FacetEditorTab[] {new WicketFeaturesEditor(editorContext, validator)};
+        return new FacetEditorTab[] {new WicketFeaturesEditor(editorContext)};
     }
 
     @Deprecated
