@@ -23,7 +23,6 @@ import com.intellij.facet.ui.FacetValidatorsManager;
 import com.intellij.facet.ui.libraries.FrameworkLibraryValidator;
 import com.intellij.framework.library.DownloadableLibraryService;
 import org.jdom.Element;
-import wicketforge.facet.ui.WicketFeaturesEditor;
 import wicketforge.library.WicketLibraryType;
 
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ public class WicketForgeFacetConfiguration implements FacetConfiguration {
                 "wicket"
         );
         validatorsManager.registerValidator(validator);
-        return new FacetEditorTab[] {new WicketFeaturesEditor(editorContext)};
+        return new FacetEditorTab[] {new WicketFacetEditorTab(editorContext)};
     }
 
     @Deprecated
