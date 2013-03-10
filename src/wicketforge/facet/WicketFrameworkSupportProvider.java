@@ -16,11 +16,17 @@
 package wicketforge.facet;
 
 import com.intellij.facet.ui.FacetBasedFrameworkSupportProvider;
+import com.intellij.framework.library.DownloadableLibraryService;
+import com.intellij.framework.library.FrameworkSupportWithLibrary;
+import com.intellij.ide.util.frameworkSupport.FrameworkSupportConfigurableBase;
+import com.intellij.ide.util.frameworkSupport.FrameworkSupportModel;
+import com.intellij.ide.util.frameworkSupport.FrameworkSupportProviderBase;
 import com.intellij.ide.util.frameworkSupport.FrameworkVersion;
 import com.intellij.openapi.roots.ModifiableRootModel;
-import com.intellij.util.SmartList;
+import com.intellij.openapi.roots.ui.configuration.libraries.CustomLibraryDescription;
 import org.jetbrains.annotations.NotNull;
-import wicketforge.facet.ui.WicketVersion;
+import org.jetbrains.annotations.Nullable;
+import wicketforge.library.WicketLibraryType;
 
 import java.util.List;
 
@@ -41,11 +47,22 @@ public class WicketFrameworkSupportProvider extends FacetBasedFrameworkSupportPr
 
     @NotNull
     @Override
-    public List<FrameworkVersion> getVersions() {
-        List<FrameworkVersion> list = new SmartList<FrameworkVersion>();
-        for (WicketVersion wicketVersion : WicketVersion.values()) {
-            list.add(new FrameworkVersion(wicketVersion.getName(), "wicket", wicketVersion.getCore()));
+    public FrameworkSupportConfigurableBase createConfigurable(@NotNull FrameworkSupportModel model) {
+        return new WicketFrameworkSupportConfigurable(this, model, getVersions(), getVersionLabelText());
+    }
+
+    private static class WicketFrameworkSupportConfigurable extends FrameworkSupportConfigurableBase implements FrameworkSupportWithLibrary {
+        private WicketFrameworkSupportConfigurable(FrameworkSupportProviderBase frameworkSupportProvider, FrameworkSupportModel model, @NotNull List<FrameworkVersion> versions, @Nullable String versionLabelText) {
+            super(frameworkSupportProvider, model, versions, versionLabelText);
         }
-        return list;
+
+        @NotNull
+        public CustomLibraryDescription createLibraryDescription() {
+            return DownloadableLibraryService.getInstance().createDescriptionForType(WicketLibraryType.class);
+        }
+
+        public boolean isLibraryOnly() {
+            return false;
+        }
     }
 }

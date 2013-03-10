@@ -33,14 +33,6 @@ import java.util.List;
 @Deprecated
 public class WicketForgeSupportModel {
     private WicketVersion version;
-    private boolean dateTime;
-    private boolean extensions;
-    private boolean velocity;
-    private boolean spring;
-    private boolean guice;
-    private boolean jmx;
-    private boolean springAnnot;
-    private boolean authRoles;
 
     private WicketForgeSupportModel() { }
 
@@ -54,14 +46,6 @@ public class WicketForgeSupportModel {
 
         if (psiFacade.findClass("org.apache.wicket.Application", scope) != null) {
             model.version = evaluateVersion(psiFacade, scope);
-            model.dateTime = psiFacade.findClass("org.apache.wicket.datetime.DateConverter", scope) != null;
-            model.velocity = psiFacade.findClass("org.apache.wicket.velocity.Initializer", scope) != null;
-            model.extensions = psiFacade.findClass("org.apache.wicket.extensions.Initializer", scope) != null;
-            model.spring = psiFacade.findClass("org.apache.wicket.spring.SpringWebApplication", scope) != null;
-            model.springAnnot = psiFacade.findClass("org.apache.wicket.spring.injection.annot.AnnotSpringInjector", scope) != null;
-            model.guice = psiFacade.findClass("org.apache.wicket.guice.GuiceWebApplication", scope) != null;
-            model.jmx = psiFacade.findClass("org.apache.wicket.jmx.Application", scope) != null;
-            model.authRoles = psiFacade.findClass("org.apache.wicket.authentication.AuthenticatedWebApplication", scope) != null;
         }
 
         return model;
@@ -88,37 +72,5 @@ public class WicketForgeSupportModel {
     @Nullable
     public WicketVersion getVersion() {
         return version;
-    }
-
-    public boolean isDateTime() {
-        return dateTime;
-    }
-
-    public boolean isExtensions() {
-        return extensions;
-    }
-
-    public boolean isVelocity() {
-        return velocity;
-    }
-
-    public boolean isSpring() {
-        return spring;
-    }
-
-    public boolean isGuice() {
-        return guice;
-    }
-
-    public boolean isJmx() {
-        return jmx;
-    }
-
-    public boolean isSpringAnnot() {
-        return springAnnot;
-    }
-
-    public boolean isAuthRoles() {
-        return authRoles;
     }
 }
