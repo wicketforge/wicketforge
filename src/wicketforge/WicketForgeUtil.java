@@ -323,7 +323,7 @@ public final class WicketForgeUtil {
      */
     @NotNull
     public static String getMarkupFileName(@NotNull PsiClass clazz) {
-        return getResourceFileName(clazz) + "." + Constants.HTML;
+        return getResourceFileName(clazz) + ".html";
     }
 
     /**
@@ -336,7 +336,7 @@ public final class WicketForgeUtil {
     public static String getPropertiesFileName(@NotNull PsiClass clazz, @NotNull Constants.PropertiesType propertiesType) {
         switch (propertiesType) {
             case PROPERTIES:
-                return getResourceFileName(clazz) + "." + Constants.PROPERTIES;
+                return getResourceFileName(clazz) + ".properties";
             case XML:
                 Module module = ModuleUtil.findModuleForPsiElement(clazz);
                 return getResourceFileName(clazz) + "." + WicketVersion.getVersion(module).getXmlPropertiesFileExtension();
@@ -456,7 +456,7 @@ public final class WicketForgeUtil {
     @Nullable
     public static PsiClass findWicketApplicationClass(@NotNull Project project) {
         PsiClass wicketApplicationClass =
-            JavaPsiFacade.getInstance(project).findClass("org.apache.wicket.Application", new ProjectAndLibrariesScope(project));
+            JavaPsiFacade.getInstance(project).findClass(Constants.WICKET_APPLICATION, new ProjectAndLibrariesScope(project));
 
         if (wicketApplicationClass == null) {
             return null;

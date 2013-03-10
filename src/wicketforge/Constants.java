@@ -25,11 +25,6 @@ import javax.swing.*;
  * A collection of constants used by the plugin.
  */
 public interface Constants {
-    // common
-    public static final String HTML = "html";
-    public static final String JAVA = "java";
-    public static final String PROPERTIES = "properties";
-
     //
     public static final String WICKET_ID = "wicket:id";
 
