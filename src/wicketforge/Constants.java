@@ -55,11 +55,9 @@ public interface Constants {
 
     // icons
     public static final Icon WICKET_ICON = IconLoader.findIcon("/icons/wicket.png");
-    public static final Icon HTML_ICON = IconLoader.findIcon("/icons/icon_html.png");
-    public static final Icon PROPERTIES_ICON = IconLoader.findIcon("/icons/icon_properties.png");
     public static final Icon WICKET_COMPONENT_ICON = IconLoader.findIcon("/icons/wicket_component.png");
-    public static final Icon TOJAVAREF = IconLoader.findIcon("/icons/form.png");
-    public static final Icon TOMARKUPREF = IconLoader.findIcon("/icons/form.png");
+    public static final Icon TOJAVAREF = IconLoader.findIcon("/icons/wicket_form.png");
+    public static final Icon TOMARKUPREF = IconLoader.findIcon("/icons/wicket_form.png");
 
     enum PropertiesType {
         PROPERTIES(WicketTemplates.WICKET_PROPERTIES),

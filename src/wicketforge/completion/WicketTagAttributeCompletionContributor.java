@@ -27,7 +27,6 @@ import com.intellij.psi.html.HtmlTag;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.psi.xml.XmlToken;
-import wicketforge.Constants;
 
 /**
  */
@@ -55,10 +54,8 @@ public class WicketTagAttributeCompletionContributor extends CompletionContribut
         WicketTag wicketTag = WicketTag.of(getParentElementName(position));
         if (wicketTag != null) {
             for (String attr : wicketTag.getAttributes()) {
-                LookupElementBuilder lookupElementBuilder =
-                        LookupElementBuilder.create(attr + "=\"\"")
+                LookupElementBuilder lookupElementBuilder = LookupElementBuilder.create(attr + "=\"\"")
                                 .setPresentableText(attr)
-                                .setIcon(Constants.HTML_ICON)
                                 .setInsertHandler(new AttributeInsertHandler());
                 rs.addElement(lookupElementBuilder);
             }
