@@ -23,9 +23,13 @@
         <item url="org/apache/wicket/wicket-core/1.5.10/wicket-core-1.5.10.jar">
             <required-class fqn="org.apache.wicket.Application"/>
         </item>
-        <item url="org/apache/wicket/wicket-util/1.5.10/wicket-util-1.5.10.jar"/> <!---->
+        <item url="org/apache/wicket/wicket-util/1.5.10/wicket-util-1.5.10.jar">
+            <required-class fqn="org.apache.wicket.util.IProvider"/>
+        </item>
+        <item url="org/apache/wicket/wicket-request/1.5.10/wicket-request-1.5.10.jar">
+            <required-class fqn="org.apache.wicket.request.Request"/>
+        </item>
         <item url="org/apache/wicket/wicket-datetime/1.5.10/wicket-datetime-1.5.10.jar"/> <!--org.apache.wicket.datetime.DateConverter-->
-        <item url="org/apache/wicket/wicket-request/1.5.10/wicket-request-1.5.10.jar"/> <!---->
         <item url="org/apache/wicket/wicket-devutils/1.5.10/wicket-devutils-1.5.10.jar"/> <!---->
         <item url="org/apache/wicket/wicket-extensions/1.5.10/wicket-extensions-1.5.10.jar"/> <!--org.apache.wicket.extensions.Initializer-->
         <item url="org/apache/wicket/wicket-ioc/1.5.10/wicket-ioc-1.5.10.jar"/> <!---->
@@ -43,9 +47,13 @@
         <item url="org/apache/wicket/wicket-core/6.6.0/wicket-core-6.6.0.jar">
             <required-class fqn="org.apache.wicket.Application"/>
         </item>
-        <item url="org/apache/wicket/wicket-util/6.6.0/wicket-util-6.6.0.jar"/> <!---->
+        <item url="org/apache/wicket/wicket-util/6.6.0/wicket-util-6.6.0.jar">
+            <required-class fqn="org.apache.wicket.util.IProvider"/>
+        </item>
         <item url="org/apache/wicket/wicket-datetime/6.6.0/wicket-datetime-6.6.0.jar"/> <!--org.apache.wicket.datetime.DateConverter-->
-        <item url="org/apache/wicket/wicket-request/6.6.0/wicket-request-6.6.0.jar"/> <!---->
+        <item url="org/apache/wicket/wicket-request/6.6.0/wicket-request-6.6.0.jar">
+            <required-class fqn="org.apache.wicket.request.Request"/>
+        </item>
         <item url="org/apache/wicket/wicket-devutils/6.6.0/wicket-devutils-6.6.0.jar"/> <!---->
         <item url="org/apache/wicket/wicket-extensions/6.6.0/wicket-extensions-6.6.0.jar"/> <!--org.apache.wicket.extensions.Initializer-->
         <item url="org/apache/wicket/wicket-ioc/6.6.0/wicket-ioc-6.6.0.jar"/> <!---->
