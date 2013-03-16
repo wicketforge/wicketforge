@@ -8,15 +8,8 @@
         <![CDATA[
         <p>WicketForge assists developers creating <a href="http://wicket.apache.org/">Wicket</a> applications.</p>
         <p>Homepage: <a href="http://code.google.com/p/wicketforge">http://code.google.com/p/wicketforge</a></p>
-        <p>Features and usage instructions may be found at:
-            <ul>
-                <li><a href="http://code.google.com/p/wicketforge/wiki/PluginFeatures">http://code.google.com/p/wicketforge/wiki/PluginFeatures</a></li>
-                <li><a href="http://code.google.com/p/wicketforge/wiki/UsageInstructions">http://code.google.com/p/wicketforge/wiki/UsageInstructions</a></li>
-            </ul>
-        </p>
-        <p>Thanks to Nick Heudecker starting this project.</p>
         <p/>
-        <p>See also <a href="http://plugins.intellij.net/plugin/?idea&id=1475">AltN8</a>. Very useful to navigate between java, markup, properties and tests... </p>
+        <p>See <a href="http://code.google.com/p/wicketforge/wiki/Introduction">Wiki</a> for features and usage instructions.</p>
         ]]>
     </description>
     <vendor url="http://code.google.com/p/wicketforge" logo="/icons/wicket.png">Minas Manthos</vendor>
