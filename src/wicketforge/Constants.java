@@ -37,8 +37,6 @@ public interface Constants {
     public static final String WICKET_PAGE = "org.apache.wicket.Page";
     public static final String WICKET_PANEL = "org.apache.wicket.markup.html.panel.Panel";
     public static final String WICKET_FORMCOMPONENTPANEL = "org.apache.wicket.markup.html.form.FormComponentPanel";
-    public static final String WICKET_IMODEL = "org.apache.wicket.model.IModel";
-    public static final String WICKET_PROPERTYMODEL = "org.apache.wicket.model.PropertyModel";
     public static final String WICKET_RESOURCEMODEL = "org.apache.wicket.model.ResourceModel";
     public static final String WICKET_STRINGRESOURCEMODEL = "org.apache.wicket.model.StringResourceModel";
 

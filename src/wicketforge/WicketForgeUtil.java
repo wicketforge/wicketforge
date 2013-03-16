@@ -88,21 +88,6 @@ public final class WicketForgeUtil {
     }
 
     /**
-     * Returns true if the passed PsiClass instance is a Wicket ResourceModel class.
-     * This method works with Wicket versions through 1.3.
-     *
-     * @param clazz PsiClass
-     * @return boolean
-     */
-    public static boolean isWicketPropertyModel(@NotNull PsiClass clazz) {
-        return isInheritor(clazz, Constants.WICKET_PROPERTYMODEL);
-    }
-
-    public static boolean isWicketModel(@NotNull PsiClass clazz) {
-        return isInheritor(clazz, Constants.WICKET_IMODEL);
-    }
-
-    /**
      * Returns true if the PsiClass is an instance of a wicket page.
      *
      * @param clazz PsiClass

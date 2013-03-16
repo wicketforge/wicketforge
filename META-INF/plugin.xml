@@ -24,7 +24,6 @@
         <fileTemplateGroup implementation="wicketforge.templates.WicketFileTemplateGroupFactory"/>
 
         <completion.contributor language="JAVA" implementationClass="wicketforge.completion.ClassWicketIdCompletionContributor"/>
-        <completion.contributor language="JAVA" implementationClass="wicketforge.completion.PropertyModelCompletionContributor"/>
         <completion.contributor language="JAVA" implementationClass="wicketforge.completion.PropertiesCompletionContributor"/>
 
         <completion.contributor language="HTML" implementationClass="wicketforge.completion.MarkupWicketIdCompletionContributor"/>
