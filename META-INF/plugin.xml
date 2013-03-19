@@ -38,6 +38,10 @@
 
         <psi.referenceContributor implementation="wicketforge.psi.WicketReferenceContributor"/>
 
+        <indexedRootsProvider implementation="wicketforge.search.AdditionalResourcePathsIndexProvider"/>
+        <fileBasedIndex implementation="wicketforge.search.MarkupIndex"/>
+        <fileBasedIndex implementation="wicketforge.search.PropertiesIndex"/>
+
     </extensions>
     <application-components>
         <component>

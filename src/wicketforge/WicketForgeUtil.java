@@ -52,6 +52,10 @@ import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.facet.WicketForgeFacet;
+import wicketforge.search.MarkupIndex;
+import wicketforge.search.PropertiesIndex;
+import wicketforge.search.WicketIndexUtil;
+import wicketforge.search.WicketSearchScope;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -162,7 +166,8 @@ public final class WicketForgeUtil {
      */
     @Nullable
     public static PsiFile getMarkupFile(@NotNull PsiClass psiClass) {
-        return getResourceFile(psiClass, getMarkupFileName(psiClass));
+        Module module = ModuleUtil.findModuleForPsiElement(psiClass);
+        return module == null ? null : MarkupIndex.getBaseFileByClass(psiClass.getProject(), psiClass, WicketSearchScope.resourcesInModuleWithDependenciesAndLibraries(module, true));
     }
 
     /**
@@ -173,67 +178,8 @@ public final class WicketForgeUtil {
      */
     @Nullable
     public static PropertiesFile getPropertiesFile(@NotNull PsiClass psiClass) {
-        PsiFile psiFile = getResourceFile(psiClass, getPropertiesFileName(psiClass, Constants.PropertiesType.PROPERTIES), getPropertiesFileName(psiClass, Constants.PropertiesType.XML));
-        return PropertiesUtil.getPropertiesFile(psiFile);
-    }
-
-    /**
-     * Returns a resource file from same package like PsiClass.
-     *
-     * @param psiClass the PsiClass
-     * @param resourceNames resourceNames to Find
-     * @return the markup PsiFile or null if no such file exists.
-     */
-    @Nullable
-    private static PsiFile getResourceFile(@NotNull PsiClass psiClass, @NotNull String... resourceNames) {
-        PsiFile psiFile = psiClass.getContainingFile();
-        if (!(psiFile instanceof PsiJavaFile)) {
-            return null;
-        }
-
-        PsiPackage psiPackage = JavaPsiFacade.getInstance(psiClass.getProject()).findPackage(((PsiJavaFile) psiFile).getPackageName());
-        if (psiPackage == null) {
-            return null;
-        }
-
-        // try first to find resource from alternate file paths
         Module module = ModuleUtil.findModuleForPsiElement(psiClass);
-        if (module != null) {
-            WicketForgeFacet wicketForgeFacet = WicketForgeFacet.getInstance(module);
-            if (wicketForgeFacet != null) {
-                if (!wicketForgeFacet.getResourcePaths().isEmpty()) {
-                    String relPath = psiPackage.getQualifiedName().replace('.', '/') + '/';
-                    for (VirtualFilePointer virtualFilePointer : wicketForgeFacet.getResourcePaths()) {
-                        VirtualFile virtualFile = virtualFilePointer.getFile();
-                        if (virtualFile != null && virtualFile.isValid()) {
-                            virtualFile = virtualFile.findFileByRelativePath(relPath);
-                            if (virtualFile != null && virtualFile.isValid()) {
-                                PsiDirectory psiDirectory = PsiManager.getInstance(module.getProject()).findDirectory(virtualFile);
-                                if (psiDirectory != null) {
-                                    for (String resourceName : resourceNames) {
-                                        PsiFile file = psiDirectory.findFile(resourceName);
-                                        if (file != null) {
-                                            return file;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        // try to find in classpath
-        GlobalSearchScope scope = module != null ? GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module) : GlobalSearchScope.allScope(psiClass.getProject());
-        for (PsiDirectory psiDirectory : psiPackage.getDirectories(scope)) {
-            for (String resourceName : resourceNames) {
-                PsiFile file = psiDirectory.findFile(resourceName);
-                if (file != null) {
-                    return file;
-                }
-            }
-        }
-        return null;
+        return module == null ? null : PropertiesUtil.getPropertiesFile(PropertiesIndex.getBaseFileByClass(psiClass.getProject(), psiClass, WicketSearchScope.resourcesInModuleWithDependenciesAndLibraries(module, true)));
     }
 
     /**
@@ -244,53 +190,19 @@ public final class WicketForgeUtil {
      */
     @Nullable
     public static PsiClass getMarkupClass(@NotNull PsiFile psiFile) {
-        PsiDirectory psiDirectory = psiFile.getContainingDirectory();
-        if (psiDirectory == null) {
+        VirtualFile virtualFile = psiFile.getVirtualFile();
+        if (virtualFile == null) {
             return null;
         }
-
-        PsiPackage psiPackage = null;
-
-        // try first to find package from alternate file paths
+        WicketIndexUtil.ResourceInfo resourceInfo = WicketIndexUtil.getClassNameFromMarkup(virtualFile, psiFile.getProject());
+        if (resourceInfo == null) {
+            return null;
+        }
         Module module = ModuleUtil.findModuleForPsiElement(psiFile);
-        if (module != null) {
-            WicketForgeFacet wicketForgeFacet = WicketForgeFacet.getInstance(module);
-            if (wicketForgeFacet != null) {
-                for (VirtualFilePointer virtualFilePointer : wicketForgeFacet.getResourcePaths()) {
-                    VirtualFile virtualFile = virtualFilePointer.getFile();
-                    if (virtualFile != null && virtualFile.isValid()) {
-                        if (VfsUtil.isAncestor(virtualFile, psiDirectory.getVirtualFile(), false)) {
-                            String packageName = VfsUtil.getRelativePath(psiDirectory.getVirtualFile(), virtualFile, '.');
-                            psiPackage = JavaPsiFacade.getInstance(psiFile.getProject()).findPackage(packageName == null ? "" : packageName);
-                            if (psiPackage != null) {
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        // if package not already resolved (from alternate file paths) -> get Package from dir
-        if (psiPackage == null) {
-            psiPackage = JavaDirectoryService.getInstance().getPackage(psiDirectory);
-        }
-        if (psiPackage == null) {
+        if (module == null) {
             return null;
         }
-        //
-        StringBuilder sb = new StringBuilder(psiPackage.getQualifiedName());
-        if (sb.length() > 0) {
-            sb.append('.');
-        }
-        String filename = psiFile.getName();
-        int index = filename.lastIndexOf('.');
-        if (index >= 0) {
-            filename = filename.substring(0, index);
-        }
-        sb.append(StringUtil.replace(filename, "$", "."));
-
-        GlobalSearchScope scope = module != null ? GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module) : GlobalSearchScope.allScope(psiFile.getProject()); 
-        PsiClass psiClass = JavaPsiFacade.getInstance(psiFile.getProject()).findClass(sb.toString(), scope);
+        PsiClass psiClass = JavaPsiFacade.getInstance(psiFile.getProject()).findClass(resourceInfo.qualifiedName, WicketSearchScope.classInModuleWithDependenciesAndLibraries(module, true));
         if (psiClass instanceof ClsClassImpl) {
             PsiClass sourceMirrorClass = ((ClsClassImpl) psiClass).getSourceMirrorClass();
             if (sourceMirrorClass != null) {

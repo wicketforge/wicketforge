@@ -46,7 +46,7 @@ public class WicketForgeFacetConfiguration implements FacetConfiguration {
                 "wicket"
         );
         validatorsManager.registerValidator(validator);
-        return new FacetEditorTab[] {new WicketFacetEditorTab(editorContext)};
+        return new FacetEditorTab[] {new WicketFacetEditorTab(editorContext, validatorsManager)};
     }
 
     @Deprecated

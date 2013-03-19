@@ -15,8 +15,7 @@
  */
 package wicketforge.facet;
 
-import com.intellij.facet.ui.FacetEditorContext;
-import com.intellij.facet.ui.FacetEditorTab;
+import com.intellij.facet.ui.*;
 import com.intellij.openapi.actionSystem.ActionToolbarPosition;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
@@ -44,9 +43,9 @@ import java.util.List;
 public class WicketFacetEditorTab extends FacetEditorTab {
     private AdditionalPathPanel additionalPathPanel;
 
-    public WicketFacetEditorTab(@NotNull FacetEditorContext editorContext) {
+    public WicketFacetEditorTab(@NotNull FacetEditorContext editorContext, @NotNull FacetValidatorsManager validatorsManager) {
         super();
-        this.additionalPathPanel = new AdditionalPathPanel(editorContext);
+        this.additionalPathPanel = new AdditionalPathPanel(editorContext, validatorsManager);
     }
 
     public void reset() {
@@ -74,15 +73,17 @@ public class WicketFacetEditorTab extends FacetEditorTab {
         return "Wicket";
     }
 
+    private static final ValidationResult RELOAD_NEEDED = new ValidationResult("Project needs to be reloaded.");
+
     /**
      *
      */
     private static class AdditionalPathPanel extends JPanel {
         private final FacetEditorContext editorContext;
         private final WicketForgeFacet wicketForgeFacet;
-        private DefaultListModel additionalPathModel = new DefaultListModel();
+        private DefaultListModel additionalPathModel = new DefaultListModel(); // List of VirtualFilePointer
 
-        public AdditionalPathPanel(@NotNull FacetEditorContext editorContext) {
+        public AdditionalPathPanel(@NotNull FacetEditorContext editorContext, @NotNull FacetValidatorsManager validatorsManager) {
             super(new BorderLayout());
             this.editorContext = editorContext;
             this.wicketForgeFacet = (WicketForgeFacet) editorContext.getFacet();
@@ -120,6 +121,14 @@ public class WicketFacetEditorTab extends FacetEditorTab {
                     }).setToolbarPosition(ActionToolbarPosition.TOP).createPanel();
             UIUtil.addBorder(panel, IdeBorderFactory.createTitledBorder("Additional Resource Search Path", false));
             add(panel, BorderLayout.CENTER);
+
+            validatorsManager.registerValidator(new FacetEditorValidator() {
+                @Override
+                public ValidationResult check() {
+                    // relaod info -> AdditionalResourcePathsIndexProvider
+                    return isModified() ? RELOAD_NEEDED : ValidationResult.OK;
+                }
+            }, listComponent);
         }
 
         public void reset() {
