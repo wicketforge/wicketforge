@@ -29,11 +29,11 @@ import com.intellij.openapi.vfs.pointers.VirtualFilePointer;
 import com.intellij.openapi.vfs.pointers.VirtualFilePointerManager;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
+import wicketforge.search.WicketSearchScope;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +85,7 @@ public class WicketForgeFacet extends Facet<WicketForgeFacetConfiguration> {
             return false;
         }
         JavaPsiFacade psiFacade = JavaPsiFacade.getInstance(module.getProject());
-        return psiFacade.findClass(Constants.WICKET_COMPONENT, GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module)) != null;
+        return psiFacade.findClass(Constants.WICKET_COMPONENT, WicketSearchScope.classInModuleWithDependenciesAndLibraries(module)) != null;
     }
 
     /**

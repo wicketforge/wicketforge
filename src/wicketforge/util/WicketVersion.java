@@ -21,8 +21,8 @@ import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
-import com.intellij.psi.search.GlobalSearchScope;
 import org.jetbrains.annotations.NotNull;
+import wicketforge.search.WicketSearchScope;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,9 +61,8 @@ enum WicketVersion {
             return WICKET_1_5;
         }
         JavaPsiFacade psiFacade = JavaPsiFacade.getInstance(module.getProject());
-        GlobalSearchScope scope = GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module);
 
-        PsiClass c = psiFacade.findClass("org.apache.wicket.Component", scope);
+        PsiClass c = psiFacade.findClass("org.apache.wicket.Component", WicketSearchScope.classInModuleWithDependenciesAndLibraries(module));
         if (c == null) {
             return WICKET_1_5;
         }

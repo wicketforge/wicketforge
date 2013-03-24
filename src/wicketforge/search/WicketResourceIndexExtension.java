@@ -85,7 +85,7 @@ abstract class WicketResourceIndexExtension extends ScalarIndexExtension<String>
         if (module == null) {
             return PsiFile.EMPTY_ARRAY;
         }
-        GlobalSearchScope scope = WicketSearchScope.resourcesInModuleWithDependenciesAndLibraries(module, true);
+        GlobalSearchScope scope = WicketSearchScope.resourcesInModuleWithDependenciesAndLibraries(module);
         final Collection<VirtualFile> files = FileBasedIndex.getInstance().getContainingFiles(indexId, name, scope);
         if (all) {
             files.addAll(FileBasedIndex.getInstance().getContainingFiles(indexId, name + LOCALIZEDFILE_INDEXMARKER, scope));

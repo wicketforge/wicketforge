@@ -27,8 +27,8 @@ public final class WicketSearchScope {
     public WicketSearchScope() {
     }
 
-    public static GlobalSearchScope resourcesInModuleWithDependenciesAndLibraries(@NotNull Module module, boolean includeTests) {
-        GlobalSearchScope scope = GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module, includeTests);
+    public static GlobalSearchScope resourcesInModuleWithDependenciesAndLibraries(@NotNull Module module) {
+        GlobalSearchScope scope = GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module, true);
         // add all additional resource paths
         WicketForgeFacet facet = WicketForgeFacet.getInstance(module);
         if (facet != null) {
@@ -42,7 +42,7 @@ public final class WicketSearchScope {
         return scope;
     }
 
-    public static GlobalSearchScope classInModuleWithDependenciesAndLibraries(@NotNull Module module, boolean includeTests) {
-        return GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module, includeTests);
+    public static GlobalSearchScope classInModuleWithDependenciesAndLibraries(@NotNull Module module) {
+        return GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module, true);
     }
 }

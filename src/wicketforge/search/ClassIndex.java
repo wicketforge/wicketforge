@@ -52,7 +52,7 @@ public class ClassIndex {
         if (module == null) {
             return null;
         }
-        PsiClass psiClass = JavaPsiFacade.getInstance(project).findClass(resourceInfo.qualifiedName, WicketSearchScope.classInModuleWithDependenciesAndLibraries(module, true));
+        PsiClass psiClass = JavaPsiFacade.getInstance(project).findClass(resourceInfo.qualifiedName, WicketSearchScope.classInModuleWithDependenciesAndLibraries(module));
         if (psiClass instanceof ClsClassImpl) {
             PsiClass sourceMirrorClass = ((ClsClassImpl) psiClass).getSourceMirrorClass();
             if (sourceMirrorClass != null) {
