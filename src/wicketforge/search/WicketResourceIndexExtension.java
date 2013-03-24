@@ -26,7 +26,9 @@ import com.intellij.psi.util.PsiUtilCore;
 import com.intellij.util.indexing.*;
 import com.intellij.util.io.EnumeratorStringDescriptor;
 import com.intellij.util.io.KeyDescriptor;
+import com.intellij.util.messages.MessageBus;
 import org.jetbrains.annotations.NotNull;
+import wicketforge.facet.WicketForgeFacetConfiguration;
 
 import java.util.*;
 
@@ -34,7 +36,14 @@ abstract class WicketResourceIndexExtension extends ScalarIndexExtension<String>
     private final EnumeratorStringDescriptor keyDescriptor = new EnumeratorStringDescriptor();
     private static final char LOCALIZEDFILE_INDEXMARKER = '#';
 
-    // TODO check add onchange in configuration and work with messageBus to recreate Indeces
+    protected WicketResourceIndexExtension(@NotNull MessageBus messageBus) {
+        messageBus.connect().subscribe(WicketForgeFacetConfiguration.ADDITIONAL_PATHS_CHANGED, new Runnable() {
+            @Override
+            public void run() {
+                FileBasedIndex.getInstance().requestRebuild(getName());
+            }
+        });
+    }
 
     @NotNull
     @Override

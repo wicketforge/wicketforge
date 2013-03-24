@@ -23,6 +23,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.indexing.ID;
+import com.intellij.util.messages.MessageBus;
 import com.intellij.util.xml.NanoXmlUtil;
 import com.intellij.util.xml.XmlFileHeader;
 import org.jetbrains.annotations.NotNull;
@@ -30,6 +31,10 @@ import org.jetbrains.annotations.Nullable;
 
 public class PropertiesIndex extends WicketResourceIndexExtension {
     public static final ID<String, Void> NAME = ID.create("WicketPropertiesIndex");
+
+    public PropertiesIndex(@NotNull MessageBus messageBus) {
+        super(messageBus);
+    }
 
     @NotNull
     @Override
