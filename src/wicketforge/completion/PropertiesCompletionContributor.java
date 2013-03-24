@@ -27,7 +27,8 @@ import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlToken;
-import wicketforge.WicketForgeUtil;
+import wicketforge.util.WicketFileUtil;
+import wicketforge.util.WicketPsiUtil;
 
 /**
  */
@@ -45,7 +46,7 @@ public class PropertiesCompletionContributor extends CompletionContributor {
                         PsiClass[] classes = jf.getClasses();
 
                         for (PsiClass c : classes) {
-                            if (WicketForgeUtil.isWicketComponent(c)) {
+                            if (WicketPsiUtil.isWicketComponent(c)) {
                                 addPropertiesToResult(c, rs);
                             }
                         }
@@ -55,7 +56,7 @@ public class PropertiesCompletionContributor extends CompletionContributor {
                     if (psiElement instanceof XmlToken) {
                         XmlToken position = (XmlToken) psiElement;
                         if (isWicketAttribute(position)) {
-                            PsiClass c = WicketForgeUtil.getMarkupClass(f);
+                            PsiClass c = WicketFileUtil.getMarkupClass(f);
                             if (c != null) {
                                 addPropertiesToResult(c, rs);
                             }
@@ -67,7 +68,7 @@ public class PropertiesCompletionContributor extends CompletionContributor {
     }
 
     private void addPropertiesToResult(PsiClass c, CompletionResultSet rs) {
-        PropertiesFile properties = WicketForgeUtil.getPropertiesFile(c);
+        PropertiesFile properties = WicketFileUtil.getPropertiesFile(c);
         if (properties != null) {
             for (IProperty property : properties.getProperties()) {
                 String propertyKey = property.getKey();
@@ -110,7 +111,7 @@ public class PropertiesCompletionContributor extends CompletionContributor {
             return false;
         }
 
-        if (WicketForgeUtil.isWicketResourceModel(psiClass)) {
+        if (WicketPsiUtil.isWicketResourceModel(psiClass)) {
             PsiExpressionList constructorArgs = newExpression.getArgumentList();
             if (constructorArgs == null) {
                 return false;

@@ -21,7 +21,7 @@ import com.intellij.util.SmartList;
 import com.intellij.util.containers.Stack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wicketforge.WicketForgeUtil;
+import wicketforge.util.WicketPsiUtil;
 
 import java.util.*;
 
@@ -71,10 +71,10 @@ class ClassWicketIdReferences {
 
             @Override
             public void visitClass(PsiClass aClass) {
-                if (onlyThisMarkupContainer && !aClass.equals(psiClass) && WicketForgeUtil.isWicketComponentWithAssociatedMarkup(aClass)) {
+                if (onlyThisMarkupContainer && !aClass.equals(psiClass) && WicketPsiUtil.isWicketComponentWithAssociatedMarkup(aClass)) {
                     return; // we do not visit inner classes that have own markup
                 }
-                if (!(aClass instanceof PsiAnonymousClass) && WicketForgeUtil.isMarkupContainer(aClass)) {
+                if (!(aClass instanceof PsiAnonymousClass) && WicketPsiUtil.isMarkupContainer(aClass)) {
                     markupReferences.pushCurrent(new SmartList<PsiElement>(aClass));
                     super.visitClass(aClass);
                     markupReferences.popCurrent();
@@ -86,7 +86,7 @@ class ClassWicketIdReferences {
             @Override
             public void visitNewExpression(PsiNewExpression expression) {
                 PsiClass aClass = expression.getAnonymousClass();
-                if (aClass != null && WicketForgeUtil.isMarkupContainer(aClass)) {
+                if (aClass != null && WicketPsiUtil.isMarkupContainer(aClass)) {
                     markupReferences.pushCurrent(new SmartList<PsiElement>(expression));
                     super.visitNewExpression(expression);
                     markupReferences.popCurrent();
@@ -137,9 +137,9 @@ class ClassWicketIdReferences {
                 String methodName = method.getName();
 
                 Map<PsiElement, List<PsiNewExpression>> currentComponentMap;
-                if (("add".equals(methodName) || "addOrReplace".equals(methodName) || "autoAdd".equals(methodName) || "replace".equals(methodName)) && WicketForgeUtil.isMarkupContainer(methodCallClass)) {
+                if (("add".equals(methodName) || "addOrReplace".equals(methodName) || "autoAdd".equals(methodName) || "replace".equals(methodName)) && WicketPsiUtil.isMarkupContainer(methodCallClass)) {
                     currentComponentMap = componentAddMap;
-                } else if ("replaceWith".equals(methodName) && WicketForgeUtil.isWicketComponent(methodCallClass)) {
+                } else if ("replaceWith".equals(methodName) && WicketPsiUtil.isWicketComponent(methodCallClass)) {
                     currentComponentMap = componentReplaceMap;
                 } else {
                     return;
@@ -162,7 +162,7 @@ class ClassWicketIdReferences {
                                     // this one will be our markupReference
                                     PsiClass classToCreate = resolveClassFromNewExpression((PsiNewExpression) markupReference);
                                     // just to be sure our markupReference is not one with own markup (ex: someone could add components to an instance of an inner panel, bad practice but possible)
-                                    if (classToCreate != null && !classToCreate.equals(psiClass) && WicketForgeUtil.isWicketComponentWithAssociatedMarkup(classToCreate)) {
+                                    if (classToCreate != null && !classToCreate.equals(psiClass) && WicketPsiUtil.isWicketComponentWithAssociatedMarkup(classToCreate)) {
                                         iterator.remove();
                                     }
                                 }
@@ -311,7 +311,7 @@ class ClassWicketIdReferences {
                             return null;
                         }
                         PsiClass returnClass = getMethodReturnClass(method);
-                        if (returnClass == null || !WicketForgeUtil.isWicketComponent(returnClass) || "get".equals(method.getName())) {
+                        if (returnClass == null || !WicketPsiUtil.isWicketComponent(returnClass) || "get".equals(method.getName())) {
                             return null;
                         }
                     }
@@ -337,7 +337,7 @@ class ClassWicketIdReferences {
                 } else if (expression instanceof PsiNewExpression) {
                     // check if its a new wicket component
                     PsiClass classToCreate = resolveClassFromNewExpression((PsiNewExpression) expression);
-                    if (classToCreate != null && WicketForgeUtil.isWicketComponent(classToCreate)) {
+                    if (classToCreate != null && WicketPsiUtil.isWicketComponent(classToCreate)) {
                         return new SmartList<PsiNewExpression>((PsiNewExpression) expression);
                     }
                 }

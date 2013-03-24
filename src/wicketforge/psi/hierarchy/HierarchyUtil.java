@@ -24,7 +24,7 @@ import com.intellij.psi.xml.XmlFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
-import wicketforge.WicketForgeUtil;
+import wicketforge.util.WicketPsiUtil;
 
 import java.util.Map;
 
@@ -62,7 +62,7 @@ public final class HierarchyUtil {
                     }
                 }
             }
-            return parent ? bestPath : bestPath + Constants.HIERARCHYSEPARATOR + WicketForgeUtil.getWicketIdFromExpression(wicketIdExpression);
+            return parent ? bestPath : bestPath + Constants.HIERARCHYSEPARATOR + WicketPsiUtil.getWicketIdFromExpression(wicketIdExpression);
         }
         return null;
     }

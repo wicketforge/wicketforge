@@ -17,8 +17,10 @@ package wicketforge.intention;
 
 import com.intellij.psi.PsiClass;
 import org.jetbrains.annotations.NotNull;
-import wicketforge.WicketForgeUtil;
 import wicketforge.templates.WicketTemplates;
+import wicketforge.util.WicketFileUtil;
+import wicketforge.util.WicketFilenameUtil;
+import wicketforge.util.WicketPsiUtil;
 
 /**
  * AddMarkupPanelIntention
@@ -37,13 +39,13 @@ public class AddMarkupPanelIntention extends AddMarkupIntention {
 
     @Override
     protected boolean hasResourceFile(@NotNull PsiClass psiClass) {
-        return WicketForgeUtil.getMarkupFile(psiClass) != null;
+        return WicketFileUtil.getMarkupFile(psiClass) != null;
     }
 
     @NotNull
     @Override
     protected String getResourceFileName(@NotNull PsiClass psiClass) {
-        return WicketForgeUtil.getMarkupFileName(psiClass);
+        return WicketFilenameUtil.getMarkupFilename(psiClass);
     }
 
     @NotNull
@@ -53,6 +55,6 @@ public class AddMarkupPanelIntention extends AddMarkupIntention {
     }
 
     protected boolean isApplicableForClass(@NotNull PsiClass psiClass) {
-        return WicketForgeUtil.isWicketPanel(psiClass);
+        return WicketPsiUtil.isWicketPanel(psiClass);
     }
 }

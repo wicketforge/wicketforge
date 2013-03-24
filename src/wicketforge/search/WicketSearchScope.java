@@ -1,6 +1,5 @@
 package wicketforge.search;
 
-import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.pointers.VirtualFilePointer;
@@ -29,6 +28,6 @@ public final class WicketSearchScope {
     }
 
     public static GlobalSearchScope classInModuleWithDependenciesAndLibraries(@NotNull Module module, boolean includeTests) {
-        return GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module);
+        return GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module, includeTests);
     }
 }

@@ -25,8 +25,9 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.Constants;
-import wicketforge.WicketForgeUtil;
 import wicketforge.action.ui.AbstractCreateDialog;
+import wicketforge.util.WicketFileUtil;
+import wicketforge.util.WicketFilenameUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +94,7 @@ public abstract class WicketClassBaseAction extends CreateElementActionBase {
                                         clazz.getExtendsList().add(extendingClass);
                                     }
                                     /*
-                                    if (WicketForgeUtil.isWicketPanel(clazz)) {
+                                    if (WicketPsiUtil.isWicketPanel(clazz)) {
                                         PsiMethod method = superClass.getConstructors()[0];
                                         if (method != null) {
                                             OverrideImplementUtil.overrideOrImplement(clazz, method);
@@ -102,7 +103,7 @@ public abstract class WicketClassBaseAction extends CreateElementActionBase {
                                     */
 
                                     if (hasMarkup) {
-                                        WicketForgeUtil.createFileFromTemplate(WicketForgeUtil.getMarkupFileName(clazz), markupDirectory, templateName);
+                                        WicketFileUtil.createFileFromTemplate(WicketFilenameUtil.getMarkupFilename(clazz), markupDirectory, templateName);
                                     }
                                 }
                                 catch (IncorrectOperationException e) {

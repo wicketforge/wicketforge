@@ -26,7 +26,7 @@ import com.intellij.psi.PsiNewExpression;
 import com.intellij.util.PsiNavigateUtil;
 import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
-import wicketforge.WicketForgeUtil;
+import wicketforge.util.WicketPsiUtil;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
                 }
             }
         } else if (element instanceof PsiClass) {
-            return WicketForgeUtil.isWicketComponentWithAssociatedMarkup((PsiClass) element);
+            return WicketPsiUtil.isWicketComponentWithAssociatedMarkup((PsiClass) element);
         }
         return super.isSuitable(element);
     }
@@ -99,7 +99,7 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
             if (children == null) {
                 List<TreeElement> list = new SmartList<TreeElement>();
                 for (PsiClass psiClass : psiJavaFile.getClasses()) {
-                    if (WicketForgeUtil.isWicketComponentWithAssociatedMarkup(psiClass)) {
+                    if (WicketPsiUtil.isWicketComponentWithAssociatedMarkup(psiClass)) {
                         list.add(new ClassTreeElement(psiClass, ClassWicketIdReferences.build(psiClass, false)));
                     }
                 }
@@ -149,7 +149,7 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
                     }
                 }
                 for (PsiClass aClass : psiClass.getAllInnerClasses()) {
-                    if (classWicketIdReferences.containsClass(aClass) && WicketForgeUtil.isWicketComponentWithAssociatedMarkup(aClass)) {
+                    if (classWicketIdReferences.containsClass(aClass) && WicketPsiUtil.isWicketComponentWithAssociatedMarkup(aClass)) {
                         list.add(new ClassTreeElement(aClass, classWicketIdReferences));
                     }
                 }

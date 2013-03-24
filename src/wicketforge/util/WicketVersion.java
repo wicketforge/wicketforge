@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package wicketforge;
+package wicketforge.util;
 
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +32,9 @@ import java.util.List;
  */
 // TODO think about to remove WicketVersion and implement getDtd and getXmlPropertiesFileExtension in other way...
 enum WicketVersion {
-    WICKET_1_3("http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd", "xml"),
-    WICKET_1_4("http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd", "xml"),
-    WICKET_1_5("http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd", "properties.xml"); // at the moment there is no 1.5 nor 6.0 dtd...
+    WICKET_1_3("http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd", ".xml"),
+    WICKET_1_4("http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd", ".xml"),
+    WICKET_1_5("http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd", ".properties.xml"); // at the moment there is no 1.5 nor 6.0 dtd...
 
     private String dtd;
     private String xmlPropertiesFileExtension;
@@ -54,7 +55,8 @@ enum WicketVersion {
     }
 
     @NotNull
-    public static WicketVersion getVersion(@Nullable Module module) {
+    public static WicketVersion getVersion(@NotNull PsiElement element) {
+        Module module = ModuleUtil.findModuleForPsiElement(element);
         if (module == null) {
             return WICKET_1_5;
         }

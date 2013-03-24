@@ -1,6 +1,5 @@
 package wicketforge.search;
 
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
@@ -11,7 +10,7 @@ import com.intellij.util.indexing.*;
 import com.intellij.util.io.EnumeratorStringDescriptor;
 import com.intellij.util.io.KeyDescriptor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import wicketforge.util.ResourceInfo;
 
 import java.util.*;
 
@@ -21,13 +20,10 @@ abstract class WicketResourceIndexExtension extends ScalarIndexExtension<String>
 
     // TODO check add onchange in configuration and work with messageBus to recreate Indeces
 
-    @Nullable
-    protected abstract WicketIndexUtil.ResourceInfo getResourceInfo(FileContent inputData);
-
     @NotNull
     @Override
     public final Map<String, Void> map(FileContent inputData) {
-        WicketIndexUtil.ResourceInfo resourceInfo = getResourceInfo(inputData);
+        ResourceInfo resourceInfo = ResourceInfo.from(inputData.getFile(), inputData.getProject());
         if (resourceInfo == null) {
             return Collections.emptyMap();
         } else if (resourceInfo.locale == null) {
@@ -64,7 +60,7 @@ abstract class WicketResourceIndexExtension extends ScalarIndexExtension<String>
     }
 
     @NotNull
-    protected static PsiFile[] getFilesByClass(@NotNull ID<String, Void> indexId, @NotNull final Project project, @NotNull final PsiClass psiClass, @NotNull final GlobalSearchScope scope, boolean all) {
+    protected static PsiFile[] getFilesByClass(@NotNull ID<String, Void> indexId, @NotNull final PsiClass psiClass, @NotNull final GlobalSearchScope scope, boolean all) {
         String name = psiClass.getQualifiedName();
         if (name == null) {
             return PsiFile.EMPTY_ARRAY;
@@ -77,9 +73,10 @@ abstract class WicketResourceIndexExtension extends ScalarIndexExtension<String>
             return PsiFile.EMPTY_ARRAY;
         }
         List<PsiFile> result = new ArrayList<PsiFile>();
+        PsiManager manager = PsiManager.getInstance(psiClass.getProject());
         for (VirtualFile file : files) {
             if (file.isValid()) {
-                PsiFile psiFile = PsiManager.getInstance(project).findFile(file);
+                PsiFile psiFile = manager.findFile(file);
                 if (psiFile != null) {
                     result.add(psiFile);
                 }

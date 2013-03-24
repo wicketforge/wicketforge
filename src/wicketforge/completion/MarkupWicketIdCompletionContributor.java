@@ -30,10 +30,10 @@ import com.intellij.psi.xml.XmlToken;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
-import wicketforge.WicketForgeUtil;
 import wicketforge.psi.hierarchy.ClassWicketIdHierarchy;
 import wicketforge.psi.hierarchy.ClassWicketIdItem;
 import wicketforge.psi.hierarchy.HierarchyUtil;
+import wicketforge.util.WicketFileUtil;
 
 /**
  */
@@ -50,7 +50,7 @@ public class MarkupWicketIdCompletionContributor extends CompletionContributor {
                     if (psiElement instanceof XmlToken) {
                         XmlAttributeValue wicketIdAttribute = getWicketIdAttribute((XmlToken) psiElement);
                         if (wicketIdAttribute != null) {
-                            PsiClass clazz = WicketForgeUtil.getMarkupClass(f);
+                            PsiClass clazz = WicketFileUtil.getMarkupClass(f);
                             if (clazz != null) {
                                 // ... before we search for our parent Item
                                 String parentPath = HierarchyUtil.findPathOf(wicketIdAttribute, true);

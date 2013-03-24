@@ -2,28 +2,18 @@ package wicketforge.search;
 
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.StdFileTypes;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.indexing.FileContent;
 import com.intellij.util.indexing.ID;
 import com.intellij.util.xml.NanoXmlUtil;
 import com.intellij.util.xml.XmlFileHeader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-
 public class PropertiesIndex extends WicketResourceIndexExtension {
     public static final ID<String, Void> NAME = ID.create("WicketPropertiesIndex");
-
-    @Nullable
-    @Override
-    protected WicketIndexUtil.ResourceInfo getResourceInfo(FileContent inputData) {
-        return WicketIndexUtil.getClassNameFromProperties(inputData.getFile(), inputData.getProject());
-    }
 
     @NotNull
     @Override
@@ -48,13 +38,13 @@ public class PropertiesIndex extends WicketResourceIndexExtension {
     }
 
     @NotNull
-    public static PsiFile[] getAllFilesByClass(@NotNull final Project project, @NotNull final PsiClass psiClass, @NotNull final GlobalSearchScope scope) {
-        return getFilesByClass(NAME, project, psiClass, scope, true);
+    public static PsiFile[] getAllFilesByClass(@NotNull final PsiClass psiClass, @NotNull final GlobalSearchScope scope) {
+        return getFilesByClass(NAME, psiClass, scope, true);
     }
 
     @Nullable
-    public static PsiFile getBaseFileByClass(@NotNull final Project project, @NotNull final PsiClass psiClass, @NotNull final GlobalSearchScope scope) {
-        PsiFile[] files = getFilesByClass(NAME, project, psiClass, scope, false);
+    public static PsiFile getBaseFileByClass(@NotNull final PsiClass psiClass, @NotNull final GlobalSearchScope scope) {
+        PsiFile[] files = getFilesByClass(NAME, psiClass, scope, false);
         return files.length > 0 ? files[0] : null;
     }
 }

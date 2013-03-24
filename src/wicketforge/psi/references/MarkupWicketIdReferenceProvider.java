@@ -21,8 +21,8 @@ import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.Constants;
-import wicketforge.WicketForgeUtil;
 import wicketforge.facet.WicketForgeFacet;
+import wicketforge.util.WicketFileUtil;
 
 /**
  */
@@ -36,7 +36,7 @@ public class MarkupWicketIdReferenceProvider extends PsiReferenceProvider {
             PsiFile psiFile = attributeValue.getContainingFile();
             if (psiFile != null) {
                 if (WicketForgeFacet.hasFacetOrIsFromLibrary(element)) {
-                    PsiClass psiClass = WicketForgeUtil.getMarkupClass(psiFile);
+                    PsiClass psiClass = WicketFileUtil.getMarkupClass(psiFile);
                     if (psiClass != null) {
                         return new PsiReference[] {new MarkupWicketIdReference(attributeValue, psiClass)};
                     }

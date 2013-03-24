@@ -36,8 +36,9 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.xml.XmlFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wicketforge.WicketForgeUtil;
 import wicketforge.action.ui.ExtractHtmlTextDialog;
+import wicketforge.util.WicketFileUtil;
+import wicketforge.util.WicketPsiUtil;
 
 /**
  */
@@ -75,9 +76,9 @@ public class ExtractHtmlTextActionHandler extends EditorWriteActionHandler {
         }
         final PsiClass psiClass;
         if (StdFileTypes.JAVA.equals(psiFile.getFileType())) {
-            psiClass = WicketForgeUtil.getParentWicketClass(psiElement);
+            psiClass = WicketPsiUtil.getParentWicketClass(psiElement);
         } else if (StdFileTypes.HTML.equals(psiFile.getFileType())) {
-            psiClass = WicketForgeUtil.getMarkupClass(psiFile);
+            psiClass = WicketFileUtil.getMarkupClass(psiFile);
         } else {
             return;
         }
@@ -103,7 +104,7 @@ public class ExtractHtmlTextActionHandler extends EditorWriteActionHandler {
                         if (selectedItem instanceof ExtractHtmlTextDialog.NewPropertiesFileInfo) {
                             // create new properties file
                             ExtractHtmlTextDialog.NewPropertiesFileInfo newPropertiesFileInfo = (ExtractHtmlTextDialog.NewPropertiesFileInfo) selectedItem;
-                            PsiElement element = WicketForgeUtil.createFileFromTemplate(newPropertiesFileInfo.getName(), destinationDirectory, newPropertiesFileInfo.getPropertiesType().getTemplateName());
+                            PsiElement element = WicketFileUtil.createFileFromTemplate(newPropertiesFileInfo.getName(), destinationDirectory, newPropertiesFileInfo.getPropertiesType().getTemplateName());
                             if (element == null) {
                                 Messages.showErrorDialog(project, "Could not create properties file.", "Extract Text");
                                 return false;

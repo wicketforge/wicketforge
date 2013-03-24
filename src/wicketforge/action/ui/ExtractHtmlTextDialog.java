@@ -29,7 +29,9 @@ import com.intellij.psi.PsiPackage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
-import wicketforge.WicketForgeUtil;
+import wicketforge.util.WicketFileUtil;
+import wicketforge.util.WicketFilenameUtil;
+import wicketforge.util.WicketPsiUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -90,7 +92,7 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
         propertyKeyTextField.setText(sb.toString());
 
         // if we have only 1 destination, we dont offer a different folder selection
-        if (WicketForgeUtil.getResourceRoots(module).length < 2) {
+        if (WicketFileUtil.getResourceRoots(module).length < 2) {
             chooseDifferentDestinationFolderPanel.setVisible(false);
         }
     }
@@ -109,7 +111,7 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
         List<Object> data = new ArrayList<Object>();
 
         { // find component class properties file
-            PropertiesFile propertiesFile = WicketForgeUtil.getPropertiesFile(componentClass);
+            PropertiesFile propertiesFile = WicketFileUtil.getPropertiesFile(componentClass);
             if (propertiesFile == null) {
                 data.add(new NewPropertiesFileInfo(componentClass, Constants.PropertiesType.PROPERTIES));
                 data.add(new NewPropertiesFileInfo(componentClass, Constants.PropertiesType.XML));
@@ -119,9 +121,9 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
         }
 
         { // find and add application properties file
-            PsiClass appClass = WicketForgeUtil.findWicketApplicationClass(project);
+            PsiClass appClass = WicketPsiUtil.findWicketApplicationClass(project);
             if (appClass != null) {
-                PropertiesFile propertiesFile = WicketForgeUtil.getPropertiesFile(appClass);
+                PropertiesFile propertiesFile = WicketFileUtil.getPropertiesFile(appClass);
                 if (propertiesFile != null) {
                     data.add(propertiesFile);
                 }
@@ -172,7 +174,7 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
 
         // if we dont have any properties file (we will create one) -> ask for destination
         if (module != null && psiPackage != null && selectedItem instanceof NewPropertiesFileInfo && chooseDifferentDestinationFolderCheckBox.isSelected()) {
-            PsiDirectory directory = WicketForgeUtil.selectTargetDirectory(psiPackage.getQualifiedName(), project, module);
+            PsiDirectory directory = WicketFileUtil.selectTargetDirectory(psiPackage.getQualifiedName(), project, module);
             if (directory == null) {
                 return; // aborted
             }
@@ -203,7 +205,7 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
 
         public NewPropertiesFileInfo(PsiClass componentClass, Constants.PropertiesType propertiesType) {
             this.propertiesType = propertiesType;
-            this.name = WicketForgeUtil.getPropertiesFileName(componentClass, propertiesType);
+            this.name = WicketFilenameUtil.getPropertiesFilename(componentClass, propertiesType);
         }
 
         public Constants.PropertiesType getPropertiesType() {
