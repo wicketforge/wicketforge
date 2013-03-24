@@ -18,8 +18,8 @@ package wicketforge.intention;
 import com.intellij.psi.PsiClass;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.Constants;
+import wicketforge.search.PropertiesIndex;
 import wicketforge.templates.WicketTemplates;
-import wicketforge.util.WicketFileUtil;
 import wicketforge.util.WicketFilenameUtil;
 import wicketforge.util.WicketPsiUtil;
 
@@ -40,7 +40,7 @@ public class AddPropertiesXMLIntention extends AddMarkupIntention {
 
     @Override
     protected boolean hasResourceFile(@NotNull PsiClass psiClass) {
-        return WicketFileUtil.getPropertiesFile(psiClass) != null;
+        return PropertiesIndex.getBaseFile(psiClass) != null;
     }
 
     @NotNull

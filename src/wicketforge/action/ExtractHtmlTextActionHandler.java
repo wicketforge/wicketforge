@@ -37,6 +37,7 @@ import com.intellij.psi.xml.XmlFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.action.ui.ExtractHtmlTextDialog;
+import wicketforge.search.ClassIndex;
 import wicketforge.util.WicketFileUtil;
 import wicketforge.util.WicketPsiUtil;
 
@@ -78,7 +79,7 @@ public class ExtractHtmlTextActionHandler extends EditorWriteActionHandler {
         if (StdFileTypes.JAVA.equals(psiFile.getFileType())) {
             psiClass = WicketPsiUtil.getParentWicketClass(psiElement);
         } else if (StdFileTypes.HTML.equals(psiFile.getFileType())) {
-            psiClass = WicketFileUtil.getMarkupClass(psiFile);
+            psiClass = ClassIndex.getAssociatedClass(psiFile);
         } else {
             return;
         }

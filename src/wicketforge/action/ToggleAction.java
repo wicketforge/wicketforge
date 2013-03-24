@@ -31,6 +31,8 @@ import com.intellij.util.PsiNavigateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.facet.WicketForgeFacet;
+import wicketforge.search.ClassIndex;
+import wicketforge.search.MarkupIndex;
 import wicketforge.templates.WicketTemplates;
 import wicketforge.util.WicketFileUtil;
 import wicketforge.util.WicketFilenameUtil;
@@ -62,7 +64,7 @@ public class ToggleAction extends AnAction {
         }
 
         if (psiFile instanceof XmlFile) {
-            PsiClass psiClass = WicketFileUtil.getMarkupClass(psiFile);
+            PsiClass psiClass = ClassIndex.getAssociatedClass(psiFile);
             if (psiClass == null) {
                 HintManager.getInstance().showInformationHint(editor, "No corresponding java class found");
             } else {
@@ -101,7 +103,7 @@ public class ToggleAction extends AnAction {
             }
 
             // get markupFile
-            PsiElement markupFile = WicketFileUtil.getMarkupFile(psiClass);
+            PsiElement markupFile = MarkupIndex.getBaseFile(psiClass);
             if (markupFile == null) {
                 // no markup file found -> ask to create one
                 final Module module = ModuleUtil.findModuleForPsiElement(psiFile);

@@ -26,7 +26,7 @@ import com.intellij.psi.xml.XmlToken;
 import com.intellij.psi.xml.XmlTokenType;
 import wicketforge.Constants;
 import wicketforge.facet.WicketForgeFacet;
-import wicketforge.util.WicketFileUtil;
+import wicketforge.search.ClassIndex;
 import wicketforge.util.WicketPsiUtil;
 
 import java.util.Collection;
@@ -42,7 +42,7 @@ public class WicketMarkupLineMarkerProvider implements LineMarkerProvider {
             PsiFile file = element.getContainingFile();
             if (file != null) {
                 if (WicketForgeFacet.hasFacetOrIsFromLibrary(file)) {
-                    final PsiClass psiClass = WicketFileUtil.getMarkupClass(file);
+                    final PsiClass psiClass = ClassIndex.getAssociatedClass(file);
                     if (psiClass != null && WicketPsiUtil.isWicketComponentWithAssociatedMarkup(psiClass)) {
                         return NavigableLineMarkerInfo.create(element, new PsiElement[]{psiClass}, Constants.TOJAVAREF, null);
                     }

@@ -33,7 +33,7 @@ import wicketforge.Constants;
 import wicketforge.psi.hierarchy.ClassWicketIdHierarchy;
 import wicketforge.psi.hierarchy.ClassWicketIdItem;
 import wicketforge.psi.hierarchy.HierarchyUtil;
-import wicketforge.util.WicketFileUtil;
+import wicketforge.search.ClassIndex;
 
 /**
  */
@@ -50,7 +50,7 @@ public class MarkupWicketIdCompletionContributor extends CompletionContributor {
                     if (psiElement instanceof XmlToken) {
                         XmlAttributeValue wicketIdAttribute = getWicketIdAttribute((XmlToken) psiElement);
                         if (wicketIdAttribute != null) {
-                            PsiClass clazz = WicketFileUtil.getMarkupClass(f);
+                            PsiClass clazz = ClassIndex.getAssociatedClass(f);
                             if (clazz != null) {
                                 // ... before we search for our parent Item
                                 String parentPath = HierarchyUtil.findPathOf(wicketIdAttribute, true);

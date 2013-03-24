@@ -21,20 +21,18 @@ import com.intellij.ide.fileTemplates.FileTemplate;
 import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.ide.fileTemplates.FileTemplateUtil;
 import com.intellij.ide.util.PackageUtil;
-import com.intellij.lang.properties.PropertiesUtil;
-import com.intellij.lang.properties.psi.PropertiesFile;
 import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.pointers.VirtualFilePointer;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.compiled.ClsClassImpl;
+import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiManager;
 import com.intellij.refactoring.PackageWrapper;
 import com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesUtil;
 import com.intellij.refactoring.util.RefactoringMessageUtil;
@@ -45,9 +43,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
 import wicketforge.facet.WicketForgeFacet;
-import wicketforge.search.MarkupIndex;
-import wicketforge.search.PropertiesIndex;
-import wicketforge.search.WicketSearchScope;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,61 +50,6 @@ import java.util.Properties;
 
 public final class WicketFileUtil {
     private WicketFileUtil() {
-    }
-
-    /**
-     * Returns the markup file for the passed PsiClass.  Null is returned if the markup file cannot be found.
-     *
-     * @param psiClass the PsiClass
-     * @return the markup PsiFile or null if no such file exists.
-     */
-    @Nullable
-    public static PsiFile getMarkupFile(@NotNull PsiClass psiClass) {
-        Module module = ModuleUtil.findModuleForPsiElement(psiClass);
-        return module == null ? null : MarkupIndex.getBaseFileByClass(psiClass, WicketSearchScope.resourcesInModuleWithDependenciesAndLibraries(module, true));
-    }
-
-    /**
-     * Returns the markup file for the passed PsiClass.  Null is returned if the markup file cannot be found.
-     *
-     * @param psiClass the PsiClass
-     * @return the markup PsiFile or null if no such file exists.
-     */
-    @Nullable
-    public static PropertiesFile getPropertiesFile(@NotNull PsiClass psiClass) {
-        Module module = ModuleUtil.findModuleForPsiElement(psiClass);
-        return module == null ? null : PropertiesUtil.getPropertiesFile(PropertiesIndex.getBaseFileByClass(psiClass, WicketSearchScope.resourcesInModuleWithDependenciesAndLibraries(module, true)));
-    }
-
-    /**
-     * Returns the class of an associated markup file
-     *
-     * @param psiFile the markup file
-     * @return the associated PsiClass or null if no such class exists.
-     */
-    @Nullable
-    public static PsiClass getMarkupClass(@NotNull PsiFile psiFile) {
-        VirtualFile virtualFile = psiFile.getVirtualFile();
-        if (virtualFile == null) {
-            return null;
-        }
-        Project project = psiFile.getProject();
-        ResourceInfo resourceInfo = ResourceInfo.from(virtualFile, project);
-        if (resourceInfo == null) {
-            return null;
-        }
-        Module module = ModuleUtil.findModuleForPsiElement(psiFile);
-        if (module == null) {
-            return null;
-        }
-        PsiClass psiClass = JavaPsiFacade.getInstance(project).findClass(resourceInfo.qualifiedName, WicketSearchScope.classInModuleWithDependenciesAndLibraries(module, true));
-        if (psiClass instanceof ClsClassImpl) {
-            PsiClass sourceMirrorClass = ((ClsClassImpl) psiClass).getSourceMirrorClass();
-            if (sourceMirrorClass != null) {
-                psiClass = sourceMirrorClass;
-            }
-        }
-        return psiClass;
     }
 
     @NotNull

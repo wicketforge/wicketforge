@@ -29,7 +29,7 @@ import wicketforge.Constants;
 import wicketforge.psi.hierarchy.HierarchyUtil;
 import wicketforge.psi.hierarchy.MarkupWicketIdHierarchy;
 import wicketforge.psi.hierarchy.MarkupWicketIdItem;
-import wicketforge.util.WicketFileUtil;
+import wicketforge.search.MarkupIndex;
 import wicketforge.util.WicketPsiUtil;
 
 /**
@@ -51,7 +51,7 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
                             if (wicketNewExpression != null) {
                                 PsiClass psiClass = WicketPsiUtil.getParentWicketClass(wicketNewExpression);
                                 if (psiClass != null) {
-                                    PsiFile markup = WicketFileUtil.getMarkupFile(psiClass);
+                                    PsiFile markup = MarkupIndex.getBaseFile(psiClass);
                                     if (markup != null) {
                                         // ... before we search for our parent Item
                                         String parentPath = HierarchyUtil.findPathOf(psiClass, wicketIdExpression, true, true);

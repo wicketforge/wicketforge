@@ -29,6 +29,7 @@ import com.intellij.psi.PsiPackage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
+import wicketforge.search.PropertiesIndex;
 import wicketforge.util.WicketFileUtil;
 import wicketforge.util.WicketFilenameUtil;
 import wicketforge.util.WicketPsiUtil;
@@ -111,7 +112,7 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
         List<Object> data = new ArrayList<Object>();
 
         { // find component class properties file
-            PropertiesFile propertiesFile = WicketFileUtil.getPropertiesFile(componentClass);
+            PropertiesFile propertiesFile = PropertiesIndex.getBaseFile(componentClass);
             if (propertiesFile == null) {
                 data.add(new NewPropertiesFileInfo(componentClass, Constants.PropertiesType.PROPERTIES));
                 data.add(new NewPropertiesFileInfo(componentClass, Constants.PropertiesType.XML));
@@ -123,7 +124,7 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
         { // find and add application properties file
             PsiClass appClass = WicketPsiUtil.findWicketApplicationClass(project);
             if (appClass != null) {
-                PropertiesFile propertiesFile = WicketFileUtil.getPropertiesFile(appClass);
+                PropertiesFile propertiesFile = PropertiesIndex.getBaseFile(appClass);
                 if (propertiesFile != null) {
                     data.add(propertiesFile);
                 }
