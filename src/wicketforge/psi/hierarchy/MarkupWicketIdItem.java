@@ -16,6 +16,7 @@
 package wicketforge.psi.hierarchy;
 
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlTag;
@@ -88,6 +89,72 @@ public final class MarkupWicketIdItem implements ItemPresentation {
     }
 
     public Icon getIcon(boolean open) {
-        return Constants.WICKET_COMPONENT_ICON;
+        return getIcon(getTag());
+    }
+
+    private static Icon getIcon(@Nullable XmlTag tag) {
+        if (tag != null) {
+            String name = tag.getName();
+            if ("div".equals(name)) {
+                return Constants.ICON_MARKUP_DIV;
+            }
+            if ("span".equals(name)) {
+                return Constants.ICON_MARKUP_SPAN;
+            }
+            if ("a".equals(name)) {
+                return Constants.ICON_MARKUP_LINK;
+            }
+            if ("table".equals(name)) {
+                return Constants.ICON_MARKUP_TABLE;
+            }
+            if ("tr".equals(name)) {
+                return Constants.ICON_MARKUP_TR;
+            }
+            if ("td".equals(name)) {
+                return Constants.ICON_MARKUP_TD;
+            }
+            if ("ul".equals(name)) {
+                return Constants.ICON_MARKUP_UL;
+            }
+            if ("li".equals(name)) {
+                return Constants.ICON_MARKUP_LI;
+            }
+            if ("label".equals(name)) {
+                return Constants.ICON_MARKUP_LABEL;
+            }
+            if ("input".equals(name)) {
+                String type = tag.getAttributeValue("type");
+                if ("submit".equals(type) || "reset".equals(type) || "image".equals(type) || "button".equals(type)) {
+                    return Constants.ICON_MARKUP_BUTTON;
+                }
+                if ("checkbox".equals(type)) {
+                    return Constants.ICON_MARKUP_INPUT_CHECKBOX;
+                }
+                if ("radio".equals(type)) {
+                    return Constants.ICON_MARKUP_INPUT_RADIO;
+                }
+                return Constants.ICON_MARKUP_INPUT;
+            }
+            if ("textarea".equals(name)) {
+                return Constants.ICON_MARKUP_TEXTAREA;
+            }
+            if ("select".equals(name)) {
+                // generic icon for combobox and list because user dont have to set size attribute...
+                return Constants.ICON_MARKUP_SELECT;
+            }
+            if ("option".equals(name)) {
+                return Constants.ICON_MARKUP_OPTION;
+            }
+            if ("form".equals(name)) {
+                return Constants.ICON_MARKUP_FORM;
+            }
+            if ("img".equals(name)) {
+                return Constants.ICON_MARKUP_IMG;
+            }
+            if ("button".equals(name)) {
+                return Constants.ICON_MARKUP_BUTTON;
+            }
+        }
+        return Constants.ICON_MARKUP_;
     }
 }

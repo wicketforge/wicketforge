@@ -96,6 +96,10 @@ public final class ClassWicketIdItem implements ItemPresentation {
     }
 
     public Icon getIcon(boolean open) {
-        return Constants.WICKET_COMPONENT_ICON;
+        // we can have multiple ClassWicketIdNewComponentItem -> just show icon from first item...
+        if (!newComponentItems.isEmpty()) {
+            return newComponentItems.get(0).getIcon(open);
+        }
+        return Constants.ICON_CLASS_;
     }
 }

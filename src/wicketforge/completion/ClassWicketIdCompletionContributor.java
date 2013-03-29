@@ -25,6 +25,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import wicketforge.Constants;
 import wicketforge.WicketForgeUtil;
 import wicketforge.psi.hierarchy.HierarchyUtil;
 import wicketforge.psi.hierarchy.MarkupWicketIdHierarchy;
@@ -57,7 +58,13 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
                                             MarkupWicketIdItem item = MarkupWicketIdHierarchy.create((XmlFile) markup).getWicketIdPathMap().get(parentPath);
                                             if (item != null) {
                                                 for (MarkupWicketIdItem child : item.getChildren()) {
-                                                    rs.addElement(LookupElementBuilder.create(child.getWicketId()).setIcon(child.getIcon()).setTypeText(".html").setTailText("  " + child.getLocationString(), true));
+                                                    rs.addElement(
+                                                            LookupElementBuilder.create(child.getWicketId())
+                                                                    //.setIcon(child.getIcon()) // child's icon bother view -> use generic icon
+                                                                    .setIcon(Constants.WICKET_COMPONENT_ICON)
+                                                                    .setTypeText(".html")
+                                                                    .setTailText("  " + child.getLocationString(), true)
+                                                    );
                                                 }
                                             }
                                         }
