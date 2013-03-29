@@ -42,6 +42,9 @@
         <fileBasedIndex implementation="wicketforge.search.MarkupIndex"/>
         <fileBasedIndex implementation="wicketforge.search.PropertiesIndex"/>
 
+        <automaticRenamerFactory implementation="wicketforge.refactoring.MarkupRenamerFactory"/>
+        <automaticRenamerFactory implementation="wicketforge.refactoring.PropertiesRenamerFactory"/>
+
     </extensions>
     <application-components>
         <component>

@@ -85,6 +85,19 @@ public final class WicketFilenameUtil {
     }
 
     /**
+     * @return extension from filename (first match from fileExtensions)
+     */
+    @Nullable
+    public static String extractExtension(@NotNull String filename, @NotNull String[] fileExtensions) {
+        for (String fileExtension : fileExtensions) {
+            if (filename.endsWith(fileExtension)) {
+                return fileExtension;
+            }
+        }
+        return null;
+    }
+
+    /**
      * <pre>
      *     HomePage      ->  [null]
      *     HomePage_en   ->  en
