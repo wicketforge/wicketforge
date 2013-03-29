@@ -17,6 +17,7 @@ package wicketforge.util;
 
 import com.intellij.psi.PsiClass;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
 
 public final class WicketFilenameUtil {
@@ -31,7 +32,7 @@ public final class WicketFilenameUtil {
      */
     @NotNull
     public static String getMarkupFilename(@NotNull PsiClass clazz) {
-        return getResourceFilename(clazz) + ".html";
+        return getResourceFilename(clazz) + FilenameConstants.EXT_HTML;
     }
 
     /**
@@ -44,7 +45,7 @@ public final class WicketFilenameUtil {
     public static String getPropertiesFilename(@NotNull PsiClass clazz, @NotNull Constants.PropertiesType propertiesType) {
         switch (propertiesType) {
             case PROPERTIES:
-                return getResourceFilename(clazz) + ".properties";
+                return getResourceFilename(clazz) + FilenameConstants.EXT_PROPERTIES;
             case XML:
                 return getResourceFilename(clazz) + WicketVersion.getVersion(clazz).getXmlPropertiesFileExtension();
             default:
@@ -68,5 +69,46 @@ public final class WicketFilenameUtil {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * @return filename with removed extension (first match from fileExtensions)
+     */
+    @NotNull
+    public static String removeExtension(@NotNull String filename, @NotNull String[] fileExtensions) {
+        for (String fileExtension : fileExtensions) {
+            if (filename.endsWith(fileExtension)) {
+                return filename.substring(0, filename.length() - fileExtension.length());
+            }
+        }
+        return filename;
+    }
+
+    /**
+     * <pre>
+     *     HomePage      ->  [null]
+     *     HomePage_en   ->  en
+     * </pre>
+     */
+    @Nullable
+    public static String extractLocale(@NotNull String filenameWithoutExtension) {
+        int indexOfLocale = indexOfLocale(filenameWithoutExtension);
+        return indexOfLocale > 0 ? filenameWithoutExtension.substring(indexOfLocale + 1) : null;
+    }
+
+    /**
+     * <pre>
+     *     HomePage      ->  HomePage
+     *     HomePage_en   ->  HomePage
+     * </pre>
+     */
+    @NotNull
+    public static String extractBasename(@NotNull String filenameWithoutExtension) {
+        int indexOfLocale = indexOfLocale(filenameWithoutExtension);
+        return indexOfLocale > 0 ? filenameWithoutExtension.substring(0, indexOfLocale) : filenameWithoutExtension;
+    }
+
+    private static int indexOfLocale(@NotNull String filenameWithoutExtension) {
+        return filenameWithoutExtension.indexOf('_'); // find '_' should be enought for the moment, we want a filename without extension for future improvement (if needed)
     }
 }

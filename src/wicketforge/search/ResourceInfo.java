@@ -30,6 +30,8 @@ import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.facet.WicketForgeFacet;
+import wicketforge.util.FilenameConstants;
+import wicketforge.util.WicketFilenameUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,15 +51,15 @@ final class ResourceInfo {
     public static ResourceInfo from(@NotNull VirtualFile file, @NotNull Project project) {
         FileType fileType = file.getFileType();
         if (StdFileTypes.HTML.equals(file.getFileType())) {
-            return from(file, project, ".html");
+            return from(file, project, FilenameConstants.MARKUP_EXTENSIONS);
         } else if (StdFileTypes.PROPERTIES.equals(fileType) || StdFileTypes.XML.equals(fileType)) {
-            return from(file, project, ".properties.xml", ".properties", ".xml");
+            return from(file, project, FilenameConstants.PROPERTIES_EXTENSIONS);
         }
         return null;
     }
 
     @Nullable
-    private static ResourceInfo from(@NotNull VirtualFile file, @NotNull Project project, @NotNull String... fileExtensions) {
+    private static ResourceInfo from(@NotNull VirtualFile file, @NotNull Project project, @NotNull String[] fileExtensions) {
         VirtualFile dir = file.getParent();
         if (dir == null || !dir.isDirectory()) {
             return null;
@@ -69,16 +71,10 @@ final class ResourceInfo {
         }
 
         // extract className from filename -> remove extensions
-        String className = file.getName();
-        for (String fileExtension : fileExtensions) {
-            if (className.endsWith(fileExtension)) {
-                className = className.substring(0, className.length() - fileExtension.length());
-            }
-        }
+        String className = WicketFilenameUtil.removeExtension(file.getName(), fileExtensions);
         // extract locale
-        int index = className.indexOf('_');
-        String locale = index > 0 ? className.substring(index + 1) : null;
-        className = StringUtil.replace(index > 0 ? className.substring(0, index) : className, "$", ".");
+        String locale = WicketFilenameUtil.extractLocale(className);
+        className = StringUtil.replace(WicketFilenameUtil.extractBasename(className), "$", ".");
         return new ResourceInfo(packageName, className, locale);
     }
 

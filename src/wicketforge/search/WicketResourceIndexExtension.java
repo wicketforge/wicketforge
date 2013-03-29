@@ -81,7 +81,7 @@ abstract class WicketResourceIndexExtension extends ScalarIndexExtension<String>
 
     @Override
     public int getVersion() {
-        return 2;
+        return 0;
     }
 
     @NotNull
