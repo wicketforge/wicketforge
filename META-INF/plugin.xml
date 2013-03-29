@@ -73,11 +73,11 @@
                     class="wicketforge.action.WicketPanelAction"
                     text="New Wicket Panel"
                     description="Creates new Wicket panel skeleton"/>
-            <action id="wicketforge.action.ViewWicketHierarchyAction"
-                    class="wicketforge.action.ViewWicketHierarchyAction"
-                    text="Wicket Hierarchy"
-                    description="Show Wicket Hierarchy Dialog">
-                <add-to-group group-id="ViewMenu" anchor="last"/>
+            <action id="wicketforge.action.ViewWicketStructureAction"
+                    class="wicketforge.action.ViewWicketStructureAction"
+                    text="Wicket Structure"
+                    description="Popup Wicket structure of the current file for quick navigation">
+                <add-to-group group-id="GoToCodeGroup" anchor="after" relative-to-action="FileStructurePopup"/>
                 <keyboard-shortcut keymap="$default" first-keystroke="alt shift F12"/>
                 <keyboard-shortcut keymap="Mac OS X" first-keystroke="control shift F12"/>
                 <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift F12"/>

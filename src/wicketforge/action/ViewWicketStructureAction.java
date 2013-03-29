@@ -39,7 +39,7 @@ import wicketforge.psi.hierarchy.MarkupStructureTreeModel;
 
 /**
  */
-public class ViewWicketHierarchyAction extends AnAction {
+public class ViewWicketStructureAction extends AnAction {
     private static final String PLACE = "WicketViewPopup";
 
     @Override
