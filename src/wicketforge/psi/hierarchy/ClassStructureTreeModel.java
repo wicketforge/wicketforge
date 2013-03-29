@@ -21,24 +21,24 @@ import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiNewExpression;
 import com.intellij.util.PsiNavigateUtil;
+import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
+import wicketforge.WicketForgeUtil;
 
-import javax.swing.*;
 import java.util.List;
 
 /**
  */
 public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
-    private ClassWicketIdReferences classWicketIdReferences;
     private StructureViewTreeElement root;
+    private static final TreeElement[] EMPTY_TREE_ELEMENTS = new TreeElement[0];
 
-    public ClassStructureTreeModel(@NotNull PsiFile psiFile, @NotNull PsiClass psiClass) {
-        super(psiFile);
-        classWicketIdReferences = ClassWicketIdReferences.build(psiClass);
-        root = new ClassTreeElement(psiClass);
+    public ClassStructureTreeModel(@NotNull PsiJavaFile psiJavaFile) {
+        super(psiJavaFile);
+        root = new JavaFileTreeElement(psiJavaFile);
     }
 
     @NotNull
@@ -49,72 +49,160 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
     @Override
     protected boolean isSuitable(PsiElement element) {
         if (element instanceof PsiNewExpression) {
-            return classWicketIdReferences.getNewComponentItem((PsiNewExpression) element) != null;
+            for (TreeElement treeElement : getRoot().getChildren()) {
+                if (treeElement instanceof ClassTreeElement) {
+                    return ((ClassTreeElement) treeElement).classWicketIdReferences.getNewComponentItem((PsiNewExpression) element) != null;
+                }
+            }
+        } else if (element instanceof PsiClass) {
+            return WicketForgeUtil.isWicketComponentWithAssociatedMarkup((PsiClass) element);
         }
         return super.isSuitable(element);
     }
 
-    private static final ItemPresentation EMPTY_PRESENTATION = new ItemPresentation() {
-        @Override
-        public String getPresentableText() {
-            return "";
+    private static class JavaFileTreeElement implements StructureViewTreeElement {
+        private PsiJavaFile psiJavaFile;
+
+        private JavaFileTreeElement(@NotNull PsiJavaFile psiJavaFile) {
+            this.psiJavaFile = psiJavaFile;
         }
 
         @Override
-        public String getLocationString() {
-            return null;
+        public Object getValue() {
+            return psiJavaFile;
         }
 
         @Override
-        public Icon getIcon(boolean open) {
-            return null;
+        public void navigate(boolean requestFocus) {
+            psiJavaFile.navigate(requestFocus);
         }
-    };
 
-    private class ClassTreeElement implements StructureViewTreeElement {
+        @Override
+        public boolean canNavigate() {
+            return psiJavaFile.canNavigate();
+        }
+
+        @Override
+        public boolean canNavigateToSource() {
+            return psiJavaFile.canNavigateToSource();
+        }
+
+        @Override
+        public ItemPresentation getPresentation() {
+            return psiJavaFile.getPresentation();
+        }
+
         private TreeElement[] children;
-        private final PsiElement psiElement;
-        private final ClassWicketIdNewComponentItem newComponentItem;
 
-        private ClassTreeElement(PsiElement psiElement) {
-            this.psiElement = psiElement;
-            this.newComponentItem = psiElement instanceof PsiNewExpression ? classWicketIdReferences.getNewComponentItem((PsiNewExpression) psiElement) : null;
+        @Override
+        public TreeElement[] getChildren() {
+            if (children == null) {
+                List<TreeElement> list = new SmartList<TreeElement>();
+                for (PsiClass psiClass : psiJavaFile.getClasses()) {
+                    if (WicketForgeUtil.isWicketComponentWithAssociatedMarkup(psiClass)) {
+                        list.add(new ClassTreeElement(psiClass, ClassWicketIdReferences.build(psiClass, false)));
+                    }
+                }
+                children = list.isEmpty() ? EMPTY_TREE_ELEMENTS : list.toArray(new TreeElement[list.size()]);
+            }
+            return children;
+        }
+    }
+
+    private static class ClassTreeElement implements StructureViewTreeElement {
+        private TreeElement[] children;
+        final ClassWicketIdReferences classWicketIdReferences;
+        final PsiClass psiClass;
+
+        private ClassTreeElement(@NotNull PsiClass psiClass, @NotNull ClassWicketIdReferences classWicketIdReferences) {
+            this.psiClass = psiClass;
+            this.classWicketIdReferences = classWicketIdReferences;
         }
 
         public Object getValue() {
-            return psiElement;
+            return psiClass;
         }
 
         public void navigate(boolean requestFocus) {
-            PsiNavigateUtil.navigate(newComponentItem != null ? newComponentItem.getWicketIdExpression() : psiElement);
+            psiClass.navigate(requestFocus);
         }
 
         public boolean canNavigate() {
-            return true;
+            return psiClass.canNavigate();
         }
 
         public boolean canNavigateToSource() {
-            return true;
+            return psiClass.canNavigateToSource();
         }
 
         public ItemPresentation getPresentation() {
-            return newComponentItem != null ? newComponentItem : EMPTY_PRESENTATION;
+            return psiClass.getPresentation();
         }
 
         public TreeElement[] getChildren() {
             if (children == null) {
-                List<PsiNewExpression> addedComponents = classWicketIdReferences.getAdded(psiElement);
+                List<TreeElement> list = new SmartList<TreeElement>();
+                List<PsiNewExpression> addedComponents = classWicketIdReferences.getAdded(psiClass);
                 if (addedComponents != null) {
-                    children = new TreeElement[addedComponents.size()];
-                    for (int i = 0, addedComponentsSize = addedComponents.size(); i < addedComponentsSize; i++) {
-                        PsiNewExpression addedComponent = addedComponents.get(i);
-                        children[i] = new ClassTreeElement(addedComponent);
+                    for (PsiNewExpression addedComponent : addedComponents) {
+                        list.add(new WicketIdTreeElement(addedComponent));
                     }
-                } else {
-                    children = new TreeElement[0];
                 }
+                for (PsiClass aClass : psiClass.getAllInnerClasses()) {
+                    if (classWicketIdReferences.containsClass(aClass) && WicketForgeUtil.isWicketComponentWithAssociatedMarkup(aClass)) {
+                        list.add(new ClassTreeElement(aClass, classWicketIdReferences));
+                    }
+                }
+                children = list.isEmpty() ? EMPTY_TREE_ELEMENTS : list.toArray(new TreeElement[list.size()]);
             }
             return children;
+        }
+
+        private class WicketIdTreeElement implements StructureViewTreeElement {
+            private TreeElement[] children;
+            private final PsiNewExpression psiElement;
+            private final ClassWicketIdNewComponentItem newComponentItem;
+
+            private WicketIdTreeElement(PsiNewExpression psiElement) {
+                this.psiElement = psiElement;
+                this.newComponentItem = classWicketIdReferences.getNewComponentItem(psiElement);
+            }
+
+            public Object getValue() {
+                return psiElement;
+            }
+
+            public void navigate(boolean requestFocus) {
+                PsiNavigateUtil.navigate(newComponentItem != null ? newComponentItem.getWicketIdExpression() : psiElement);
+            }
+
+            public boolean canNavigate() {
+                return true;
+            }
+
+            public boolean canNavigateToSource() {
+                return true;
+            }
+
+            public ItemPresentation getPresentation() {
+                return newComponentItem;
+            }
+
+            public TreeElement[] getChildren() {
+                if (children == null) {
+                    List<PsiNewExpression> addedComponents = classWicketIdReferences.getAdded(psiElement);
+                    if (addedComponents != null) {
+                        children = new TreeElement[addedComponents.size()];
+                        for (int i = 0, addedComponentsSize = addedComponents.size(); i < addedComponentsSize; i++) {
+                            PsiNewExpression addedComponent = addedComponents.get(i);
+                            children[i] = new WicketIdTreeElement(addedComponent);
+                        }
+                    } else {
+                        children = EMPTY_TREE_ELEMENTS;
+                    }
+                }
+                return children;
+            }
         }
     }
 }
