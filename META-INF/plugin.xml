@@ -77,11 +77,10 @@
                     class="wicketforge.action.ViewWicketHierarchyAction"
                     text="Wicket Hierarchy"
                     description="Show Wicket Hierarchy Dialog">
-                <!--TODO this action is not in menu until its finished (currently only for debug)-->
-                <!--<add-to-group group-id="ViewMenu" anchor="last"/>-->
-                <!--<keyboard-shortcut keymap="$default" first-keystroke="alt shift F12"/>-->
-                <!--<keyboard-shortcut keymap="Mac OS X" first-keystroke="control shift F12"/>-->
-                <!--<keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift F12"/>-->
+                <add-to-group group-id="ViewMenu" anchor="last"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="alt shift F12"/>
+                <keyboard-shortcut keymap="Mac OS X" first-keystroke="control shift F12"/>
+                <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift F12"/>
         </action>
 
         <group text="WicketForge">

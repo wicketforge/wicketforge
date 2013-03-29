@@ -52,7 +52,18 @@ class ClassWicketIdReferences {
         return newComponentItemMap.get(newExpression);
     }
 
+    /**
+     * @return
+     */
+    public boolean containsClass(@NotNull PsiClass psiClass) {
+        return addMap.containsKey(psiClass);
+    }
+
     public static ClassWicketIdReferences build(@NotNull final PsiClass psiClass) {
+        return build(psiClass, true);
+    }
+
+    public static ClassWicketIdReferences build(@NotNull final PsiClass psiClass, final boolean onlyThisMarkupContainer) {
         final Map<PsiElement, List<PsiNewExpression>> componentAddMap = new HashMap<PsiElement, List<PsiNewExpression>>(); // Key: PsiClass or PsiNewExpression reference from a WicketMarkup component
         final Map<PsiElement, List<PsiNewExpression>> componentReplaceMap = new HashMap<PsiElement, List<PsiNewExpression>>();
         psiClass.accept(new JavaRecursiveElementVisitor() {
@@ -60,7 +71,7 @@ class ClassWicketIdReferences {
 
             @Override
             public void visitClass(PsiClass aClass) {
-                if (!aClass.equals(psiClass) && WicketForgeUtil.isWicketComponentWithAssociatedMarkup(aClass)) {
+                if (onlyThisMarkupContainer && !aClass.equals(psiClass) && WicketForgeUtil.isWicketComponentWithAssociatedMarkup(aClass)) {
                     return; // we do not visit inner classes that have own markup
                 }
                 if (!(aClass instanceof PsiAnonymousClass) && WicketForgeUtil.isMarkupContainer(aClass)) {

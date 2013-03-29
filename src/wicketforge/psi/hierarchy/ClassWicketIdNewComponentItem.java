@@ -93,6 +93,65 @@ public final class ClassWicketIdNewComponentItem implements ItemPresentation {
 
     @Override
     public Icon getIcon(boolean open) {
-        return Constants.WICKET_COMPONENT_ICON;
+        return getIcon(baseClassToCreate);
+    }
+
+    private static Icon getIcon(@Nullable PsiClass classToCreate) {
+        // simply name check should be enough
+        while (classToCreate != null) {
+            String name = classToCreate.getName();
+
+            if ("Form".equals(name)) {
+                return Constants.ICON_CLASS_FORM;
+            }
+            if ("AbstractChoice".equals(name)) {
+                return Constants.ICON_CLASS_SELECT;
+            }
+            if ("CheckBox".equals(name)) {
+                return Constants.ICON_CLASS_CHECKBOX;
+            }
+            if ("Radio".equals(name)) {
+                return Constants.ICON_CLASS_RADIO;
+            }
+            if ("Image".equals(name) || "ContextImage".equals(name)) {
+                return Constants.ICON_CLASS_RADIO;
+            }
+            if ("Label".equals(name) || "MultiLineLabel".equals(name) || "FormComponentLabel".equals(name)) {
+                return Constants.ICON_CLASS_LABEL;
+            }
+            if ("AbstractLink".equals(name)) {
+                return Constants.ICON_CLASS_LINK;
+            }
+            if ("Button".equals(name)) {
+                return Constants.ICON_CLASS_BUTTON;
+            }
+            if ("TextArea".equals(name)) {
+                return Constants.ICON_CLASS_TEXTAREA;
+            }
+            if ("AbstractTextComponent".equals(name)) {
+                return Constants.ICON_CLASS_TEXTFIELD;
+            }
+            if ("AbstractRepeater".equals(name)) {
+                return Constants.ICON_CLASS_REPEATER;
+            }
+            if ("Panel".equals(name)) {
+                return Constants.ICON_CLASS_PANEL;
+            }
+            if ("Border".equals(name)) {
+                return Constants.ICON_CLASS_BORDER;
+            }
+            if ("FormComponentPanel".equals(name)) {
+                return Constants.ICON_CLASS_FORMCOMPONENTPANEL;
+            }
+            if ("FormComponent".equals(name)) {
+                return Constants.ICON_CLASS_FORMCOMPONENT;
+            }
+            if ("WebMarkupContainer".equals(name)) {
+                return Constants.ICON_CLASS_WEBMARKUPCONTAINER;
+            }
+
+            classToCreate = classToCreate.getSuperClass();
+        }
+        return Constants.ICON_CLASS_;
     }
 }

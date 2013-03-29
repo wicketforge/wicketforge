@@ -58,7 +58,13 @@ public class MarkupWicketIdCompletionContributor extends CompletionContributor {
                                     ClassWicketIdItem item = ClassWicketIdHierarchy.create(clazz).getWicketIdPathMap().get(parentPath);
                                     if (item != null) {
                                         for (ClassWicketIdItem child : item.getChildren()) {
-                                            rs.addElement(LookupElementBuilder.create(child.getWicketId()).setIcon(child.getIcon()).setTypeText(".java").setTailText("  " + child.getLocationString(), true));
+                                            rs.addElement(
+                                                    LookupElementBuilder.create(child.getWicketId())
+                                                            //.setIcon(child.getIcon()) // child's icon bother view -> use generic icon
+                                                            .setIcon(Constants.WICKET_COMPONENT_ICON)
+                                                            .setTypeText(".java")
+                                                            .setTailText("  " + child.getLocationString(), true)
+                                            );
                                         }
                                     }
                                 }

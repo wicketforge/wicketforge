@@ -20,7 +20,6 @@ import com.intellij.ide.structureView.TextEditorBasedStructureViewModel;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.PsiNavigateUtil;
@@ -34,9 +33,9 @@ public class MarkupStructureTreeModel extends TextEditorBasedStructureViewModel 
     private StructureViewTreeElement root;
     private MarkupWicketIdHierarchy hierarchy;
 
-    public MarkupStructureTreeModel(@NotNull PsiFile psiFile) {
-        super(psiFile);
-        hierarchy = MarkupWicketIdHierarchy.create((XmlFile) psiFile);
+    public MarkupStructureTreeModel(@NotNull XmlFile xmlFile) {
+        super(xmlFile);
+        hierarchy = MarkupWicketIdHierarchy.create(xmlFile);
         root = new MarkupTreeElement(hierarchy.getRoot());
     }
 

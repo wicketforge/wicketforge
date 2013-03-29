@@ -26,12 +26,14 @@ import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.pom.Navigatable;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.ui.PlaceHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wicketforge.WicketForgeUtil;
 import wicketforge.psi.hierarchy.ClassStructureTreeModel;
 import wicketforge.psi.hierarchy.MarkupStructureTreeModel;
 
@@ -63,16 +65,12 @@ public class ViewWicketHierarchyAction extends AnAction {
         if (currentElement == null) {
             return;
         }
-        StructureViewModel viewModel = null;
+        StructureViewModel viewModel;
         if (psiFile instanceof XmlFile) {
-            viewModel = new MarkupStructureTreeModel(psiFile);
+            viewModel = new MarkupStructureTreeModel((XmlFile) psiFile);
         } else if (psiFile instanceof PsiJavaFile) {
-            PsiClass psiClass = WicketForgeUtil.getParentWicketClass(currentElement);
-            if (psiClass != null) {
-                viewModel = new ClassStructureTreeModel(psiFile, psiClass);
-            }
-        }
-        if (viewModel == null) {
+            viewModel = new ClassStructureTreeModel((PsiJavaFile) psiFile);
+        } else {
             return;
         }
         FileEditor fileEditor = PlatformDataKeys.FILE_EDITOR.getData(dataContext);
