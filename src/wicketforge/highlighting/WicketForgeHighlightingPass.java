@@ -43,16 +43,12 @@ import java.util.List;
  */
 public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
     private PsiFile file;
-    private int startOffset;
-    private int endOffset;
 
     private volatile Collection<HighlightInfo> highlights = Collections.emptyList();
 
-    public WicketForgeHighlightingPass(@NotNull PsiFile file, @NotNull Editor editor, int startOffset, int endOffset) {
+    public WicketForgeHighlightingPass(@NotNull PsiFile file, @NotNull Editor editor) {
         super(file.getProject(), editor.getDocument());
         this.file = file;
-        this.startOffset = startOffset;
-        this.endOffset = endOffset;
     }
 
     @Override
@@ -129,7 +125,7 @@ public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
     @Override
     public void doApplyInformationToEditor() {
         assert myDocument != null; // editor.getDocument() is notnull
-        UpdateHighlightersUtil.setHighlightersToEditor(myProject, myDocument, startOffset, endOffset, highlights, getColorsScheme(), getId());
+        UpdateHighlightersUtil.setHighlightersToEditor(myProject, myDocument, 0, myDocument.getTextLength(), highlights, getColorsScheme(), getId());
     }
 
     @Nullable

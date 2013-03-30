@@ -40,6 +40,6 @@ public class WicketForgeHighlightingPassFactory extends AbstractProjectComponent
     }
 
     public TextEditorHighlightingPass createHighlightingPass(@NotNull PsiFile file, @NotNull Editor editor) {
-        return new WicketForgeHighlightingPass(file, editor, 0, editor.getDocument().getTextLength());
+        return new WicketForgeHighlightingPass(file, editor);
     }
 }
