@@ -31,6 +31,7 @@ public class CreateWicketPageAction extends CreateWicketAction {
         super("Wicket Page", "Create a new Wicket Page");
     }
 
+    @Override
     @NotNull
     protected PsiElement[] invokeDialog(Project project, PsiDirectory directory) {
         ActionRunnableImpl actionRunnable = new ActionRunnableImpl(project, directory, WicketTemplates.WICKET_PAGE_HTML);

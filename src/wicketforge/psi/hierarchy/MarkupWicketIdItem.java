@@ -74,15 +74,18 @@ public final class MarkupWicketIdItem implements ItemPresentation {
 
     /* ItemPresentation*/
 
+    @Override
     public String getPresentableText() {
         return wicketId;
     }
 
+    @Override
     public String getLocationString() {
         XmlTag tag = getTag();
         return tag != null ? tag.getName() : null;
     }
 
+    @Override
     @Nullable
     public Icon getIcon(boolean unused) {
         return getIcon(getTag());

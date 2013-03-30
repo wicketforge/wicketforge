@@ -39,6 +39,7 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
     @Override
     public void fillCompletionVariants(final CompletionParameters p, final CompletionResultSet rs) {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
+            @Override
             public void run() {
                 // lets do some basic checks...
                 PsiFile f = p.getOriginalFile();

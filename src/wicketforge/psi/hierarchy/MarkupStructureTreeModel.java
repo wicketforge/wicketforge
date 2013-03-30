@@ -39,6 +39,7 @@ public class MarkupStructureTreeModel extends TextEditorBasedStructureViewModel 
         root = new MarkupTreeElement(hierarchy.getRoot());
     }
 
+    @Override
     @NotNull
     public StructureViewTreeElement getRoot() {
         return root;
@@ -64,26 +65,32 @@ public class MarkupStructureTreeModel extends TextEditorBasedStructureViewModel 
             this.markupWicketIdItem = markupWicketIdItem;
         }
 
+        @Override
         public Object getValue() {
             return markupWicketIdItem.getTag();
         }
 
+        @Override
         public void navigate(boolean requestFocus) {
             PsiNavigateUtil.navigate(markupWicketIdItem.getAttributeValue());
         }
 
+        @Override
         public boolean canNavigate() {
             return true;
         }
 
+        @Override
         public boolean canNavigateToSource() {
             return true;
         }
 
+        @Override
         public ItemPresentation getPresentation() {
             return markupWicketIdItem;
         }
 
+        @Override
         public TreeElement[] getChildren() {
             if (children == null) {
                 List<MarkupWicketIdItem> markupWicketIdItemChildren = markupWicketIdItem.getChildren();

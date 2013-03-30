@@ -32,6 +32,7 @@ public class WicketForgeProjectComponent implements ProjectComponent {
     public WicketForgeProjectComponent(Project project) {
     }
 
+    @Override
     public void initComponent() {
         IntentionManager.getInstance().registerIntentionAndMetaData(new AddMarkupPageIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
         IntentionManager.getInstance().registerIntentionAndMetaData(new AddMarkupPanelIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
@@ -39,17 +40,21 @@ public class WicketForgeProjectComponent implements ProjectComponent {
         IntentionManager.getInstance().registerIntentionAndMetaData(new AddPropertiesXMLIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
     }
 
+    @Override
     public void disposeComponent() {
     }
 
+    @Override
     @NotNull
     public String getComponentName() {
         return "WicketForge Project Component";
     }
 
+    @Override
     public void projectOpened() {
     }
 
+    @Override
     public void projectClosed() {
     }
 

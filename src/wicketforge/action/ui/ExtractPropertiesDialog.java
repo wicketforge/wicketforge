@@ -135,6 +135,7 @@ public class ExtractPropertiesDialog extends DialogWrapper {
         propertiesFileComboBox.setModel(new DefaultComboBoxModel(data.toArray(new Object[data.size()])));
         propertiesFileComboBox.setRenderer(new PropertiesFileComboBoxRenderer());
         propertiesFileComboBox.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 // if a properties file is selected, then there is nothing to create so no different destination selectable...
                 chooseDifferentDestinationFolderCheckBox.setEnabled(!(propertiesFileComboBox.getSelectedItem() instanceof PropertiesFile));

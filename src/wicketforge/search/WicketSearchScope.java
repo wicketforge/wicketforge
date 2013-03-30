@@ -27,6 +27,7 @@ public final class WicketSearchScope {
     private WicketSearchScope() {
     }
 
+    @NotNull
     public static GlobalSearchScope resourcesInModuleWithDependenciesAndLibraries(@NotNull Module module) {
         GlobalSearchScope scope = GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module, true);
         // add all additional resource paths
@@ -42,6 +43,7 @@ public final class WicketSearchScope {
         return scope;
     }
 
+    @NotNull
     public static GlobalSearchScope classInModuleWithDependenciesAndLibraries(@NotNull Module module) {
         return GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module, true);
     }

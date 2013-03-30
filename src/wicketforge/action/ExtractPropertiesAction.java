@@ -97,8 +97,10 @@ public class ExtractPropertiesAction extends EditorAction {
             }
 
             ExtractPropertiesDialog.ActionRunnable actionRunnable = new ExtractPropertiesDialog.ActionRunnable() {
+                @Override
                 public boolean run(@Nullable final Object selectedItem, @NotNull final PsiDirectory destinationDirectory, final @NotNull String key, final @NotNull String value) {
                     return ApplicationManager.getApplication().runWriteAction(new Computable<Boolean>() {
+                        @Override
                         public Boolean compute() {
                             final PropertiesFile propertiesFile;
 

@@ -56,11 +56,13 @@ public class WicketFrameworkSupportProvider extends FacetBasedFrameworkSupportPr
             super(frameworkSupportProvider, model, versions, versionLabelText);
         }
 
+        @Override
         @NotNull
         public CustomLibraryDescription createLibraryDescription() {
             return DownloadableLibraryService.getInstance().createDescriptionForType(WicketLibraryType.class);
         }
 
+        @Override
         public boolean isLibraryOnly() {
             return false;
         }

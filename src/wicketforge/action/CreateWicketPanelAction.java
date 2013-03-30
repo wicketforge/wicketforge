@@ -31,6 +31,7 @@ public class CreateWicketPanelAction extends CreateWicketAction {
         super("Wicket Panel", "Create a new Wicket Panel");
     }
 
+    @Override
     @NotNull
     protected PsiElement[] invokeDialog(Project project, PsiDirectory directory) {
         ActionRunnableImpl actionRunnable = new ActionRunnableImpl(project, directory, WicketTemplates.WICKET_PANEL_HTML);

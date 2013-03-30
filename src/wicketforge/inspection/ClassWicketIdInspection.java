@@ -54,24 +54,28 @@ public class ClassWicketIdInspection extends BaseJavaLocalInspectionTool {
         };
     }
 
+    @Override
     @Nls
     @NotNull
     public String getGroupDisplayName() {
         return Constants.INTENSION_INSPECTION_GROUPNAME;
     }
 
+    @Override
     @Nls
     @NotNull
     public String getDisplayName() {
         return "Wicket Java ID Inspection";
     }
 
+    @Override
     @NonNls
     @NotNull
     public String getShortName() {
         return "WicketForgeJavaIdInspection";
     }
 
+    @Override
     public boolean isEnabledByDefault() {
         return true;
     }

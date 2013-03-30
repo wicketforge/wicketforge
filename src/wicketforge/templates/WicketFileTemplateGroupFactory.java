@@ -25,6 +25,7 @@ import wicketforge.Constants;
  */
 public class WicketFileTemplateGroupFactory implements FileTemplateGroupDescriptorFactory, WicketTemplates {
     
+    @Override
     public FileTemplateGroupDescriptor getFileTemplatesDescriptor() {
         final FileTemplateGroupDescriptor groupDescriptor = new FileTemplateGroupDescriptor("Wicket", Constants.WICKET_ICON);
         groupDescriptor.addTemplate(new FileTemplateDescriptor(WICKET_PAGE_HTML));

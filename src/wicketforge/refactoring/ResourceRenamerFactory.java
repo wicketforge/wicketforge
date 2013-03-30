@@ -88,11 +88,13 @@ abstract class ResourceRenamerFactory implements AutomaticRenamerFactory {
             }
         }
 
+        @Override
         public String nameToCanonicalName(String name, PsiNamedElement element) {
             String filenameWithoutExtension = WicketFilenameUtil.removeExtension(name, fileExtensions);
             return WicketFilenameUtil.extractBasename(filenameWithoutExtension);
         }
 
+        @Override
         public String canonicalNameToName(String canonicalName, PsiNamedElement element) {
             String currentName = element.getName();
             String currentExtension = currentName != null ? WicketFilenameUtil.extractExtension(currentName, fileExtensions) : null;
@@ -108,18 +110,22 @@ abstract class ResourceRenamerFactory implements AutomaticRenamerFactory {
             return sb.toString();
         }
 
+        @Override
         public boolean isSelectedByDefault() {
             return true;
         }
 
+        @Override
         public String getDialogTitle() {
             return "Rename " + entityName;
         }
 
+        @Override
         public String getDialogDescription() {
             return "Rename " + entityName + " to";
         }
 
+        @Override
         public String entityName() {
             return entityName;
         }

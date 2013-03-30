@@ -54,30 +54,36 @@ public class WicketForgeColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("markup wicketId", MARKUPWICKETID)
     };
 
+    @Override
     @NotNull
     public String getDisplayName() {
         return "Wicket";
     }
 
+    @Override
     public Icon getIcon() {
         return Constants.WICKET_ICON;
     }
 
+    @Override
     @NotNull
     public AttributesDescriptor[] getAttributeDescriptors() {
         return ATTRIBUTESDESC;
     }
 
+    @Override
     @NotNull
     public ColorDescriptor[] getColorDescriptors() {
         return ColorDescriptor.EMPTY_ARRAY;
     }
 
+    @Override
     @NotNull
     public SyntaxHighlighter getHighlighter() {
         return new PlainSyntaxHighlighter();
     }
 
+    @Override
     @NotNull
     public String getDemoText() {
         return "-- java\n" +
@@ -88,6 +94,7 @@ public class WicketForgeColorSettingsPage implements ColorSettingsPage {
                 "span wicket:id=<markupWicketId>\"someWicketId\"</markupWicketId>\n";
     }
 
+    @Override
     public Map<String, TextAttributesKey> getAdditionalHighlightingTagToDescriptorMap() {
         Map<String, TextAttributesKey> map = new HashMap<String, TextAttributesKey>();
         map.put("javaWicketId", JAVAWICKETID);
@@ -103,11 +110,13 @@ public class WicketForgeColorSettingsPage implements ColorSettingsPage {
             this.textAttributesKey = textAttributesKey;
         }
 
+        @Override
         @NotNull
         public HighlightSeverity getSeverity(PsiElement psiElement) {
             return HighlightSeverity.INFORMATION;
         }
 
+        @Override
         public TextAttributesKey getAttributesKey() {
             return textAttributesKey;
         }

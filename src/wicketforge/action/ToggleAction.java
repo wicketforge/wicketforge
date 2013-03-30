@@ -48,6 +48,7 @@ public class ToggleAction extends AnAction {
         e.getPresentation().setEnabled(WicketForgeFacet.hasFacetOrIsFromLibrary(psiFile));
     }
 
+    @Override
     public void actionPerformed(AnActionEvent event) {
         Editor editor = event.getData(DataKeys.EDITOR);
         if (editor == null) {

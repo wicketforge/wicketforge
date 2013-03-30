@@ -56,29 +56,34 @@ public class MarkupWicketIdInspection extends XmlSuppressableInspectionTool {
         };
     }
 
+    @Override
     @Nls
     @NotNull
     public String getGroupDisplayName() {
         return Constants.INTENSION_INSPECTION_GROUPNAME;
     }
 
+    @Override
     @Nls
     @NotNull
     public String getDisplayName() {
         return "Wicket HTML ID Inspection";
     }
 
+    @Override
     @NonNls
     @NotNull
     public String getShortName() {
         return "WicketForgeHtmlIdInspection";
     }
 
+    @Override
     @NotNull
     public HighlightDisplayLevel getDefaultLevel() {
         return HighlightDisplayLevel.WARNING;
     }
 
+    @Override
     public boolean isEnabledByDefault() {
         return true;
     }

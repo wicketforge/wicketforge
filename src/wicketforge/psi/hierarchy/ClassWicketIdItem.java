@@ -72,11 +72,13 @@ public final class ClassWicketIdItem implements ItemPresentation {
 
     /* ItemPresentation */
 
+    @Override
     public String getPresentableText() {
         return wicketId;
     }
 
     private String location;
+    @Override
     public String getLocationString() {
         if (location == null) {
             StringBuilder sb = new StringBuilder();
@@ -91,6 +93,7 @@ public final class ClassWicketIdItem implements ItemPresentation {
         return location;
     }
 
+    @Override
     @Nullable
     public Icon getIcon(boolean unused) {
         // we can have multiple ClassWicketIdNewComponentItem -> just show icon from first item...

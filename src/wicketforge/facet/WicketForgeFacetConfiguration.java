@@ -40,6 +40,7 @@ public class WicketForgeFacetConfiguration implements FacetConfiguration {
 
     List<String> resourceUrls = new ArrayList<String>();
 
+    @Override
     public FacetEditorTab[] createEditorTabs(FacetEditorContext editorContext, FacetValidatorsManager validatorsManager) {
         validatorsManager.registerValidator(FacetEditorsFactoryImpl.getInstanceImpl().createLibraryValidator(
                 DownloadableLibraryService.getInstance().createDescriptionForType(WicketLibraryType.class),
@@ -50,6 +51,7 @@ public class WicketForgeFacetConfiguration implements FacetConfiguration {
         return new FacetEditorTab[]{new WicketFacetEditorTab(editorContext)};
     }
 
+    @Override
     @Deprecated
     public void readExternal(Element element) {
         Element resourceUrlsElement = element.getChild(RESOURCEURLS_TAG);
@@ -65,6 +67,7 @@ public class WicketForgeFacetConfiguration implements FacetConfiguration {
         }
     }
 
+    @Override
     @Deprecated
     public void writeExternal(Element element) {
         Element resourceUrlsElement = new Element(RESOURCEURLS_TAG);

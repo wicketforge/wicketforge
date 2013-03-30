@@ -81,6 +81,7 @@ public abstract class AbstractCreateDialog extends DialogWrapper {
         return storeKey + key;
     }
 
+    @Override
     protected void init() {
         super.init();
 
@@ -105,6 +106,7 @@ public abstract class AbstractCreateDialog extends DialogWrapper {
             chooseDifferentDestinationFolderPanel.setVisible(false);
         } else {
             createAssociatedMarkupFileCheckBox.addChangeListener(new ChangeListener() {
+                @Override
                 public void stateChanged(ChangeEvent e) {
                     chooseDifferentDestinationFolderCheckBox.setEnabled(createAssociatedMarkupFileCheckBox.isSelected());
                 }
@@ -130,11 +132,13 @@ public abstract class AbstractCreateDialog extends DialogWrapper {
         extendsClassPanel.add(extendClassEditor);
     }
 
+    @Override
     @Nullable
     protected JComponent createCenterPanel() {
         return contentPane;
     }
 
+    @Override
     protected void doOKAction() {
         String inputString = classNameTextField.getText().trim();
         String extendsClass = extendClassEditor.getText();

@@ -62,6 +62,7 @@ abstract class CreateWicketAction extends CreateElementActionBase {
             createdElements = new SmartPsiElementPointer[0];
         }
 
+        @Override
         public boolean run(@NotNull final String inputString, @NotNull final String extendsClass, final boolean hasMarkup, @NotNull final PsiDirectory markupDirectory) {
             try {
                 JavaDirectoryService.getInstance().checkCreateClass(psiDirectory, inputString);
@@ -73,6 +74,7 @@ abstract class CreateWicketAction extends CreateElementActionBase {
             final Exception[] exception = new Exception[1];
 
             final Runnable command = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         final JavaPsiFacade facade = JavaPsiFacade.getInstance(project);
@@ -82,6 +84,7 @@ abstract class CreateWicketAction extends CreateElementActionBase {
                         final PsiElementFactory factory = facade.getElementFactory();
                         final PsiJavaCodeReferenceElement extendingClass = factory.createClassReferenceElement(superClass);
                         ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                            @Override
                             public void run() {
                                 try {
                                     PsiClass clazz = (PsiClass) psiElements[0];

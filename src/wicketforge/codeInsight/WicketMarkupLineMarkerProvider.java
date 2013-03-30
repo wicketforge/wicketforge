@@ -38,6 +38,7 @@ import java.util.List;
 /**
  */
 public class WicketMarkupLineMarkerProvider implements LineMarkerProvider {
+    @Override
     @Nullable
     public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement element) {
         // look for root tag
@@ -56,6 +57,7 @@ public class WicketMarkupLineMarkerProvider implements LineMarkerProvider {
         return null;
     }
 
+    @Override
     public void collectSlowLineMarkers(@NotNull List<PsiElement> elements, @NotNull Collection<LineMarkerInfo> result) {
     }
 }

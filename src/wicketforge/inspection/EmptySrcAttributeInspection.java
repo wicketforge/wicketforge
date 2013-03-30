@@ -40,23 +40,27 @@ public class EmptySrcAttributeInspection extends XmlSuppressableInspectionTool {
         return visitor.getProblemDescriptors();
     }
 
+    @Override
     @Nls
     @NotNull
     public String getDisplayName() {
         return "Wicket Empty Src Attribute Inspection";
     }
 
+    @Override
     @Nls
     @NotNull
     public String getGroupDisplayName() {
         return Constants.INTENSION_INSPECTION_GROUPNAME;
     }
 
+    @Override
     @NotNull
     public String getShortName() {
         return "WicketForgeEmptySrcAttributeInspection";
     }
 
+    @Override
     @NotNull
     public HighlightDisplayLevel getDefaultLevel() {
         return HighlightDisplayLevel.ERROR;

@@ -35,6 +35,7 @@ public class WicketTagAttributeCompletionContributor extends CompletionContribut
     @Override
     public void fillCompletionVariants(final CompletionParameters p, final CompletionResultSet rs) {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
+            @Override
             public void run() {
                 PsiFile f = p.getOriginalFile();
                 if (f.getFileType() == StdFileTypes.HTML) {
@@ -81,6 +82,7 @@ public class WicketTagAttributeCompletionContributor extends CompletionContribut
     }
 
     private static class AttributeInsertHandler implements InsertHandler<LookupElement> {
+        @Override
         public void handleInsert(InsertionContext insertionContext, LookupElement lookupElement) {
             CaretModel caretModel = insertionContext.getEditor().getCaretModel();
             caretModel.moveToOffset(caretModel.getOffset()-1);

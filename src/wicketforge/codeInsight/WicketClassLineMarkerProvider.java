@@ -31,6 +31,7 @@ import java.util.List;
 /**
  */
 public class WicketClassLineMarkerProvider implements LineMarkerProvider {
+    @Override
     @Nullable
     public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement element) {
         if (element instanceof PsiIdentifier && element.getParent() instanceof PsiClass) {
@@ -47,6 +48,7 @@ public class WicketClassLineMarkerProvider implements LineMarkerProvider {
         return null;
     }
 
+    @Override
     public void collectSlowLineMarkers(@NotNull List<PsiElement> elements, @NotNull Collection<LineMarkerInfo> result) {
     }
 }
