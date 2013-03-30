@@ -35,17 +35,21 @@ public class WicketForgeApplicationComponent implements ApplicationComponent, In
     public WicketForgeApplicationComponent() {
     }
 
+    @Override
     public void initComponent() {
     }
 
+    @Override
     public void disposeComponent() {
     }
 
-    @NotNull 
+    @Override
+    @NotNull
     public String getComponentName() {
         return "WicketForgeApplicationComponent";
     }
 
+    @Override
     public Class[] getInspectionClasses() {
         return new Class[]{MarkupWicketIdInspection.class, ClassWicketIdInspection.class, EmptySrcAttributeInspection.class};
     }

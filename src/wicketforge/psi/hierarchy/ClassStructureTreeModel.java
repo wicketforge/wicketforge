@@ -41,6 +41,7 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
         root = new JavaFileTreeElement(psiJavaFile);
     }
 
+    @Override
     @NotNull
     public StructureViewTreeElement getRoot() {
         return root;
@@ -119,26 +120,32 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
             this.classWicketIdReferences = classWicketIdReferences;
         }
 
+        @Override
         public Object getValue() {
             return psiClass;
         }
 
+        @Override
         public void navigate(boolean requestFocus) {
             psiClass.navigate(requestFocus);
         }
 
+        @Override
         public boolean canNavigate() {
             return psiClass.canNavigate();
         }
 
+        @Override
         public boolean canNavigateToSource() {
             return psiClass.canNavigateToSource();
         }
 
+        @Override
         public ItemPresentation getPresentation() {
             return psiClass.getPresentation();
         }
 
+        @Override
         public TreeElement[] getChildren() {
             if (children == null) {
                 List<TreeElement> list = new SmartList<TreeElement>();
@@ -168,26 +175,32 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
                 this.newComponentItem = classWicketIdReferences.getNewComponentItem(psiElement);
             }
 
+            @Override
             public Object getValue() {
                 return psiElement;
             }
 
+            @Override
             public void navigate(boolean requestFocus) {
                 PsiNavigateUtil.navigate(newComponentItem != null ? newComponentItem.getWicketIdExpression() : psiElement);
             }
 
+            @Override
             public boolean canNavigate() {
                 return true;
             }
 
+            @Override
             public boolean canNavigateToSource() {
                 return true;
             }
 
+            @Override
             public ItemPresentation getPresentation() {
                 return newComponentItem;
             }
 
+            @Override
             public TreeElement[] getChildren() {
                 if (children == null) {
                     List<PsiNewExpression> addedComponents = classWicketIdReferences.getAdded(psiElement);

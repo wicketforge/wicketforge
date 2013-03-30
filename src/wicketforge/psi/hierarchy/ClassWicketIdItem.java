@@ -72,11 +72,13 @@ public final class ClassWicketIdItem implements ItemPresentation {
 
     /* ItemPresentation */
 
+    @Override
     public String getPresentableText() {
         return wicketId;
     }
 
     private String location;
+    @Override
     public String getLocationString() {
         if (location == null) {
             StringBuilder sb = new StringBuilder();
@@ -91,14 +93,12 @@ public final class ClassWicketIdItem implements ItemPresentation {
         return location;
     }
 
-    public Icon getIcon() {
-        return getIcon(false);
-    }
-
-    public Icon getIcon(boolean open) {
+    @Override
+    @Nullable
+    public Icon getIcon(boolean unused) {
         // we can have multiple ClassWicketIdNewComponentItem -> just show icon from first item...
         if (!newComponentItems.isEmpty()) {
-            return newComponentItems.get(0).getIcon(open);
+            return newComponentItems.get(0).getIcon(unused);
         }
         return Constants.ICON_CLASS_;
     }

@@ -41,8 +41,8 @@ import javax.swing.*;
  */
 public class WicketForgeFacetType extends FacetType<WicketForgeFacet, WicketForgeFacetConfiguration> {
 
-    public static final String STRING_ID = "wicketforge";
-    public static final String PRESENTABLE_NAME = "Wicket";
+    private static final String STRING_ID = "wicketforge";
+    private static final String PRESENTABLE_NAME = "Wicket";
     public static final FacetTypeId<WicketForgeFacet> ID = new FacetTypeId<WicketForgeFacet>(STRING_ID);
     public static final WicketForgeFacetType INSTANCE = new WicketForgeFacetType();
 
@@ -50,22 +50,27 @@ public class WicketForgeFacetType extends FacetType<WicketForgeFacet, WicketForg
         super(ID, STRING_ID, PRESENTABLE_NAME);
     }
 
+    @Override
     public WicketForgeFacetConfiguration createDefaultConfiguration() {
         return new WicketForgeFacetConfiguration();
     }
 
+    @Override
     public WicketForgeFacet createFacet(@NotNull Module module, String name, @NotNull WicketForgeFacetConfiguration configuration, @Nullable Facet underlyingFacet) {
         return new WicketForgeFacet(this, module, name, configuration, underlyingFacet);
     }
 
+    @Override
     public boolean isSuitableModuleType(ModuleType moduleType) {
         return (moduleType instanceof JavaModuleType);
     }
 
+    @Override
     public boolean isOnlyOneFacetAllowed() {
         return true;
     }
 
+    @Override
     public Icon getIcon() {
         return Constants.WICKET_ICON;
     }
@@ -92,6 +97,7 @@ public class WicketForgeFacetType extends FacetType<WicketForgeFacet, WicketForg
         public ElementPattern<FileContent> createSuitableFilePattern() {
             // review: improve "xmlns:wicket" detection with patterns
             return FileContentPattern.fileContent().with(new PatternCondition<FileContent>("wicketNamespace") {
+                @Override
                 public boolean accepts(@NotNull final FileContent fileContent, final ProcessingContext context) {
                     return fileContent.getContentAsText().toString().contains("xmlns:wicket");
                 }

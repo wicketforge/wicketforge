@@ -27,11 +27,13 @@ import wicketforge.util.WicketPsiUtil;
  */
 public class AddMarkupPageIntention extends AddMarkupIntention {
 
+    @Override
     @NotNull
     public String getText() {
         return "Create Markup Page";
     }
 
+    @Override
     @NotNull
     public String getFamilyName() {
         return "Create Markup Page";
@@ -54,6 +56,7 @@ public class AddMarkupPageIntention extends AddMarkupIntention {
         return WicketTemplates.WICKET_PAGE_HTML;
     }
 
+    @Override
     protected boolean isApplicableForClass(@NotNull PsiClass psiClass) {
         return WicketPsiUtil.isWicketPage(psiClass);
     }

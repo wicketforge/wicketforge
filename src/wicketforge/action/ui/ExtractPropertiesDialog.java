@@ -26,6 +26,8 @@ import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiPackage;
+import com.intellij.ui.ColoredListCellRenderer;
+import com.intellij.ui.SimpleTextAttributes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
@@ -35,13 +37,12 @@ import wicketforge.util.WicketFilenameUtil;
 import wicketforge.util.WicketPsiUtil;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExtractHtmlTextDialog extends DialogWrapper {
+public class ExtractPropertiesDialog extends DialogWrapper {
     private JPanel contentPane;
     private JTextField propertyKeyTextField;
     private JTextArea propertyValueTextArea;
@@ -56,7 +57,7 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
     private PsiDirectory destinationDirectory;
     private PsiPackage psiPackage;
 
-    public ExtractHtmlTextDialog(@NotNull Project project, @NotNull ActionRunnable actionRunnable, @NotNull String title, @NotNull PsiClass componentClass, @NotNull PsiDirectory directory, @NotNull String text) {
+    public ExtractPropertiesDialog(@NotNull Project project, @NotNull ActionRunnable actionRunnable, @NotNull String title, @NotNull PsiClass componentClass, @NotNull PsiDirectory directory, @NotNull String text) {
         super(project, false);
 
         this.project = project;
@@ -134,6 +135,7 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
         propertiesFileComboBox.setModel(new DefaultComboBoxModel(data.toArray(new Object[data.size()])));
         propertiesFileComboBox.setRenderer(new PropertiesFileComboBoxRenderer());
         propertiesFileComboBox.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 // if a properties file is selected, then there is nothing to create so no different destination selectable...
                 chooseDifferentDestinationFolderCheckBox.setEnabled(!(propertiesFileComboBox.getSelectedItem() instanceof PropertiesFile));
@@ -187,16 +189,15 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
         }
     }
 
-    private static class PropertiesFileComboBoxRenderer extends JLabel implements ListCellRenderer {
-        public Component getListCellRendererComponent(JList jList, Object value, int index, boolean isSelected, boolean hasFocus) {
+    private static class PropertiesFileComboBoxRenderer extends ColoredListCellRenderer {
+        @Override
+        protected void customizeCellRenderer(JList list, Object value, int index, boolean selected, boolean hasFocus) {
             if (value instanceof PropertiesFile) {
-                setText(((PropertiesFile) value).getName());
+                append(((PropertiesFile) value).getName());
             } else if (value instanceof NewPropertiesFileInfo) {
-                setText(((NewPropertiesFileInfo) value).getName() + "   [new]");
-            } else {
-                setText("");
+                append(((NewPropertiesFileInfo) value).getName());
+                append(" [new]", SimpleTextAttributes.GRAYED_ATTRIBUTES);
             }
-            return this;
         }
     }
 

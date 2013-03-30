@@ -50,27 +50,33 @@ class WicketFacetEditorTab extends FacetEditorTab {
         this.additionalPathPanel = new AdditionalPathPanel(editorContext);
     }
 
+    @Override
     public void reset() {
         additionalPathPanel.reset();
     }
 
+    @Override
     public boolean isModified() {
         return additionalPathPanel.isModified();
     }
 
+    @Override
     public void apply() throws ConfigurationException {
         additionalPathPanel.apply();
         ApplicationManager.getApplication().getMessageBus().syncPublisher(WicketForgeFacetConfiguration.ADDITIONAL_PATHS_CHANGED).run();
     }
 
+    @Override
     public JComponent createComponent() {
         return additionalPathPanel;
     }
 
+    @Override
     public void disposeUIResources() {
         additionalPathPanel = null;
     }
 
+    @Override
     @Nls
     public String getDisplayName() {
         return "Wicket";
@@ -144,7 +150,7 @@ class WicketFacetEditorTab extends FacetEditorTab {
             return false;
         }
 
-        public void apply() throws ConfigurationException {
+        public void apply() {
             List<VirtualFilePointer> list = new SmartList<VirtualFilePointer>();
             for (int i = 0, n = additionalPathModel.size(); i < n; i++) {
                 list.add((VirtualFilePointer) additionalPathModel.get(i));

@@ -17,10 +17,9 @@ package wicketforge.codeInsight;
 
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.codeInsight.daemon.LineMarkerProvider;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiIdentifier;
+import com.intellij.psi.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
 import wicketforge.facet.WicketForgeFacet;
 import wicketforge.search.MarkupIndex;
@@ -32,14 +31,16 @@ import java.util.List;
 /**
  */
 public class WicketClassLineMarkerProvider implements LineMarkerProvider {
-    public LineMarkerInfo getLineMarkerInfo(PsiElement element) {
+    @Override
+    @Nullable
+    public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement element) {
         if (element instanceof PsiIdentifier && element.getParent() instanceof PsiClass) {
             if (WicketForgeFacet.hasFacetOrIsFromLibrary(element)) {
                 PsiClass psiClass = (PsiClass) element.getParent();
                 if (WicketPsiUtil.isWicketComponentWithAssociatedMarkup(psiClass)) {
                     final PsiFile psiFile = MarkupIndex.getBaseFile(psiClass);
                     if (psiFile != null) {
-                        return NavigableLineMarkerInfo.create(element, new PsiElement[] {psiFile}, Constants.TOMARKUPREF, null);
+                        return NavigableLineMarkerInfo.create(element, new NavigatablePsiElement[] {psiFile}, Constants.TOMARKUPREF);
                     }
                 }
             }
@@ -47,6 +48,7 @@ public class WicketClassLineMarkerProvider implements LineMarkerProvider {
         return null;
     }
 
-    public void collectSlowLineMarkers(List<PsiElement> elements, Collection<LineMarkerInfo> result) {
+    @Override
+    public void collectSlowLineMarkers(@NotNull List<PsiElement> elements, @NotNull Collection<LineMarkerInfo> result) {
     }
 }

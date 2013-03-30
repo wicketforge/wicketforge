@@ -31,10 +31,12 @@ import wicketforge.util.WicketFileUtil;
  */
 abstract class AddMarkupIntention implements IntentionAction {
 
+    @Override
     public boolean startInWriteAction() {
         return true;
     }
 
+    @Override
     public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {
         if (!(file instanceof PsiJavaFile)) {
             return false;
@@ -64,6 +66,7 @@ abstract class AddMarkupIntention implements IntentionAction {
                 !hasResourceFile(psiClass);
     }
 
+    @Override
     public void invoke(@NotNull final Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
         int offset = editor.getCaretModel().getOffset();
         PsiElement element = file.findElementAt(offset);

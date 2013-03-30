@@ -122,9 +122,4 @@ public class ClassWicketIdHierarchy {
     public Map<String, ClassWicketIdItem> getWicketIdPathMap() {
         return wicketIdPathMap;
     }
-
-    @NotNull
-    public ClassWicketIdItem getRoot() {
-        return root;
-    }
 }

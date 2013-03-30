@@ -37,6 +37,7 @@ public class WicketActionGroup extends DefaultActionGroup {
         getTemplatePresentation().setIcon(Constants.WICKET_ICON);
     }
 
+    @Override
     public void update(AnActionEvent e) {
         e.getPresentation().setVisible(isUnderSourceRoots(e));
     }

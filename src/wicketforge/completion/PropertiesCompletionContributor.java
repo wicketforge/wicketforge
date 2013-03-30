@@ -38,6 +38,7 @@ public class PropertiesCompletionContributor extends CompletionContributor {
     @Override
     public void fillCompletionVariants(final CompletionParameters p, final CompletionResultSet rs) {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
+            @Override
             public void run() {
                 PsiFile f = p.getOriginalFile();
                 if (f.getFileType() == StdFileTypes.JAVA && p.getPosition() instanceof PsiJavaToken) {
@@ -76,9 +77,9 @@ public class PropertiesCompletionContributor extends CompletionContributor {
                 if (propertyKey != null) {
                     LookupElementBuilder lookupElementBuilder =
                             LookupElementBuilder.create(propertyKey)
-                                    .setIcon(StdFileTypes.PROPERTIES.getIcon())
-                                    .setTypeText(".properties")
-                                    .setTailText("  " + property.getValue(), true);
+                                    .withIcon(StdFileTypes.PROPERTIES.getIcon())
+                                    .withTypeText(".properties")
+                                    .withTailText("  " + property.getValue(), true);
                     rs.addElement(lookupElementBuilder);
                     rs.stopHere();
                 }

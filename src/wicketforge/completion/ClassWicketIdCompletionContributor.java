@@ -39,6 +39,7 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
     @Override
     public void fillCompletionVariants(final CompletionParameters p, final CompletionResultSet rs) {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
+            @Override
             public void run() {
                 // lets do some basic checks...
                 PsiFile f = p.getOriginalFile();
@@ -61,10 +62,10 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
                                                 for (MarkupWicketIdItem child : item.getChildren()) {
                                                     rs.addElement(
                                                             LookupElementBuilder.create(child.getWicketId())
-                                                                    //.setIcon(child.getIcon()) // child's icon bother view -> use generic icon
-                                                                    .setIcon(Constants.WICKET_COMPONENT_ICON)
-                                                                    .setTypeText(".html")
-                                                                    .setTailText("  " + child.getLocationString(), true)
+                                                                    //.withIcon(child.getIcon()) // child's icon bother view -> use generic icon
+                                                                    .withIcon(Constants.WICKET_COMPONENT_ICON)
+                                                                    .withTypeText(".html")
+                                                                    .withTailText("  " + child.getLocationString(), true)
                                                     );
                                                 }
                                             }

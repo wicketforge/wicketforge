@@ -28,11 +28,13 @@ import wicketforge.util.WicketPsiUtil;
  */
 public class AddPropertiesIntention extends AddMarkupIntention {
 
+    @Override
     @NotNull
     public String getText() {
         return "Create Properties File";
     }
 
+    @Override
     @NotNull
     public String getFamilyName() {
         return "Create Properties File";
@@ -55,6 +57,7 @@ public class AddPropertiesIntention extends AddMarkupIntention {
         return WicketTemplates.WICKET_PROPERTIES;
     }
 
+    @Override
     protected boolean isApplicableForClass(@NotNull PsiClass psiClass) {
         return WicketPsiUtil.isWicketComponentWithAssociatedMarkup(psiClass);
     }

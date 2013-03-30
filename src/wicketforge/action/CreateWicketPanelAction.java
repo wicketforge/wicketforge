@@ -19,38 +19,39 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
-import wicketforge.action.ui.CreatePageDialog;
+import wicketforge.action.ui.CreatePanelDialog;
 import wicketforge.templates.WicketTemplates;
 
 /**
- * WicketPageAction
+ * CreateWicketPanelAction
  */
-public class WicketPageAction extends WicketClassBaseAction {
+public class CreateWicketPanelAction extends CreateWicketAction {
 
-    protected WicketPageAction() {
-        super("Wicket Page", "Create a new Wicket Page");
+    public CreateWicketPanelAction() {
+        super("Wicket Panel", "Create a new Wicket Panel");
     }
 
+    @Override
     @NotNull
     protected PsiElement[] invokeDialog(Project project, PsiDirectory directory) {
-        ActionRunnableImpl actionRunnable = new ActionRunnableImpl(project, directory, WicketTemplates.WICKET_PAGE_HTML);
-        CreatePageDialog dialog = new CreatePageDialog(project, actionRunnable, getCommandName(), directory);
+        ActionRunnableImpl actionRunnable = new ActionRunnableImpl(project, directory, WicketTemplates.WICKET_PANEL_HTML);
+        CreatePanelDialog dialog = new CreatePanelDialog(project, actionRunnable, getCommandName(), directory);
         dialog.show();
         return actionRunnable.getCreatedElements();
     }
 
     @Override
     protected String getErrorTitle() {
-        return "Cannot create Wicket Page";
+        return "Cannot create Wicket Panel";
     }
 
     @Override
     protected String getCommandName() {
-        return "Create Wicket Page";
+        return "Create Wicket Panel";
     }
 
     @Override
     protected String getActionName(PsiDirectory directory, String newName) {
-        return "Creating Wicket Page " + newName;
+        return "Creating Wicket Panel " + newName;
     }
 }

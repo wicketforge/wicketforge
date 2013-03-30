@@ -43,6 +43,7 @@ public class MarkupWicketIdReference implements PsiReference, PsiPolyVariantRefe
         textRange = new TextRange(1, attributeValue.getTextLength() - 1);
     }
 
+    @Override
     @NotNull
     public ResolveResult[] multiResolve(boolean incompleteCode) {
         String path = HierarchyUtil.findPathOf(attributeValue, false);
@@ -62,34 +63,41 @@ public class MarkupWicketIdReference implements PsiReference, PsiPolyVariantRefe
         return ResolveResult.EMPTY_ARRAY;
     }
 
+    @Override
     public PsiElement getElement() {
         return attributeValue;
     }
 
+    @Override
     public TextRange getRangeInElement() {
         return textRange;
     }
 
+    @Override
     public PsiElement resolve() {
         ResolveResult[] resolveResults = multiResolve(false);
         return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
     }
 
+    @Override
     @NotNull
     public String getCanonicalText() {
         return textRange.substring(attributeValue.getText());
     }
 
+    @Override
     public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
         final PsiElement elementAt = attributeValue.findElementAt(textRange.getStartOffset());
         assert elementAt != null;
         return ElementManipulators.getManipulator(elementAt).handleContentChange(elementAt, getRangeInElement(), newElementName);
     }
 
+    @Override
     public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
         return null;
     }
 
+    @Override
     public boolean isReferenceTo(PsiElement element) {
         final PsiManager manager = attributeValue.getManager();
         for (final ResolveResult result : multiResolve(false)) {
@@ -98,11 +106,13 @@ public class MarkupWicketIdReference implements PsiReference, PsiPolyVariantRefe
         return false;
     }
 
+    @Override
     @NotNull
     public Object[] getVariants() {
         return ArrayUtil.EMPTY_OBJECT_ARRAY;
     }
 
+    @Override
     public boolean isSoft() {
         return true;
     }

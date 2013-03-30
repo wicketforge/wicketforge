@@ -16,7 +16,6 @@
 package wicketforge.psi.hierarchy;
 
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlTag;
@@ -75,20 +74,20 @@ public final class MarkupWicketIdItem implements ItemPresentation {
 
     /* ItemPresentation*/
 
+    @Override
     public String getPresentableText() {
         return wicketId;
     }
 
+    @Override
     public String getLocationString() {
         XmlTag tag = getTag();
         return tag != null ? tag.getName() : null;
     }
 
-    public Icon getIcon() {
-        return getIcon(false);
-    }
-
-    public Icon getIcon(boolean open) {
+    @Override
+    @Nullable
+    public Icon getIcon(boolean unused) {
         return getIcon(getTag());
     }
 

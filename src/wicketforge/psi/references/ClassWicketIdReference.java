@@ -40,14 +40,17 @@ public class ClassWicketIdReference implements PsiReference {
         textRange = new TextRange(0, wicketIdExpression.getTextLength()); // issue 62: text range from 0 -> need also parentheses 
     }
 
+    @Override
     public PsiElement getElement() {
         return wicketIdExpression;
     }
 
+    @Override
     public TextRange getRangeInElement() {
         return textRange;
     }
 
+    @Override
     public PsiElement resolve() {
         PsiFile markupFile = MarkupIndex.getBaseFile(psiClass);
         if (markupFile != null) {
@@ -63,11 +66,13 @@ public class ClassWicketIdReference implements PsiReference {
         return null;
     }
 
+    @Override
     @NotNull
     public String getCanonicalText() {
         return textRange.substring(wicketIdExpression.getText());
     }
 
+    @Override
     public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
         ElementManipulator manipulator = ElementManipulators.getManipulator(wicketIdExpression);
         if (manipulator instanceof StringLiteralManipulator) {
@@ -76,19 +81,23 @@ public class ClassWicketIdReference implements PsiReference {
         return null;
     }
 
+    @Override
     public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
         return null;
     }
 
+    @Override
     public boolean isReferenceTo(PsiElement element) {
         return wicketIdExpression.getManager().areElementsEquivalent(resolve(), element);
     }
 
+    @Override
     @NotNull
     public Object[] getVariants() {
         return ArrayUtil.EMPTY_OBJECT_ARRAY;
     }
 
+    @Override
     public boolean isSoft() {
         return true;
     }

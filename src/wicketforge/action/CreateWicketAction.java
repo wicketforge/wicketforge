@@ -33,11 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * WicketClassBaseAction
+ * CreateWicketAction
  */
-public abstract class WicketClassBaseAction extends CreateElementActionBase {
+abstract class CreateWicketAction extends CreateElementActionBase {
 
-    protected WicketClassBaseAction(String text, String description) {
+    protected CreateWicketAction(String text, String description) {
         super(text, description, Constants.WICKET_ICON);
     }
 
@@ -62,6 +62,7 @@ public abstract class WicketClassBaseAction extends CreateElementActionBase {
             createdElements = new SmartPsiElementPointer[0];
         }
 
+        @Override
         public boolean run(@NotNull final String inputString, @NotNull final String extendsClass, final boolean hasMarkup, @NotNull final PsiDirectory markupDirectory) {
             try {
                 JavaDirectoryService.getInstance().checkCreateClass(psiDirectory, inputString);
@@ -73,13 +74,9 @@ public abstract class WicketClassBaseAction extends CreateElementActionBase {
             final Exception[] exception = new Exception[1];
 
             final Runnable command = new Runnable() {
+                @Override
                 public void run() {
-                    // TODO -> localhistoryAction disabled because IDEA10 has different interface than IDEA9. think about: do we really need a localhistory here?
-//                    LocalHistoryAction action = LocalHistoryAction.NULL;
-
-                    //noinspection EmptyFinallyBlock
                     try {
-//                        action = LocalHistory.startAction(project, getActionName(psiDirectory, inputString));
                         final JavaPsiFacade facade = JavaPsiFacade.getInstance(project);
                         final PsiClass superClass = facade.findClass(extendsClass, GlobalSearchScope.allScope(project));
                         assert superClass != null;
@@ -87,11 +84,13 @@ public abstract class WicketClassBaseAction extends CreateElementActionBase {
                         final PsiElementFactory factory = facade.getElementFactory();
                         final PsiJavaCodeReferenceElement extendingClass = factory.createClassReferenceElement(superClass);
                         ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                            @Override
                             public void run() {
                                 try {
                                     PsiClass clazz = (PsiClass) psiElements[0];
-                                    if (extendingClass != null) {
-                                        clazz.getExtendsList().add(extendingClass);
+                                    PsiReferenceList referenceList = clazz.getExtendsList();
+                                    if (referenceList != null) {
+                                        referenceList.add(extendingClass);
                                     }
                                     /*
                                     if (WicketPsiUtil.isWicketPanel(clazz)) {
@@ -105,8 +104,7 @@ public abstract class WicketClassBaseAction extends CreateElementActionBase {
                                     if (hasMarkup) {
                                         WicketFileUtil.createFileFromTemplate(WicketFilenameUtil.getMarkupFilename(clazz), markupDirectory, templateName);
                                     }
-                                }
-                                catch (IncorrectOperationException e) {
+                                } catch (IncorrectOperationException e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -117,12 +115,8 @@ public abstract class WicketClassBaseAction extends CreateElementActionBase {
                         for (int i = 0; i < createdElements.length; i++) {
                             createdElements[i] = manager.createSmartPsiElementPointer(psiElements[i]);
                         }
-                    }
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         exception[0] = ex;
-                    }
-                    finally {
-//                        action.finish();
                     }
                 }
             };

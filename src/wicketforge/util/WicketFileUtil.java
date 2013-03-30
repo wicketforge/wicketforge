@@ -89,6 +89,7 @@ public final class WicketFileUtil {
         final PackageWrapper targetPackage = new PackageWrapper(PsiManager.getInstance(project), packageName);
 
         final VirtualFile selectedRoot = new ReadAction<VirtualFile>() {
+            @Override
             protected void run(Result<VirtualFile> result) throws Throwable {
                 VirtualFile[] roots = getResourceRoots(module);
                 if (roots.length == 0) return;
@@ -108,6 +109,7 @@ public final class WicketFileUtil {
 
         try {
             return new WriteCommandAction<PsiDirectory>(project, CodeInsightBundle.message("create.directory.command")) {
+                @Override
                 protected void run(Result<PsiDirectory> result) throws Throwable {
                     result.setResult(RefactoringUtil.createPackageDirectoryInSourceRoot(targetPackage, selectedRoot));
                 }

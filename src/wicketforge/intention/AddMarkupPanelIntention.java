@@ -27,11 +27,13 @@ import wicketforge.util.WicketPsiUtil;
  */
 public class AddMarkupPanelIntention extends AddMarkupIntention {
 
+    @Override
     @NotNull
     public String getText() {
         return "Create Markup Panel";
     }
 
+    @Override
     @NotNull
     public String getFamilyName() {
         return "Create Markup Panel";
@@ -54,6 +56,7 @@ public class AddMarkupPanelIntention extends AddMarkupIntention {
         return WicketTemplates.WICKET_PANEL_HTML;
     }
 
+    @Override
     protected boolean isApplicableForClass(@NotNull PsiClass psiClass) {
         return WicketPsiUtil.isWicketPanel(psiClass);
     }

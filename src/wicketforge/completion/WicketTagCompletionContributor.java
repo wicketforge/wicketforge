@@ -33,6 +33,7 @@ public class WicketTagCompletionContributor extends CompletionContributor {
     @Override
     public void fillCompletionVariants(final CompletionParameters p, final CompletionResultSet rs) {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
+            @Override
             public void run() {
                 PsiFile f = p.getOriginalFile();
                 if (f.getFileType() == StdFileTypes.HTML) {

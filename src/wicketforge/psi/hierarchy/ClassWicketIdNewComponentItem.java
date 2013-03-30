@@ -91,8 +91,9 @@ public final class ClassWicketIdNewComponentItem implements ItemPresentation {
         return /*"new " + */getBaseClassToCreate().getName()/* + "(...)"*/;
     }
 
+    @Nullable
     @Override
-    public Icon getIcon(boolean open) {
+    public Icon getIcon(boolean unused) {
         return getIcon(baseClassToCreate);
     }
 
