@@ -56,8 +56,8 @@ public class WicketTagAttributeCompletionContributor extends CompletionContribut
         if (wicketTag != null) {
             for (String attr : wicketTag.getAttributes()) {
                 LookupElementBuilder lookupElementBuilder = LookupElementBuilder.create(attr + "=\"\"")
-                                .setPresentableText(attr)
-                                .setInsertHandler(new AttributeInsertHandler());
+                                .withPresentableText(attr)
+                                .withInsertHandler(new AttributeInsertHandler());
                 rs.addElement(lookupElementBuilder);
             }
         }

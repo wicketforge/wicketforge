@@ -77,9 +77,9 @@ public class PropertiesCompletionContributor extends CompletionContributor {
                 if (propertyKey != null) {
                     LookupElementBuilder lookupElementBuilder =
                             LookupElementBuilder.create(propertyKey)
-                                    .setIcon(StdFileTypes.PROPERTIES.getIcon())
-                                    .setTypeText(".properties")
-                                    .setTailText("  " + property.getValue(), true);
+                                    .withIcon(StdFileTypes.PROPERTIES.getIcon())
+                                    .withTypeText(".properties")
+                                    .withTailText("  " + property.getValue(), true);
                     rs.addElement(lookupElementBuilder);
                     rs.stopHere();
                 }

@@ -62,10 +62,10 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
                                                 for (MarkupWicketIdItem child : item.getChildren()) {
                                                     rs.addElement(
                                                             LookupElementBuilder.create(child.getWicketId())
-                                                                    //.setIcon(child.getIcon()) // child's icon bother view -> use generic icon
-                                                                    .setIcon(Constants.WICKET_COMPONENT_ICON)
-                                                                    .setTypeText(".html")
-                                                                    .setTailText("  " + child.getLocationString(), true)
+                                                                    //.withIcon(child.getIcon()) // child's icon bother view -> use generic icon
+                                                                    .withIcon(Constants.WICKET_COMPONENT_ICON)
+                                                                    .withTypeText(".html")
+                                                                    .withTailText("  " + child.getLocationString(), true)
                                                     );
                                                 }
                                             }
