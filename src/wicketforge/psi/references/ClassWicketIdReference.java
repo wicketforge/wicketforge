@@ -22,10 +22,10 @@ import com.intellij.psi.xml.XmlFile;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
-import wicketforge.WicketForgeUtil;
 import wicketforge.psi.hierarchy.HierarchyUtil;
 import wicketforge.psi.hierarchy.MarkupWicketIdHierarchy;
 import wicketforge.psi.hierarchy.MarkupWicketIdItem;
+import wicketforge.search.MarkupIndex;
 
 /**
  */
@@ -49,7 +49,7 @@ public class ClassWicketIdReference implements PsiReference {
     }
 
     public PsiElement resolve() {
-        PsiFile markupFile = WicketForgeUtil.getMarkupFile(psiClass);
+        PsiFile markupFile = MarkupIndex.getBaseFile(psiClass);
         if (markupFile != null) {
             String path = HierarchyUtil.findPathOf(psiClass, wicketIdExpression, false, false);
             if (path != null) {

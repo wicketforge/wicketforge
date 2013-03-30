@@ -16,11 +16,9 @@
 package wicketforge.library;
 
 import com.intellij.framework.library.DownloadableLibraryTypeBase;
-import com.intellij.openapi.diagnostic.Logger;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.Constants;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class WicketLibraryType extends DownloadableLibraryTypeBase {

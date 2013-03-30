@@ -36,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.psi.hierarchy.ClassStructureTreeModel;
 import wicketforge.psi.hierarchy.MarkupStructureTreeModel;
+import wicketforge.util.WicketPsiUtil;
 
 /**
  */

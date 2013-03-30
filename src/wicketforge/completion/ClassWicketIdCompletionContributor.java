@@ -26,10 +26,11 @@ import com.intellij.psi.xml.XmlFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
-import wicketforge.WicketForgeUtil;
 import wicketforge.psi.hierarchy.HierarchyUtil;
 import wicketforge.psi.hierarchy.MarkupWicketIdHierarchy;
 import wicketforge.psi.hierarchy.MarkupWicketIdItem;
+import wicketforge.search.MarkupIndex;
+import wicketforge.util.WicketPsiUtil;
 
 /**
  */
@@ -48,9 +49,9 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
                         if (wicketIdExpression != null) {
                             PsiNewExpression wicketNewExpression = getWicketNewExpression(wicketIdExpression);
                             if (wicketNewExpression != null) {
-                                PsiClass psiClass = WicketForgeUtil.getParentWicketClass(wicketNewExpression);
+                                PsiClass psiClass = WicketPsiUtil.getParentWicketClass(wicketNewExpression);
                                 if (psiClass != null) {
-                                    PsiFile markup = WicketForgeUtil.getMarkupFile(psiClass);
+                                    PsiFile markup = MarkupIndex.getBaseFile(psiClass);
                                     if (markup != null) {
                                         // ... before we search for our parent Item
                                         String parentPath = HierarchyUtil.findPathOf(psiClass, wicketIdExpression, true, true);
@@ -104,8 +105,8 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
             return null;
         }
 
-        PsiClass psiClass = WicketForgeUtil.getClassFromNewExpression((PsiNewExpression) parent);
+        PsiClass psiClass = WicketPsiUtil.getClassFromNewExpression((PsiNewExpression) parent);
 
-        return psiClass != null && WicketForgeUtil.isWicketComponent(psiClass) ? (PsiNewExpression) parent : null;
+        return psiClass != null && WicketPsiUtil.isWicketComponent(psiClass) ? (PsiNewExpression) parent : null;
     }
 }

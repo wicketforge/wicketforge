@@ -20,7 +20,7 @@ import com.intellij.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
-import wicketforge.WicketForgeUtil;
+import wicketforge.util.WicketPsiUtil;
 
 import javax.swing.*;
 
@@ -38,11 +38,11 @@ public final class ClassWicketIdNewComponentItem implements ItemPresentation {
         ClassWicketIdNewComponentItem result = new ClassWicketIdNewComponentItem();
 
         result.newExpression = newExpression;
-        result.wicketIdExpression = WicketForgeUtil.getWicketIdExpressionFromArguments(newExpression);
+        result.wicketIdExpression = WicketPsiUtil.getWicketIdExpressionFromArguments(newExpression);
         if (result.wicketIdExpression == null) {
             return null;
         }
-        result.wicketId = WicketForgeUtil.getWicketIdFromExpression(result.wicketIdExpression);
+        result.wicketId = WicketPsiUtil.getWicketIdFromExpression(result.wicketIdExpression);
         if (result.wicketId == null) {
             return null;
         }

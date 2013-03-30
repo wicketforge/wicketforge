@@ -27,12 +27,12 @@ import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiPackage;
-import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.ui.RecentsManager;
 import com.intellij.ui.ReferenceEditorComboWithBrowseButton;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wicketforge.WicketForgeUtil;
+import wicketforge.search.WicketSearchScope;
+import wicketforge.util.WicketFileUtil;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -101,7 +101,7 @@ public abstract class AbstractCreateDialog extends DialogWrapper {
         chooseDifferentDestinationFolderCheckBox.setSelected(propertiesComponent.getBoolean(getStoreKey(CHOOSE_DIFFERENT_DESTINATION_KEY), true));
 
         // if we have only 1 destination, we dont offer a different folder selection
-        if (WicketForgeUtil.getResourceRoots(module).length < 2) {
+        if (WicketFileUtil.getResourceRoots(module).length < 2) {
             chooseDifferentDestinationFolderPanel.setVisible(false);
         } else {
             createAssociatedMarkupFileCheckBox.addChangeListener(new ChangeListener() {
@@ -118,7 +118,7 @@ public abstract class AbstractCreateDialog extends DialogWrapper {
                 PsiClass psiClass = getDefaultClass(project);
 
                 TreeClassChooser chooser = TreeClassChooserFactory.getInstance(project).createInheritanceClassChooser(
-                        "Choose Class to extend", GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module), psiClass, null);
+                        "Choose Class to extend", WicketSearchScope.classInModuleWithDependenciesAndLibraries(module), psiClass, null);
 
                 chooser.showDialog();
                 PsiClass aClass = chooser.getSelected();
@@ -142,7 +142,7 @@ public abstract class AbstractCreateDialog extends DialogWrapper {
         boolean chooseDifferentDestination = chooseDifferentDestinationFolderCheckBox.isSelected();
 
         if (module != null && psiPackage != null && createMarkup && chooseDifferentDestination) {
-            PsiDirectory directory = WicketForgeUtil.selectTargetDirectory(psiPackage.getQualifiedName(), project, module);
+            PsiDirectory directory = WicketFileUtil.selectTargetDirectory(psiPackage.getQualifiedName(), project, module);
             if (directory == null) {
                 return; // aborted
             }

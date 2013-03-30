@@ -18,8 +18,10 @@ package wicketforge.intention;
 import com.intellij.psi.PsiClass;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.Constants;
-import wicketforge.WicketForgeUtil;
+import wicketforge.search.PropertiesIndex;
 import wicketforge.templates.WicketTemplates;
+import wicketforge.util.WicketFilenameUtil;
+import wicketforge.util.WicketPsiUtil;
 
 /**
  * Class level intention used to create properties files for Wicket page and panel components.
@@ -38,13 +40,13 @@ public class AddPropertiesIntention extends AddMarkupIntention {
 
     @Override
     protected boolean hasResourceFile(@NotNull PsiClass psiClass) {
-        return WicketForgeUtil.getPropertiesFile(psiClass) != null;
+        return PropertiesIndex.getBaseFile(psiClass) != null;
     }
 
     @NotNull
     @Override
     protected String getResourceFileName(@NotNull PsiClass psiClass) {
-        return WicketForgeUtil.getPropertiesFileName(psiClass, Constants.PropertiesType.PROPERTIES);
+        return WicketFilenameUtil.getPropertiesFilename(psiClass, Constants.PropertiesType.PROPERTIES);
     }
 
     @NotNull
@@ -54,6 +56,6 @@ public class AddPropertiesIntention extends AddMarkupIntention {
     }
 
     protected boolean isApplicableForClass(@NotNull PsiClass psiClass) {
-        return WicketForgeUtil.isWicketComponentWithAssociatedMarkup(psiClass);
+        return WicketPsiUtil.isWicketComponentWithAssociatedMarkup(psiClass);
     }
 }

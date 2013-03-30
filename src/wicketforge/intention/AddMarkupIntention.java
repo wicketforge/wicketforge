@@ -23,8 +23,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
-import wicketforge.WicketForgeUtil;
 import wicketforge.facet.WicketForgeFacet;
+import wicketforge.util.WicketFileUtil;
 
 /**
  * AddMarkupIntention
@@ -85,9 +85,9 @@ abstract class AddMarkupIntention implements IntentionAction {
                 return;
             }
 
-            PsiDirectory directory = WicketForgeUtil.selectTargetDirectory(psiPackage.getQualifiedName(), project, module);
+            PsiDirectory directory = WicketFileUtil.selectTargetDirectory(psiPackage.getQualifiedName(), project, module);
             if (directory != null) {
-                WicketForgeUtil.createFileFromTemplate(getResourceFileName((PsiClass) element), directory, getTemplateName());
+                WicketFileUtil.createFileFromTemplate(getResourceFileName((PsiClass) element), directory, getTemplateName());
             }
         }
     }

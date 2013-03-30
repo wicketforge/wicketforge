@@ -18,8 +18,9 @@ package wicketforge.psi.references;
 import com.intellij.psi.*;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
-import wicketforge.WicketForgeUtil;
 import wicketforge.facet.WicketForgeFacet;
+import wicketforge.search.MarkupIndex;
+import wicketforge.util.WicketPsiUtil;
 
 /**
  */
@@ -38,9 +39,9 @@ public class ClassWicketIdReferenceProvider extends PsiReferenceProvider {
                     PsiElement clazzElement = clazzReference.resolve();
                     if (clazzElement instanceof PsiClass) {
                         PsiClass psiClass = (PsiClass) clazzElement;
-                        if (WicketForgeUtil.isWicketComponent(psiClass) && !WicketForgeUtil.isWicketPage(psiClass)) {
-                            PsiClass wicketClass = WicketForgeUtil.getParentWicketClass(newExpression);
-                            if (wicketClass != null && WicketForgeUtil.getMarkupFile(wicketClass) != null) {
+                        if (WicketPsiUtil.isWicketComponent(psiClass) && !WicketPsiUtil.isWicketPage(psiClass)) {
+                            PsiClass wicketClass = WicketPsiUtil.getParentWicketClass(newExpression);
+                            if (wicketClass != null && MarkupIndex.getBaseFile(wicketClass) != null) {
                                 return new PsiReference[] {new ClassWicketIdReference((PsiLiteralExpression) element, wicketClass)};
                             }
                         }

@@ -20,8 +20,8 @@ import com.intellij.facet.impl.ui.FacetEditorsFactoryImpl;
 import com.intellij.facet.ui.FacetEditorContext;
 import com.intellij.facet.ui.FacetEditorTab;
 import com.intellij.facet.ui.FacetValidatorsManager;
-import com.intellij.facet.ui.libraries.FrameworkLibraryValidator;
 import com.intellij.framework.library.DownloadableLibraryService;
+import com.intellij.util.messages.Topic;
 import org.jdom.Element;
 import wicketforge.library.WicketLibraryType;
 
@@ -36,17 +36,18 @@ public class WicketForgeFacetConfiguration implements FacetConfiguration {
     private static final String RESOURCEURL_TAG = "resourceUrl";
     private static final String URL = "url";
 
+    public static final Topic<Runnable> ADDITIONAL_PATHS_CHANGED = new Topic<Runnable>("additional resource paths changed", Runnable.class);
+
     List<String> resourceUrls = new ArrayList<String>();
 
     public FacetEditorTab[] createEditorTabs(FacetEditorContext editorContext, FacetValidatorsManager validatorsManager) {
-        FrameworkLibraryValidator validator =  FacetEditorsFactoryImpl.getInstanceImpl().createLibraryValidator(
+        validatorsManager.registerValidator(FacetEditorsFactoryImpl.getInstanceImpl().createLibraryValidator(
                 DownloadableLibraryService.getInstance().createDescriptionForType(WicketLibraryType.class),
                 editorContext,
                 validatorsManager,
                 "wicket"
-        );
-        validatorsManager.registerValidator(validator);
-        return new FacetEditorTab[] {new WicketFacetEditorTab(editorContext)};
+        ));
+        return new FacetEditorTab[]{new WicketFacetEditorTab(editorContext)};
     }
 
     @Deprecated

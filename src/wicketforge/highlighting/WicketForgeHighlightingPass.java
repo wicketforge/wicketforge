@@ -30,10 +30,10 @@ import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
-import wicketforge.WicketForgeUtil;
 import wicketforge.facet.WicketForgeFacet;
 import wicketforge.psi.references.ClassWicketIdReference;
 import wicketforge.psi.references.MarkupWicketIdReference;
+import wicketforge.util.WicketPsiUtil;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -92,12 +92,12 @@ public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
                     @Override
                     public void visitNewExpression(PsiNewExpression expression) {
                         super.visitNewExpression(expression);
-                        PsiClass psiClass = WicketForgeUtil.getClassFromNewExpression(expression);
+                        PsiClass psiClass = WicketPsiUtil.getClassFromNewExpression(expression);
                         // if its a component
-                        if (psiClass != null && WicketForgeUtil.isWicketComponent(psiClass)) {
+                        if (psiClass != null && WicketPsiUtil.isWicketComponent(psiClass)) {
                             // highlight wicketId expression (but only if its not a page)
-                            if (!WicketForgeUtil.isWicketPage(psiClass)) {
-                                PsiExpression wicketIdExpression = WicketForgeUtil.getWicketIdExpressionFromArguments(expression);
+                            if (!WicketPsiUtil.isWicketPage(psiClass)) {
+                                PsiExpression wicketIdExpression = WicketPsiUtil.getWicketIdExpressionFromArguments(expression);
                                 if (wicketIdExpression != null) {
                                     // only PsiLiteralExpression are resolvable wicketIds
                                     HighlightInfo highlightInfo = createHighlightInfo(

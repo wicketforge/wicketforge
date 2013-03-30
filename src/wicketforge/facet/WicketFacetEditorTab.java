@@ -18,6 +18,7 @@ package wicketforge.facet;
 import com.intellij.facet.ui.FacetEditorContext;
 import com.intellij.facet.ui.FacetEditorTab;
 import com.intellij.openapi.actionSystem.ActionToolbarPosition;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.options.ConfigurationException;
@@ -41,7 +42,7 @@ import java.util.List;
 /**
  * WicketFacetEditorTab
  */
-public class WicketFacetEditorTab extends FacetEditorTab {
+class WicketFacetEditorTab extends FacetEditorTab {
     private AdditionalPathPanel additionalPathPanel;
 
     public WicketFacetEditorTab(@NotNull FacetEditorContext editorContext) {
@@ -59,6 +60,7 @@ public class WicketFacetEditorTab extends FacetEditorTab {
 
     public void apply() throws ConfigurationException {
         additionalPathPanel.apply();
+        ApplicationManager.getApplication().getMessageBus().syncPublisher(WicketForgeFacetConfiguration.ADDITIONAL_PATHS_CHANGED).run();
     }
 
     public JComponent createComponent() {
@@ -80,7 +82,7 @@ public class WicketFacetEditorTab extends FacetEditorTab {
     private static class AdditionalPathPanel extends JPanel {
         private final FacetEditorContext editorContext;
         private final WicketForgeFacet wicketForgeFacet;
-        private DefaultListModel additionalPathModel = new DefaultListModel();
+        private DefaultListModel additionalPathModel = new DefaultListModel(); // List of VirtualFilePointer
 
         public AdditionalPathPanel(@NotNull FacetEditorContext editorContext) {
             super(new BorderLayout());

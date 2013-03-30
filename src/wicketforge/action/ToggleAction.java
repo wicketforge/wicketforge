@@ -30,9 +30,13 @@ import com.intellij.psi.xml.XmlFile;
 import com.intellij.util.PsiNavigateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wicketforge.WicketForgeUtil;
 import wicketforge.facet.WicketForgeFacet;
+import wicketforge.search.ClassIndex;
+import wicketforge.search.MarkupIndex;
 import wicketforge.templates.WicketTemplates;
+import wicketforge.util.WicketFileUtil;
+import wicketforge.util.WicketFilenameUtil;
+import wicketforge.util.WicketPsiUtil;
 
 /**
  */
@@ -60,7 +64,7 @@ public class ToggleAction extends AnAction {
         }
 
         if (psiFile instanceof XmlFile) {
-            PsiClass psiClass = WicketForgeUtil.getMarkupClass(psiFile);
+            PsiClass psiClass = ClassIndex.getAssociatedClass(psiFile);
             if (psiClass == null) {
                 HintManager.getInstance().showInformationHint(editor, "No corresponding java class found");
             } else {
@@ -82,14 +86,14 @@ public class ToggleAction extends AnAction {
             if (offset >= 0) {
                 PsiElement currentElement = psiFile.findElementAt(offset);
                 if (currentElement != null) {
-                    psiClass = WicketForgeUtil.getParentWicketClass(currentElement);
+                    psiClass = WicketPsiUtil.getParentWicketClass(currentElement);
                 }
             }
             // if not found -> look for (first) class of file
             if (psiClass == null) {
                 PsiClass[] psiClasses = ((PsiJavaFile) psiFile).getClasses();
                 if (psiClasses.length > 0) {
-                    psiClass = WicketForgeUtil.getParentWicketClass(psiClasses[0]);
+                    psiClass = WicketPsiUtil.getParentWicketClass(psiClasses[0]);
                 }
             }
 
@@ -99,7 +103,7 @@ public class ToggleAction extends AnAction {
             }
 
             // get markupFile
-            PsiElement markupFile = WicketForgeUtil.getMarkupFile(psiClass);
+            PsiElement markupFile = MarkupIndex.getBaseFile(psiClass);
             if (markupFile == null) {
                 // no markup file found -> ask to create one
                 final Module module = ModuleUtil.findModuleForPsiElement(psiFile);
@@ -130,9 +134,9 @@ public class ToggleAction extends AnAction {
         }
 
         String templateName = null;
-        if (WicketForgeUtil.isWicketPage(psiClass)) {
+        if (WicketPsiUtil.isWicketPage(psiClass)) {
             templateName = WicketTemplates.WICKET_PAGE_HTML;
-        } else if (WicketForgeUtil.isWicketPanel(psiClass)) {
+        } else if (WicketPsiUtil.isWicketPanel(psiClass)) {
             templateName = WicketTemplates.WICKET_PANEL_HTML;
         }
         if (templateName != null &&
@@ -141,10 +145,10 @@ public class ToggleAction extends AnAction {
                         "Create Markup",
                         Messages.getQuestionIcon()) == 0
                 ) {
-            PsiDirectory directory = WicketForgeUtil.selectTargetDirectory(psiPackage.getQualifiedName(), module.getProject(), module);
+            PsiDirectory directory = WicketFileUtil.selectTargetDirectory(psiPackage.getQualifiedName(), module.getProject(), module);
             if (directory != null) {
                 // create
-                return WicketForgeUtil.createFileFromTemplate(WicketForgeUtil.getMarkupFileName(psiClass), directory, templateName);
+                return WicketFileUtil.createFileFromTemplate(WicketFilenameUtil.getMarkupFilename(psiClass), directory, templateName);
             }
         }
         return null;
