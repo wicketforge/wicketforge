@@ -69,7 +69,7 @@
                 <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift W"/>
             </action>
             <action id="wicketforge.action.ExtractHtmlTextAction"
-                    class="wicketforge.action.ExtractHtmlTextAction"
+                    class="wicketforge.action.ExtractPropertiesAction"
                     text="Extract Text to Properties..."
                     description="Extract selected text to properties"/>
             <action id="wicketforge.action.CreateAction.NewPage"
