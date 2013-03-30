@@ -25,6 +25,7 @@ import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
 import com.intellij.psi.PsiElement;
+import com.intellij.ui.JBColor;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.Constants;
 
@@ -36,7 +37,7 @@ import java.util.Map;
 /**
  */
 public class WicketForgeColorSettingsPage implements ColorSettingsPage {
-    private static final TextAttributes DEFAULTWICKETID = new TextAttributes(new Color(0xe8590a), null, null, null, Font.BOLD);
+    private static final TextAttributes DEFAULTWICKETID = new TextAttributes(new JBColor(new Color(0xe8590a), new Color(0xc8530a)), null, null, null, Font.BOLD);
     private static final TextAttributes DEFAULTWICKETID_NOTRESOLVABLE = new TextAttributes(null, null, null, null, Font.PLAIN);
 
     static final TextAttributesKey JAVAWICKETID = TextAttributesKey.createTextAttributesKey("JAVAWICKETID", DEFAULTWICKETID);
