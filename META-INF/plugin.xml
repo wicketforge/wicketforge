@@ -60,7 +60,7 @@
         </component>
     </project-components>
     <actions>
-            <action id="wicketforge.action.ToggleAction"
+            <action id="WicketForgeToggle"
                     class="wicketforge.action.ToggleAction"
                     text="Wicket Java Markup Toggle"
                     description="Toggles between Wicket Java and Markup files">
@@ -68,19 +68,19 @@
                 <keyboard-shortcut keymap="Mac OS X" first-keystroke="control shift W"/>
                 <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift W"/>
             </action>
-            <action id="wicketforge.action.ExtractHtmlTextAction"
+            <action id="WicketForgeExtractProperties"
                     class="wicketforge.action.ExtractPropertiesAction"
                     text="Extract Text to Properties..."
                     description="Extract selected text to properties"/>
-            <action id="wicketforge.action.CreateAction.NewPage"
+            <action id="WicketForgeCreatePage"
                     class="wicketforge.action.CreateWicketPageAction"
                     text="New Wicket Page"
                     description="Creates new Wicket page skeleton"/>
-            <action id="wicketforge.action.CreateAction.NewPanel"
+            <action id="WicketForgeCreatePanel"
                     class="wicketforge.action.CreateWicketPanelAction"
                     text="New Wicket Panel"
                     description="Creates new Wicket panel skeleton"/>
-            <action id="wicketforge.action.ViewWicketStructureAction"
+            <action id="WicketForgeViewStructure"
                     class="wicketforge.action.ViewWicketStructureAction"
                     text="Wicket Structure"
                     description="Popup Wicket structure of the current file for quick navigation">
@@ -92,13 +92,13 @@
 
         <group text="WicketForge">
             <separator/>
-            <reference ref="wicketforge.action.ToggleAction"/>
-            <reference ref="wicketforge.action.ExtractHtmlTextAction"/>
+            <reference ref="WicketForgeToggle"/>
+            <reference ref="WicketForgeExtractProperties"/>
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="CutCopyPasteGroup"/>
         </group>
-        <group id="wicketforge.action.CreateAction" class="wicketforge.action.WicketActionGroup" text="Wicket">
-            <reference ref="wicketforge.action.CreateAction.NewPage"/>
-            <reference ref="wicketforge.action.CreateAction.NewPanel"/>
+        <group id="WicketForgeCreateGroup" class="wicketforge.action.WicketActionGroup" text="Wicket">
+            <reference ref="WicketForgeCreatePage"/>
+            <reference ref="WicketForgeCreatePanel"/>
             <add-to-group group-id="NewGroup" anchor="last"/>
         </group>
     </actions>
