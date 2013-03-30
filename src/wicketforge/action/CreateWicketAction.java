@@ -33,11 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * WicketClassBaseAction
+ * CreateWicketAction
  */
-abstract class WicketClassBaseAction extends CreateElementActionBase {
+abstract class CreateWicketAction extends CreateElementActionBase {
 
-    protected WicketClassBaseAction(String text, String description) {
+    protected CreateWicketAction(String text, String description) {
         super(text, description, Constants.WICKET_ICON);
     }
 
@@ -74,12 +74,7 @@ abstract class WicketClassBaseAction extends CreateElementActionBase {
 
             final Runnable command = new Runnable() {
                 public void run() {
-                    // TODO -> localhistoryAction disabled because IDEA10 has different interface than IDEA9. think about: do we really need a localhistory here?
-//                    LocalHistoryAction action = LocalHistoryAction.NULL;
-
-                    //noinspection EmptyFinallyBlock
                     try {
-//                        action = LocalHistory.startAction(project, getActionName(psiDirectory, inputString));
                         final JavaPsiFacade facade = JavaPsiFacade.getInstance(project);
                         final PsiClass superClass = facade.findClass(extendsClass, GlobalSearchScope.allScope(project));
                         assert superClass != null;
@@ -117,12 +112,8 @@ abstract class WicketClassBaseAction extends CreateElementActionBase {
                         for (int i = 0; i < createdElements.length; i++) {
                             createdElements[i] = manager.createSmartPsiElementPointer(psiElements[i]);
                         }
-                    }
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         exception[0] = ex;
-                    }
-                    finally {
-//                        action.finish();
                     }
                 }
             };

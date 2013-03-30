@@ -73,11 +73,11 @@
                     text="Extract Text to Properties..."
                     description="Extract selected text to properties"/>
             <action id="wicketforge.action.CreateAction.NewPage"
-                    class="wicketforge.action.WicketPageAction"
+                    class="wicketforge.action.CreateWicketPageAction"
                     text="New Wicket Page"
                     description="Creates new Wicket page skeleton"/>
             <action id="wicketforge.action.CreateAction.NewPanel"
-                    class="wicketforge.action.WicketPanelAction"
+                    class="wicketforge.action.CreateWicketPanelAction"
                     text="New Wicket Panel"
                     description="Creates new Wicket panel skeleton"/>
             <action id="wicketforge.action.ViewWicketStructureAction"
