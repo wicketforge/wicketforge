@@ -2,8 +2,8 @@
 <idea-plugin version="2">
     <id>WicketForge</id>
     <name>WicketForge</name>
-    <!--<version>2.2.0</version>-->
-    <version>2.x-SNAPSHOT</version>
+    <!--<version>3.0.0</version>-->
+    <version>3.x-SNAPSHOT</version>
     <description>
         <![CDATA[
         <p>WicketForge assists developers creating <a href="http://wicket.apache.org/">Wicket</a> applications.</p>
@@ -13,7 +13,7 @@
         ]]>
     </description>
     <vendor url="http://code.google.com/p/wicketforge" logo="/icons/wicket.png">Minas Manthos</vendor>
-    <idea-version since-build="111.69"/>
+    <idea-version since-build="123.72"/>
     <depends>com.intellij.properties</depends>
     <change-notes><![CDATA[See <a href="http://code.google.com/p/wicketforge/wiki/ChangeNotes">change notes</a>.]]></change-notes>
     <extensions defaultExtensionNs="com.intellij">
