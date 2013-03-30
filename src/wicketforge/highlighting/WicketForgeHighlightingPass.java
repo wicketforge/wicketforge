@@ -41,12 +41,12 @@ import java.util.List;
 
 /**
  */
-public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
+class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
     private PsiFile file;
 
     private volatile Collection<HighlightInfo> highlights = Collections.emptyList();
 
-    public WicketForgeHighlightingPass(@NotNull PsiFile file, @NotNull Editor editor) {
+    WicketForgeHighlightingPass(@NotNull PsiFile file, @NotNull Editor editor) {
         super(file.getProject(), editor.getDocument());
         this.file = file;
     }

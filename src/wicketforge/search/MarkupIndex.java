@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class MarkupIndex extends WicketResourceIndexExtension {
-    public static final ID<String, Void> NAME = ID.create("WicketMarkupIndex");
+    private static final ID<String, Void> NAME = ID.create("WicketMarkupIndex");
 
     public MarkupIndex(@NotNull MessageBus messageBus) {
         super(messageBus);

@@ -32,7 +32,7 @@ class WicketTag {
             new WicketTag("wicket:child")
     };
 
-    WicketTag(@NotNull String name, @Nullable String... attributes) {
+    private WicketTag(@NotNull String name, @Nullable String... attributes) {
         this.name = name;
         this.attributes = attributes;
     }

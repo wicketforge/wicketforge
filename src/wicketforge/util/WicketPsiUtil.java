@@ -141,7 +141,7 @@ public final class WicketPsiUtil {
     }
 
     @Nullable
-    public static PsiClass getConcreteClass(@Nullable PsiClass psiClass) {
+    private static PsiClass getConcreteClass(@Nullable PsiClass psiClass) {
         while (psiClass != null && psiClass.getName() == null) { // parentWicketClass needs a name (ex anonymous classes dont have) so we get its superclass (issue 48)
             psiClass = psiClass.getSuperClass();
         }

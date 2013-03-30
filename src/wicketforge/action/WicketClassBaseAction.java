@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * WicketClassBaseAction
  */
-public abstract class WicketClassBaseAction extends CreateElementActionBase {
+abstract class WicketClassBaseAction extends CreateElementActionBase {
 
     protected WicketClassBaseAction(String text, String description) {
         super(text, description, Constants.WICKET_ICON);

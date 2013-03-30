@@ -41,8 +41,8 @@ import javax.swing.*;
  */
 public class WicketForgeFacetType extends FacetType<WicketForgeFacet, WicketForgeFacetConfiguration> {
 
-    public static final String STRING_ID = "wicketforge";
-    public static final String PRESENTABLE_NAME = "Wicket";
+    private static final String STRING_ID = "wicketforge";
+    private static final String PRESENTABLE_NAME = "Wicket";
     public static final FacetTypeId<WicketForgeFacet> ID = new FacetTypeId<WicketForgeFacet>(STRING_ID);
     public static final WicketForgeFacetType INSTANCE = new WicketForgeFacetType();
 

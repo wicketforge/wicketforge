@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PropertiesIndex extends WicketResourceIndexExtension {
-    public static final ID<String, Void> NAME = ID.create("WicketPropertiesIndex");
+    private static final ID<String, Void> NAME = ID.create("WicketPropertiesIndex");
 
     public PropertiesIndex(@NotNull MessageBus messageBus) {
         super(messageBus);
