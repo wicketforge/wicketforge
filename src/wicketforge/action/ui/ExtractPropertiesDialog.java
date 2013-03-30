@@ -42,7 +42,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExtractHtmlTextDialog extends DialogWrapper {
+public class ExtractPropertiesDialog extends DialogWrapper {
     private JPanel contentPane;
     private JTextField propertyKeyTextField;
     private JTextArea propertyValueTextArea;
@@ -57,7 +57,7 @@ public class ExtractHtmlTextDialog extends DialogWrapper {
     private PsiDirectory destinationDirectory;
     private PsiPackage psiPackage;
 
-    public ExtractHtmlTextDialog(@NotNull Project project, @NotNull ActionRunnable actionRunnable, @NotNull String title, @NotNull PsiClass componentClass, @NotNull PsiDirectory directory, @NotNull String text) {
+    public ExtractPropertiesDialog(@NotNull Project project, @NotNull ActionRunnable actionRunnable, @NotNull String title, @NotNull PsiClass componentClass, @NotNull PsiDirectory directory, @NotNull String text) {
         super(project, false);
 
         this.project = project;

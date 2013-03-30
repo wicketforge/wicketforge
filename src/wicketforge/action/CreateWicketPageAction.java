@@ -23,11 +23,11 @@ import wicketforge.action.ui.CreatePageDialog;
 import wicketforge.templates.WicketTemplates;
 
 /**
- * WicketPageAction
+ * CreateWicketPageAction
  */
-public class WicketPageAction extends WicketClassBaseAction {
+public class CreateWicketPageAction extends CreateWicketAction {
 
-    protected WicketPageAction() {
+    protected CreateWicketPageAction() {
         super("Wicket Page", "Create a new Wicket Page");
     }
 

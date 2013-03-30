@@ -23,11 +23,11 @@ import wicketforge.action.ui.CreatePanelDialog;
 import wicketforge.templates.WicketTemplates;
 
 /**
- * WicketPanelAction
+ * CreateWicketPanelAction
  */
-public class WicketPanelAction extends WicketClassBaseAction {
+public class CreateWicketPanelAction extends CreateWicketAction {
 
-    public WicketPanelAction() {
+    public CreateWicketPanelAction() {
         super("Wicket Panel", "Create a new Wicket Panel");
     }
 
