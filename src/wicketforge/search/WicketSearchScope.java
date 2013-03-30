@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import wicketforge.facet.WicketForgeFacet;
 
 public final class WicketSearchScope {
-    public WicketSearchScope() {
+    private WicketSearchScope() {
     }
 
     public static GlobalSearchScope resourcesInModuleWithDependenciesAndLibraries(@NotNull Module module) {

@@ -16,7 +16,6 @@
 package wicketforge.psi.hierarchy;
 
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlTag;
@@ -84,11 +83,8 @@ public final class MarkupWicketIdItem implements ItemPresentation {
         return tag != null ? tag.getName() : null;
     }
 
-    public Icon getIcon() {
-        return getIcon(false);
-    }
-
-    public Icon getIcon(boolean open) {
+    @Nullable
+    public Icon getIcon(boolean unused) {
         return getIcon(getTag());
     }
 

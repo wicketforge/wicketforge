@@ -144,7 +144,7 @@ class WicketFacetEditorTab extends FacetEditorTab {
             return false;
         }
 
-        public void apply() throws ConfigurationException {
+        public void apply() {
             List<VirtualFilePointer> list = new SmartList<VirtualFilePointer>();
             for (int i = 0, n = additionalPathModel.size(); i < n; i++) {
                 list.add((VirtualFilePointer) additionalPathModel.get(i));
