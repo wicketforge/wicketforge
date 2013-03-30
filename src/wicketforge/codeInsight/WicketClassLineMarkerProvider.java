@@ -17,10 +17,7 @@ package wicketforge.codeInsight;
 
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.codeInsight.daemon.LineMarkerProvider;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiIdentifier;
+import com.intellij.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
@@ -42,7 +39,7 @@ public class WicketClassLineMarkerProvider implements LineMarkerProvider {
                 if (WicketPsiUtil.isWicketComponentWithAssociatedMarkup(psiClass)) {
                     final PsiFile psiFile = MarkupIndex.getBaseFile(psiClass);
                     if (psiFile != null) {
-                        return NavigableLineMarkerInfo.create(element, new PsiElement[] {psiFile}, Constants.TOMARKUPREF, null);
+                        return NavigableLineMarkerInfo.create(element, new NavigatablePsiElement[] {psiFile}, Constants.TOMARKUPREF);
                     }
                 }
             }

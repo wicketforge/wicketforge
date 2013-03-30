@@ -17,6 +17,7 @@ package wicketforge.codeInsight;
 
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.codeInsight.daemon.LineMarkerProvider;
+import com.intellij.psi.NavigatablePsiElement;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -47,7 +48,7 @@ public class WicketMarkupLineMarkerProvider implements LineMarkerProvider {
                 if (WicketForgeFacet.hasFacetOrIsFromLibrary(file)) {
                     final PsiClass psiClass = ClassIndex.getAssociatedClass(file);
                     if (psiClass != null && WicketPsiUtil.isWicketComponentWithAssociatedMarkup(psiClass)) {
-                        return NavigableLineMarkerInfo.create(element, new PsiElement[]{psiClass}, Constants.TOJAVAREF, null);
+                        return NavigableLineMarkerInfo.create(element, new NavigatablePsiElement[]{psiClass}, Constants.TOJAVAREF);
                     }
                 }
             }
