@@ -25,6 +25,7 @@ import com.intellij.openapi.ui.popup.PopupChooserBuilder;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.ui.awt.RelativePoint;
+import com.intellij.ui.components.JBList;
 import com.intellij.util.Function;
 import com.intellij.util.PsiNavigateUtil;
 import org.jetbrains.annotations.NotNull;
@@ -74,7 +75,7 @@ class NavigableLineMarkerInfo {
         if (targets.length == 1) {
             PsiNavigateUtil.navigate(targets[0]);
         } else {
-            final JList list = new JList(targets);
+            final JList list = new JBList(targets);
             list.setCellRenderer(listRenderer);
 
             final PopupChooserBuilder builder = new PopupChooserBuilder(list);
