@@ -24,6 +24,8 @@ import com.intellij.psi.xml.XmlDocument;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.psi.xml.XmlToken;
 import com.intellij.psi.xml.XmlTokenType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
 import wicketforge.facet.WicketForgeFacet;
 import wicketforge.search.ClassIndex;
@@ -35,7 +37,8 @@ import java.util.List;
 /**
  */
 public class WicketMarkupLineMarkerProvider implements LineMarkerProvider {
-    public LineMarkerInfo getLineMarkerInfo(PsiElement element) {
+    @Nullable
+    public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement element) {
         // look for root tag
         if (element instanceof XmlToken && ((XmlToken) element).getTokenType() == XmlTokenType.XML_START_TAG_START &&
                 element.getParent() instanceof XmlTag && element.getParent().getParent() instanceof XmlDocument) {
@@ -52,6 +55,6 @@ public class WicketMarkupLineMarkerProvider implements LineMarkerProvider {
         return null;
     }
 
-    public void collectSlowLineMarkers(List<PsiElement> elements, Collection<LineMarkerInfo> result) {
+    public void collectSlowLineMarkers(@NotNull List<PsiElement> elements, @NotNull Collection<LineMarkerInfo> result) {
     }
 }

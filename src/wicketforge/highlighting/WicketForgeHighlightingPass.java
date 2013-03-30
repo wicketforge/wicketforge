@@ -56,7 +56,7 @@ public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
     }
 
     @Override
-    public void doCollectInformation(ProgressIndicator progress) {
+    public void doCollectInformation(@NotNull ProgressIndicator progress) {
         if (!WicketForgeFacet.hasFacetOrIsFromLibrary(file)) {
             return;
         }
@@ -128,6 +128,7 @@ public class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
 
     @Override
     public void doApplyInformationToEditor() {
+        assert myDocument != null; // editor.getDocument() is notnull
         UpdateHighlightersUtil.setHighlightersToEditor(myProject, myDocument, startOffset, endOffset, highlights, getColorsScheme(), getId());
     }
 

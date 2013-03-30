@@ -90,8 +90,9 @@ public abstract class WicketClassBaseAction extends CreateElementActionBase {
                             public void run() {
                                 try {
                                     PsiClass clazz = (PsiClass) psiElements[0];
-                                    if (extendingClass != null) {
-                                        clazz.getExtendsList().add(extendingClass);
+                                    PsiReferenceList referenceList = clazz.getExtendsList();
+                                    if (referenceList != null) {
+                                        referenceList.add(extendingClass);
                                     }
                                     /*
                                     if (WicketPsiUtil.isWicketPanel(clazz)) {
@@ -105,8 +106,7 @@ public abstract class WicketClassBaseAction extends CreateElementActionBase {
                                     if (hasMarkup) {
                                         WicketFileUtil.createFileFromTemplate(WicketFilenameUtil.getMarkupFilename(clazz), markupDirectory, templateName);
                                     }
-                                }
-                                catch (IncorrectOperationException e) {
+                                } catch (IncorrectOperationException e) {
                                     e.printStackTrace();
                                 }
                             }
