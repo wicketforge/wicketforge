@@ -13,7 +13,8 @@
         ]]>
     </description>
     <vendor url="http://code.google.com/p/wicketforge" logo="/icons/wicket.png">Minas Manthos</vendor>
-    <idea-version since-build="123.72"/>
+    <!-- 129.161 -> 12.1 -->
+    <idea-version since-build="129.161"/>
     <depends>com.intellij.properties</depends>
     <change-notes><![CDATA[See <a href="http://code.google.com/p/wicketforge/wiki/ChangeNotes">change notes</a>.]]></change-notes>
     <extensions defaultExtensionNs="com.intellij">
@@ -32,7 +33,7 @@
         <completion.contributor language="HTML" implementationClass="wicketforge.completion.WicketTagAttributeCompletionContributor"/>
 
         <codeInsight.lineMarkerProvider language="JAVA" implementationClass="wicketforge.codeInsight.WicketClassLineMarkerProvider"/>
-        <codeInsight.lineMarkerProvider language="HTML" implementationClass="wicketforge.codeInsight.WicketMarkupLineMarkerProvider"/>        
+        <codeInsight.lineMarkerProvider language="HTML" implementationClass="wicketforge.codeInsight.WicketMarkupLineMarkerProvider"/>
 
         <colorSettingsPage implementation="wicketforge.highlighting.WicketForgeColorSettingsPage"/>
 
