@@ -19,7 +19,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.JavaConstantExpressionEvaluator;
-import com.intellij.psi.search.ProjectAndLibrariesScope;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtil;
@@ -153,13 +153,13 @@ public final class WicketPsiUtil {
     @Nullable
     public static PsiClass findWicketApplicationClass(@NotNull Project project) {
         PsiClass wicketApplicationClass =
-            JavaPsiFacade.getInstance(project).findClass(Constants.WICKET_APPLICATION, new ProjectAndLibrariesScope(project));
+            JavaPsiFacade.getInstance(project).findClass(Constants.WICKET_APPLICATION, GlobalSearchScope.allScope(project));
 
         if (wicketApplicationClass == null) {
             return null;
         }
 
-        Query<PsiClass> query = ClassInheritorsSearch.search(wicketApplicationClass, new ProjectAndLibrariesScope(project), true);
+        Query<PsiClass> query = ClassInheritorsSearch.search(wicketApplicationClass, GlobalSearchScope.allScope(project), true);
         Collection<PsiClass> matches = query.findAll();
         if (matches.isEmpty()) {
             return null;
