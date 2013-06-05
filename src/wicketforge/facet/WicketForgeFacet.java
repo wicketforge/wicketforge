@@ -21,8 +21,6 @@ import com.intellij.facet.FacetType;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectFileIndex;
-import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.pointers.VirtualFilePointer;
@@ -34,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
 import wicketforge.search.WicketSearchScope;
+import wicketforge.util.WicketFileUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,30 +102,7 @@ public class WicketForgeFacet extends Facet<WicketForgeFacetConfiguration> {
                     return getInstance(module) != null;
                 }
                 // else check if file from lib
-                return isFileFromLibrary(vf, project);
-            }
-        }
-        return false;
-    }
-
-    /**
-     * @param vf
-     * @return true if file is from library
-     */
-    private static boolean isFileFromLibrary(@NotNull VirtualFile vf, @NotNull Project project) {
-        ProjectFileIndex projectFileIndex = ProjectRootManager.getInstance(project).getFileIndex();
-        return projectFileIndex.isInLibrarySource(vf) || projectFileIndex.isInLibraryClasses(vf);
-    }
-
-    /**
-     * @param element
-     * @return true if element is from library
-     */
-    public static boolean isFromLibrary(@Nullable PsiElement element) {
-        if (element != null) {
-            VirtualFile vf = PsiUtil.getVirtualFile(element);
-            if (vf != null) {
-                return isFileFromLibrary(vf, element.getProject());
+                return WicketFileUtil.isInLibrary(vf, project);
             }
         }
         return false;

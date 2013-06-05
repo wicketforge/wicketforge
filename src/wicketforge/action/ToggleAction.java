@@ -108,7 +108,7 @@ public class ToggleAction extends AnAction {
             if (markupFile == null) {
                 // no markup file found -> ask to create one
                 final Module module = ModuleUtil.findModuleForPsiElement(psiFile);
-                if (module != null && !WicketForgeFacet.isFromLibrary(psiClass)) {
+                if (module != null && !WicketPsiUtil.isInLibrary(psiClass)) {
                     markupFile = createMarkup(module, psiFile, psiClass);
                     if (markupFile == null) { // cancel
                         return;

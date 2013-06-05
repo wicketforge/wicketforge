@@ -27,6 +27,8 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.roots.ProjectFileIndex;
+import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.pointers.VirtualFilePointer;
@@ -145,5 +147,14 @@ public final class WicketFileUtil {
         } catch (Exception e) {
             throw new RuntimeException("Unable to create template for '" + fileName + "'", e);
         }
+    }
+
+    /**
+     * @param vf
+     * @return true if file is in library
+     */
+    public static boolean isInLibrary(@NotNull VirtualFile vf, @NotNull Project project) {
+        ProjectFileIndex projectFileIndex = ProjectRootManager.getInstance(project).getFileIndex();
+        return projectFileIndex.isInLibrarySource(vf) || projectFileIndex.isInLibraryClasses(vf);
     }
 }

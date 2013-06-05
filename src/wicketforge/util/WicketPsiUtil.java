@@ -16,11 +16,13 @@
 package wicketforge.util;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.JavaConstantExpressionEvaluator;
 import com.intellij.psi.search.ProjectAndLibrariesScope;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.Query;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -199,5 +201,19 @@ public final class WicketPsiUtil {
     public static String getWicketIdFromExpression(@NotNull PsiExpression expression) {
         Object object = JavaConstantExpressionEvaluator.computeConstantExpression(expression, false);
         return object instanceof String ? (String) object : null;
+    }
+
+    /**
+     * @param element
+     * @return true if element is in library
+     */
+    public static boolean isInLibrary(@Nullable PsiElement element) {
+        if (element != null) {
+            VirtualFile vf = PsiUtil.getVirtualFile(element);
+            if (vf != null) {
+                return WicketFileUtil.isInLibrary(vf, element.getProject());
+            }
+        }
+        return false;
     }
 }

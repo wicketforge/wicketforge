@@ -25,6 +25,7 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.facet.WicketForgeFacet;
 import wicketforge.util.WicketFileUtil;
+import wicketforge.util.WicketPsiUtil;
 
 /**
  * AddMarkupIntention
@@ -54,7 +55,7 @@ abstract class AddMarkupIntention implements IntentionAction {
             return false;
         }
 
-        if (WicketForgeFacet.isFromLibrary(element)) {
+        if (WicketPsiUtil.isInLibrary(element)) {
             return false;
         }
 
