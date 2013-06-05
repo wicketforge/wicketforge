@@ -22,6 +22,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.ProjectScope;
 import com.intellij.psi.util.PsiUtilCore;
 import com.intellij.util.indexing.*;
 import com.intellij.util.io.EnumeratorStringDescriptor;
@@ -29,6 +30,7 @@ import com.intellij.util.io.KeyDescriptor;
 import com.intellij.util.messages.MessageBus;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.facet.WicketForgeFacetConfiguration;
+import wicketforge.util.WicketPsiUtil;
 
 import java.util.*;
 
@@ -90,11 +92,18 @@ abstract class WicketResourceIndexExtension extends ScalarIndexExtension<String>
         if (name == null) {
             return PsiFile.EMPTY_ARRAY;
         }
-        Module module = ModuleUtil.findModuleForPsiElement(psiClass);
-        if (module == null) {
-            return PsiFile.EMPTY_ARRAY;
+
+        GlobalSearchScope scope;
+        if (WicketPsiUtil.isInLibrary(psiClass)) {
+            scope = ProjectScope.getLibrariesScope(psiClass.getProject());
+        } else {
+            Module module = ModuleUtil.findModuleForPsiElement(psiClass);
+            if (module == null) {
+                return PsiFile.EMPTY_ARRAY;
+            }
+            scope = WicketSearchScope.resourcesInModuleWithDependenciesAndLibraries(module);
         }
-        GlobalSearchScope scope = WicketSearchScope.resourcesInModuleWithDependenciesAndLibraries(module);
+
         final Collection<VirtualFile> files = FileBasedIndex.getInstance().getContainingFiles(indexId, name, scope);
         if (all) {
             files.addAll(FileBasedIndex.getInstance().getContainingFiles(indexId, name + LOCALIZEDFILE_INDEXMARKER, scope));

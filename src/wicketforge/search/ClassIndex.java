@@ -23,8 +23,11 @@ import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.compiled.ClsClassImpl;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.ProjectScope;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import wicketforge.util.WicketPsiUtil;
 
 public class ClassIndex {
     private ClassIndex() {
@@ -48,11 +51,19 @@ public class ClassIndex {
         if (resourceInfo == null) {
             return null;
         }
-        Module module = ModuleUtil.findModuleForPsiElement(psiFile);
-        if (module == null) {
-            return null;
+
+        GlobalSearchScope scope;
+        if (WicketPsiUtil.isInLibrary(psiFile)) {
+            scope = ProjectScope.getLibrariesScope(project);
+        } else {
+            Module module = ModuleUtil.findModuleForPsiElement(psiFile);
+            if (module == null) {
+                return null;
+            }
+            scope = WicketSearchScope.classInModuleWithDependenciesAndLibraries(module);
         }
-        PsiClass psiClass = JavaPsiFacade.getInstance(project).findClass(resourceInfo.qualifiedName, WicketSearchScope.classInModuleWithDependenciesAndLibraries(module));
+
+        PsiClass psiClass = JavaPsiFacade.getInstance(project).findClass(resourceInfo.qualifiedName, scope);
         if (psiClass instanceof ClsClassImpl) {
             PsiClass sourceMirrorClass = ((ClsClassImpl) psiClass).getSourceMirrorClass();
             if (sourceMirrorClass != null) {
