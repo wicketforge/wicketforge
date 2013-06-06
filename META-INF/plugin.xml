@@ -2,8 +2,8 @@
 <idea-plugin version="2">
     <id>WicketForge</id>
     <name>WicketForge</name>
-    <!--<version>3.0.0</version>-->
-    <version>3.x-SNAPSHOT</version>
+    <version>3.0.0</version>
+    <!--<version>3.x-SNAPSHOT</version>-->
     <description>
         <![CDATA[
         <p>WicketForge assists developers creating <a href="http://wicket.apache.org/">Wicket</a> applications.</p>
