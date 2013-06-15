@@ -22,12 +22,16 @@ import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
+import com.intellij.util.indexing.FileContent;
 import com.intellij.util.indexing.ID;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.util.xml.NanoXmlUtil;
 import com.intellij.util.xml.XmlFileHeader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collections;
+import java.util.Map;
 
 public class PropertiesIndex extends WicketResourceIndexExtension {
     private static final ID<String, Void> NAME = ID.create("WicketPropertiesIndex");
@@ -45,17 +49,20 @@ public class PropertiesIndex extends WicketResourceIndexExtension {
     @Override
     public boolean acceptInput(VirtualFile file) {
         FileType fileType = file.getFileType();
-        if (StdFileTypes.PROPERTIES.equals(fileType)) {
-            return true;
-        }
-        if (StdFileTypes.XML.equals(fileType)) {
-            XmlFileHeader fileHeader = NanoXmlUtil.parseHeader(file);
-            //noinspection ConstantConditions
-            if (fileHeader != null && "properties".equals(fileHeader.getRootTagLocalName())) {
-                return true;
+        return StdFileTypes.PROPERTIES.equals(fileType) || StdFileTypes.XML.equals(fileType);
+    }
+
+    @NotNull
+    @Override
+    public Map<String, Void> map(FileContent inputData) {
+        if (StdFileTypes.XML.equals(inputData.getFileType())) {
+            // check if its a properties xml
+            XmlFileHeader fileHeader = NanoXmlUtil.parseHeader(inputData.getFile());
+            if (!"properties".equals(fileHeader.getRootTagLocalName())) {
+                return Collections.emptyMap(); // if not, nothing to map here
             }
         }
-        return false;
+        return super.map(inputData);
     }
 
     /**
