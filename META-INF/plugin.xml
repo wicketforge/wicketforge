@@ -1,5 +1,5 @@
 <!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
-<idea-plugin version="2">
+<idea-plugin version="2" url="http://code.google.com/p/wicketforge/">
     <id>WicketForge</id>
     <name>WicketForge</name>
     <!--<version>3.0.1</version>-->
@@ -7,12 +7,11 @@
     <description>
         <![CDATA[
         <p>WicketForge assists developers creating <a href="http://wicket.apache.org/">Wicket</a> applications.</p>
-        <p>Homepage: <a href="http://code.google.com/p/wicketforge">http://code.google.com/p/wicketforge</a></p>
         <p/>
         <p>See <a href="http://code.google.com/p/wicketforge/wiki/Introduction">Wiki</a> for features and usage instructions.</p>
         ]]>
     </description>
-    <vendor url="http://code.google.com/p/wicketforge" logo="/icons/wicket.png">Minas Manthos</vendor>
+    <vendor logo="/icons/wicket.png">Minas Manthos</vendor>
     <!-- 129.161 -> 12.1 -->
     <idea-version since-build="129.161"/>
     <depends>com.intellij.properties</depends>
