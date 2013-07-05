@@ -30,10 +30,15 @@ public final class ClassWicketIdItem implements ItemPresentation {
     private String wicketId;
     private List<ClassWicketIdNewComponentItem> newComponentItems;
     private List<ClassWicketIdItem> children;
+    private ClassWicketIdItem parent;
 
-    ClassWicketIdItem(@NotNull String wicketId) {
+    ClassWicketIdItem(@NotNull String wicketId, @Nullable ClassWicketIdItem parent) {
         this.wicketId = wicketId;
         this.newComponentItems = new SmartList<ClassWicketIdNewComponentItem>();
+        if (parent != null) {
+            this.parent = parent;
+            parent.addChild(this);
+        }
     }
 
     @Nullable
@@ -48,7 +53,11 @@ public final class ClassWicketIdItem implements ItemPresentation {
         return null;
     }
 
-    void addChild(@NotNull ClassWicketIdItem child) {
+    boolean contains(@NotNull ClassWicketIdNewComponentItem newComponentItem) {
+        return newComponentItems.contains(newComponentItem) || (parent != null && parent.contains(newComponentItem));
+    }
+
+    private void addChild(@NotNull ClassWicketIdItem child) {
         if (children == null) {
             children = new ArrayList<ClassWicketIdItem>();
         }

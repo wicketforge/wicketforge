@@ -33,7 +33,6 @@ public class ClassWicketIdHierarchy {
     private static final Logger LOG = Logger.getInstance("#wicketforge.psi.hierarchy.ClassWicketIdHierarchy");
 
     private Map<String, ClassWicketIdItem> wicketIdPathMap;
-    private ClassWicketIdItem root;
 
     @NotNull
     public static ClassWicketIdHierarchy create(@NotNull PsiClass psiClass) {
@@ -42,7 +41,8 @@ public class ClassWicketIdHierarchy {
 
     private ClassWicketIdHierarchy(@NotNull final PsiClass psiClass) {
         this.wicketIdPathMap = new HashMap<String, ClassWicketIdItem>();
-        this.root = new ClassWicketIdItem("");
+
+        ClassWicketIdItem root = new ClassWicketIdItem("", null);
         this.wicketIdPathMap.put("", root);
 
         ClassWicketIdReferences classWicketIdReferences = ClassWicketIdReferences.build(psiClass);
@@ -71,8 +71,7 @@ public class ClassWicketIdHierarchy {
                     continue;
                 }
                 ClassWicketIdNewComponentItem newComponentItem = classWicketIdReferences.getNewComponentItem(newExpression);
-                if (newComponentItem != null) {
-
+                if (newComponentItem != null && !parent.contains(newComponentItem)) {
                     int length = path.length();
                     try {
                         path.append(Constants.HIERARCHYSEPARATOR).append(newComponentItem.getWicketId());
@@ -111,8 +110,7 @@ public class ClassWicketIdHierarchy {
     private ClassWicketIdItem findOrCreateChild(@NotNull StringBuilder path, @NotNull ClassWicketIdItem parent, @NotNull String wicketId) {
         ClassWicketIdItem child = parent.findChild(wicketId);
         if (child == null) {
-            child = new ClassWicketIdItem(wicketId);
-            parent.addChild(child);
+            child = new ClassWicketIdItem(wicketId, parent);
             wicketIdPathMap.put(path.toString(), child);
         }
         return child;
