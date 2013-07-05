@@ -26,7 +26,9 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.pointers.VirtualFilePointer;
+import com.intellij.psi.PsiFile;
 import com.intellij.util.SmartList;
+import com.intellij.util.indexing.FileContent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.facet.WicketForgeFacet;
@@ -43,29 +45,70 @@ final class ResourceInfo {
     public final String locale;
 
     private ResourceInfo(@Nullable String packageName, @NotNull String className, @Nullable String locale) {
-        this.qualifiedName = packageName == null ? className : packageName + '.' + className;
+        this.qualifiedName = packageName == null ? className : packageName + '.' + className; // currently we only need full qualified name
         this.locale = locale;
     }
 
+    /**
+     * get ResourceInfo from PsiFile
+     */
     @Nullable
-    public static ResourceInfo from(@NotNull VirtualFile file, @NotNull Project project) {
+    public static ResourceInfo from(@NotNull PsiFile file) {
         FileType fileType = file.getFileType();
-        if (StdFileTypes.HTML.equals(file.getFileType())) {
-            return from(file, project, FilenameConstants.MARKUP_EXTENSIONS);
+        if (StdFileTypes.HTML.equals(fileType)) {
+            return fromMarkup(file.getVirtualFile(), file.getProject(), file.getText());
         } else if (StdFileTypes.PROPERTIES.equals(fileType) || StdFileTypes.XML.equals(fileType)) {
-            return from(file, project, FilenameConstants.PROPERTIES_EXTENSIONS);
+            return fromProperties(file.getVirtualFile(), file.getProject());
+        }
+        return null;
+    }
+
+    /**
+     * get ResourceInfo from FileContent
+     */
+    @Nullable
+    public static ResourceInfo from(@NotNull FileContent fileContent) {
+        FileType fileType = fileContent.getFileType();
+        if (StdFileTypes.HTML.equals(fileType)) {
+            return fromMarkup(fileContent.getFile(), fileContent.getProject(), fileContent.getContentAsText().toString());
+        } else if (StdFileTypes.PROPERTIES.equals(fileType) || StdFileTypes.XML.equals(fileType)) {
+            return fromProperties(fileContent.getFile(), fileContent.getProject());
         }
         return null;
     }
 
     @Nullable
-    private static ResourceInfo from(@NotNull VirtualFile file, @NotNull Project project, @NotNull String[] fileExtensions) {
+    private static ResourceInfo fromMarkup(@Nullable VirtualFile file, @NotNull Project project, @Nullable String content) {
+        if (file == null) {
+            return null;
+        }
+        // get classname from wicketforge-bind
+        String className = SearchUtils.getBoundClassName(content);
+        if (className != null) {
+            // extract locale
+            String locale = WicketFilenameUtil.extractLocale(WicketFilenameUtil.removeExtension(file.getName(), FilenameConstants.MARKUP_EXTENSIONS));
+            int index = className.lastIndexOf('.');
+            return new ResourceInfo(index >= 0 ? className.substring(0, index) : null, index >= 0 ? className.substring(index + 1) : className, locale);
+        }
+        return fromResource(file, project, FilenameConstants.MARKUP_EXTENSIONS);
+    }
+
+    @Nullable
+    private static ResourceInfo fromProperties(@Nullable VirtualFile file, @NotNull Project project) {
+        if (file == null) {
+            return null;
+        }
+        return fromResource(file, project, FilenameConstants.PROPERTIES_EXTENSIONS);
+    }
+
+    @Nullable
+    private static ResourceInfo fromResource(@NotNull VirtualFile file, @NotNull Project project, @NotNull String[] fileExtensions) {
         VirtualFile dir = file.getParent();
         if (dir == null || !dir.isDirectory()) {
             return null;
         }
 
-        String packageName = getPackageNameFromAdditionalResourcePaths(file, project);
+        String packageName = getPackageNameFromAdditionalResourcePaths(file, dir, project);
         if (packageName == null) {
             packageName = ProjectRootManager.getInstance(project).getFileIndex().getPackageNameByDirectory(dir);
         }
@@ -79,11 +122,7 @@ final class ResourceInfo {
     }
 
     @Nullable
-    private static String getPackageNameFromAdditionalResourcePaths(@NotNull VirtualFile file, @NotNull Project project) {
-        VirtualFile dir = file.getParent();
-        if (dir == null || !dir.isDirectory()) {
-            return null;
-        }
+    private static String getPackageNameFromAdditionalResourcePaths(@NotNull VirtualFile file, @NotNull VirtualFile dir, @NotNull Project project) {
         List<Module> modules = new SmartList<Module>();
         Module module = ModuleUtil.findModuleForFile(file, project);
         if (module != null) {

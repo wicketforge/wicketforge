@@ -18,7 +18,6 @@ package wicketforge.search;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
@@ -42,15 +41,12 @@ public class ClassIndex {
      */
     @Nullable
     public static PsiClass getAssociatedClass(@NotNull PsiFile psiFile) {
-        VirtualFile virtualFile = psiFile.getVirtualFile();
-        if (virtualFile == null) {
-            return null;
-        }
-        Project project = psiFile.getProject();
-        ResourceInfo resourceInfo = ResourceInfo.from(virtualFile, project);
+        ResourceInfo resourceInfo = ResourceInfo.from(psiFile);
         if (resourceInfo == null) {
             return null;
         }
+
+        Project project = psiFile.getProject();
 
         GlobalSearchScope scope;
         if (WicketPsiUtil.isInLibrary(psiFile)) {
