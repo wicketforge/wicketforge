@@ -130,6 +130,6 @@ class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
 
     @Nullable
     private static HighlightInfo createHighlightInfo(HighlightInfoType type, TextRange textRange) {
-        return HighlightInfo.createHighlightInfo(type, textRange, null); // deprecated in 12.1 -> need to create via builder in IDEA 13 (see http://devnet.jetbrains.com/thread/442020)
+        return HighlightInfo.newHighlightInfo(type).range(textRange).create();
     }
 }

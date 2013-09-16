@@ -100,7 +100,7 @@ public final class WicketFileUtil {
                     result.setResult(roots[0]);
                 } else {
                     PsiDirectory defaultDir = PackageUtil.findPossiblePackageDirectoryInModule(module, packageName);
-                    result.setResult(MoveClassesOrPackagesUtil.chooseSourceRoot(targetPackage, roots, defaultDir));
+                    result.setResult(MoveClassesOrPackagesUtil.chooseSourceRoot(targetPackage, new SmartList<VirtualFile>(roots), defaultDir));
                 }
             }
         }.execute().getResultObject();
