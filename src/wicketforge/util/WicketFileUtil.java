@@ -141,7 +141,7 @@ public final class WicketFileUtil {
         final FileTemplate template = FileTemplateManager.getInstance().getJ2eeTemplate(templateName);
 
         Properties props = FileTemplateManager.getInstance().getDefaultProperties();
-        props.put(Constants.PROP_WICKET_DTD, WicketVersion.getVersion(directory).getDtd());
+        props.put(Constants.PROP_WICKET_NS, WicketVersion.getVersion(directory).getNS());
         try {
             return FileTemplateUtil.createFromTemplate(template, fileName, props, directory);
         } catch (Exception e) {
