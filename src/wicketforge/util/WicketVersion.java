@@ -34,7 +34,7 @@ import java.util.List;
 enum WicketVersion {
     WICKET_1_3("http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd", FilenameConstants.EXT_XML),
     WICKET_1_4("http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd", FilenameConstants.EXT_XML),
-    WICKET_1_5("http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd", FilenameConstants.EXT_PROPERTIES_XML); // at the moment there is no 1.5 nor 6.0 dtd...
+    WICKET_1_5("http://wicket.apache.org", FilenameConstants.EXT_PROPERTIES_XML); // schema included in wickets jars (see issue 143)
 
     private String ns;
     private String xmlPropertiesFileExtension;
