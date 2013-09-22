@@ -43,8 +43,8 @@ public interface Constants {
     // intension/inspection
     public static final String INTENSION_INSPECTION_GROUPNAME = "Wicket";
 
-    // fileTemplate vars
-    public static final String PROP_WICKET_DTD = "WICKET_DTD";
+    // fileTemplate properties
+    public static final String PROP_WICKET_NS = "WICKET_NS";
 
     // icons
     public static final Icon WICKET_ICON = IconLoader.findIcon("/icons/wicket.png");
