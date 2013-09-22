@@ -12,8 +12,8 @@
         ]]>
     </description>
     <vendor logo="/icons/wicket.png">Minas Manthos</vendor>
-    <!-- 132.197 -> 13 EAP -->
-    <idea-version since-build="132.197"/>
+    <!-- 132.325 -> 13 EAP -->
+    <idea-version since-build="132.325"/>
     <depends>com.intellij.properties</depends>
     <change-notes><![CDATA[See <a href="http://code.google.com/p/wicketforge/wiki/ChangeNotes">change notes</a>.]]></change-notes>
     <extensions defaultExtensionNs="com.intellij">
