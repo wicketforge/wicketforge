@@ -15,13 +15,13 @@
  */
 package wicketforge.library;
 
-import com.intellij.framework.library.DownloadableLibraryTypeBase;
+import com.intellij.framework.library.DownloadableLibraryType;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.Constants;
 
 import java.net.URL;
 
-public class WicketLibraryType extends DownloadableLibraryTypeBase {
+public class WicketLibraryType extends DownloadableLibraryType {
 //    private static final Logger LOG = Logger.getInstance("#wicketforge.library.WicketLibraryType");
     private static final String[] DETECTIONCLASSNAMES = new String[]{Constants.WICKET_APPLICATION};
 
