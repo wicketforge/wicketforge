@@ -76,7 +76,7 @@ public final class WicketPsiUtil {
      * @return true if instance of a wicket panel
      */
     public static boolean isWicketPanel(@NotNull final PsiClass clazz) {
-        return isInheritor(clazz, Constants.WICKET_PANEL);
+        return isInheritor(clazz, Constants.WICKET_PANEL, Constants.WICKET_FORMCOMPONENTPANEL);
     }
 
     /**
