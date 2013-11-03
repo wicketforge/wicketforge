@@ -17,6 +17,7 @@ package wicketforge.psi.hierarchy;
 
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.util.ArrayUtil;
 import com.intellij.util.SmartList;
 import com.intellij.util.containers.Stack;
 import org.jetbrains.annotations.NotNull;
@@ -137,9 +138,9 @@ class ClassWicketIdReferences {
                 String methodName = method.getName();
 
                 Map<PsiElement, List<PsiNewExpression>> currentComponentMap;
-                if (("add".equals(methodName) || "addOrReplace".equals(methodName) || "autoAdd".equals(methodName) || "replace".equals(methodName)) && WicketPsiUtil.isMarkupContainer(methodCallClass)) {
+                if (ArrayUtil.contains(methodName, "add", "addOrReplace", "autoAdd", "replace", "addToBorder", "replaceInBorder") && WicketPsiUtil.isMarkupContainer(methodCallClass)) {
                     currentComponentMap = componentAddMap;
-                } else if ("replaceWith".equals(methodName) && WicketPsiUtil.isWicketComponent(methodCallClass)) {
+                } else if (ArrayUtil.contains(methodName, "replaceWith") && WicketPsiUtil.isWicketComponent(methodCallClass)) {
                     currentComponentMap = componentReplaceMap;
                 } else {
                     return;
@@ -162,7 +163,8 @@ class ClassWicketIdReferences {
                                     // this one will be our markupReference
                                     PsiClass classToCreate = resolveClassFromNewExpression((PsiNewExpression) markupReference);
                                     // just to be sure our markupReference is not one with own markup (ex: someone could add components to an instance of an inner panel, bad practice but possible)
-                                    if (classToCreate != null && !classToCreate.equals(psiClass) && WicketPsiUtil.isWicketComponentWithAssociatedMarkup(classToCreate)) {
+                                    // except borders, because they are WicketComponentWithAssociatedMarkup but add goes to BodyContainer of Border
+                                    if (classToCreate != null && !classToCreate.equals(psiClass) && WicketPsiUtil.isWicketComponentWithAssociatedMarkup(classToCreate) && !WicketPsiUtil.isWicketBorder(classToCreate)) {
                                         iterator.remove();
                                     }
                                 }

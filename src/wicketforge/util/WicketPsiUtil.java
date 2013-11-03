@@ -80,13 +80,23 @@ public final class WicketPsiUtil {
     }
 
     /**
+     * Returns true if the PsiClass is an instance of a wicket border.
+     *
+     * @param clazz PsiClass
+     * @return true if instance of a wicket border
+     */
+    public static boolean isWicketBorder(@NotNull final PsiClass clazz) {
+        return isInheritor(clazz, Constants.WICKET_BORDER);
+    }
+
+    /**
      * Returns true if the PsiClass is an instance of a wicket Page or WebMarkupContainerWithAssociatedMarkup.
      *
      * @param clazz PsiClass
      * @return true if instance of a wicket Page or WebMarkupContainerWithAssociatedMarkup
      */
     public static boolean isWicketComponentWithAssociatedMarkup(@NotNull final PsiClass clazz) {
-        return isInheritor(clazz, Constants.WICKET_PAGE, Constants.WICKET_PANEL, Constants.WICKET_FORMCOMPONENTPANEL);
+        return isInheritor(clazz, Constants.WICKET_PAGE, Constants.WICKET_PANEL, Constants.WICKET_FORMCOMPONENTPANEL, Constants.WICKET_BORDER);
     }
 
     /**
