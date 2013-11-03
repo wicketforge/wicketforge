@@ -30,6 +30,7 @@ public class WicketFileTemplateGroupFactory implements FileTemplateGroupDescript
         final FileTemplateGroupDescriptor groupDescriptor = new FileTemplateGroupDescriptor("Wicket", Constants.WICKET_ICON);
         groupDescriptor.addTemplate(new FileTemplateDescriptor(WICKET_PAGE_HTML));
         groupDescriptor.addTemplate(new FileTemplateDescriptor(WICKET_PANEL_HTML));
+        groupDescriptor.addTemplate(new FileTemplateDescriptor(WICKET_BORDER_HTML));
         groupDescriptor.addTemplate(new FileTemplateDescriptor(WICKET_PROPERTIES));
         groupDescriptor.addTemplate(new FileTemplateDescriptor(WICKET_PROPERTIES_XML));
         return groupDescriptor;
