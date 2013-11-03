@@ -19,10 +19,7 @@ import com.intellij.codeInsight.intention.IntentionManager;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
-import wicketforge.intention.AddMarkupPageIntention;
-import wicketforge.intention.AddMarkupPanelIntention;
-import wicketforge.intention.AddPropertiesIntention;
-import wicketforge.intention.AddPropertiesXMLIntention;
+import wicketforge.intention.*;
 
 /**
  *
@@ -34,10 +31,12 @@ public class WicketForgeProjectComponent implements ProjectComponent {
 
     @Override
     public void initComponent() {
-        IntentionManager.getInstance().registerIntentionAndMetaData(new AddMarkupPageIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
-        IntentionManager.getInstance().registerIntentionAndMetaData(new AddMarkupPanelIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
-        IntentionManager.getInstance().registerIntentionAndMetaData(new AddPropertiesIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
-        IntentionManager.getInstance().registerIntentionAndMetaData(new AddPropertiesXMLIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
+        IntentionManager intentionManager = IntentionManager.getInstance();
+        intentionManager.registerIntentionAndMetaData(new AddMarkupPageIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
+        intentionManager.registerIntentionAndMetaData(new AddMarkupPanelIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
+        intentionManager.registerIntentionAndMetaData(new AddMarkupBorderIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
+        intentionManager.registerIntentionAndMetaData(new AddPropertiesIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
+        intentionManager.registerIntentionAndMetaData(new AddPropertiesXMLIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
     }
 
     @Override

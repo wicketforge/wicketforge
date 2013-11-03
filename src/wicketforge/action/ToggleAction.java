@@ -139,6 +139,8 @@ public class ToggleAction extends AnAction {
             templateName = WicketTemplates.WICKET_PAGE_HTML;
         } else if (WicketPsiUtil.isWicketPanel(psiClass)) {
             templateName = WicketTemplates.WICKET_PANEL_HTML;
+        } else if (WicketPsiUtil.isWicketBorder(psiClass)) {
+            templateName = WicketTemplates.WICKET_BORDER_HTML;
         }
         if (templateName != null &&
                 Messages.showYesNoDialog(module.getProject(),
