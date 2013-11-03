@@ -16,10 +16,9 @@
 package wicketforge.action;
 
 import com.intellij.ide.structureView.StructureView;
-import com.intellij.ide.structureView.StructureViewBuilder;
 import com.intellij.ide.structureView.StructureViewModel;
+import com.intellij.ide.structureView.newStructureView.StructureViewComponent;
 import com.intellij.ide.util.FileStructurePopup;
-import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditor;
@@ -30,7 +29,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.xml.XmlFile;
-import com.intellij.ui.PlaceHolder;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.psi.hierarchy.ClassStructureTreeModel;
 import wicketforge.psi.hierarchy.MarkupStructureTreeModel;
@@ -38,8 +36,6 @@ import wicketforge.psi.hierarchy.MarkupStructureTreeModel;
 /**
  */
 public class ViewWicketStructureAction extends AnAction {
-    private static final String PLACE = "WicketViewPopup";
-
     @Override
     public void actionPerformed(AnActionEvent e) {
         DataContext dataContext = e.getDataContext();
@@ -75,30 +71,17 @@ public class ViewWicketStructureAction extends AnAction {
         if (fileEditor == null) {
             return;
         }
-        final StructureViewBuilder structureViewBuilder = fileEditor.getStructureViewBuilder();
-        if (structureViewBuilder == null) {
-            return;
-        }
-        StructureView structureView = structureViewBuilder.createStructureView(fileEditor, project);
+        StructureView structureView = new StructureViewComponent(fileEditor, viewModel, project);
 
-        FileStructurePopup popup = createPopup(editor, project, viewModel, structureView/*, PlatformDataKeys.NAVIGATABLE.getData(dataContext)*/);
+        FileStructurePopup popup = createStructureViewPopup(project, fileEditor, structureView);
         popup.setTitle(psiFile.getName());
         popup.show();
     }
 
     @NotNull
-    private static FileStructurePopup createPopup(final Editor editor, Project project, StructureViewModel model, StructureView structureView/*, @Nullable Navigatable navigatable*/) {
-        if (model instanceof PlaceHolder) {
-            ((PlaceHolder) model).setPlace(PLACE);
-        }
-        return createStructureViewPopup(model, editor, project, structureView/*, navigatable*/);
+    private static FileStructurePopup createStructureViewPopup(@NotNull Project project, @NotNull FileEditor fileEditor, @NotNull StructureView structureView) {
+        return new FileStructurePopup(project, fileEditor, structureView, true);
     }
-
-    @NotNull
-    private static FileStructurePopup createStructureViewPopup(final StructureViewModel structureViewModel, final Editor editor, final Project project, final @NotNull Disposable auxDisposable/*, @Nullable final Navigatable navigatable*/) {
-        return new FileStructurePopup(structureViewModel, editor, project, auxDisposable, true);
-    }
-
 
     @Override
     public void update(AnActionEvent e) {
