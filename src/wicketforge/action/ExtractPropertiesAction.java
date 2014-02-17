@@ -31,10 +31,7 @@ import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Computable;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -71,28 +68,36 @@ public class ExtractPropertiesAction extends EditorAction {
             if (offset <= 0) {
                 return;
             }
-            PsiElement psiElement = psiFile.findElementAt(offset);
+            final PsiElement psiElement = psiFile.findElementAt(offset);
             if (psiElement == null) {
                 return;
             }
+
             final PsiClass psiClass;
+            String selectedText = null;
             if (StdFileTypes.JAVA.equals(psiFile.getFileType())) {
                 psiClass = WicketPsiUtil.getParentWicketClass(psiElement);
+                // text to extract from String
+                if (psiElement.getParent() instanceof PsiLiteralExpression) {
+                    selectedText = (String) ((PsiLiteralExpression) psiElement.getParent()).getValue();
+                }
+                if (selectedText == null) {
+                    Messages.showErrorDialog(project, "No string to extract", "Extract Text");
+                    return;
+                }
             } else if (StdFileTypes.HTML.equals(psiFile.getFileType())) {
                 psiClass = ClassIndex.getAssociatedClass(psiFile);
+                // text to extract from selection
+                selectedText = editor.getSelectionModel().getSelectedText();
+                if (selectedText == null) {
+                    Messages.showErrorDialog(project, "No selected text to extract", "Extract Text");
+                    return;
+                }
             } else {
                 return;
             }
 
             if (psiClass == null) {
-                return;
-            }
-
-            SelectionModel selection = editor.getSelectionModel();
-
-            String selectedText = selection.getSelectedText();
-            if (selectedText == null) {
-                Messages.showErrorDialog(project, "No text was selected", "Extract Text");
                 return;
             }
 
@@ -124,8 +129,8 @@ public class ExtractPropertiesAction extends EditorAction {
                                 // add
                                 propertiesFile.addProperty(key, value);
 
-                                // replace in html with wicket:message
                                 if (psiFile instanceof XmlFile) {
+                                    // replace in html with wicket:message
                                     String startTag = String.format("<wicket:message key=\"%s\">", key);
                                     String endTag = "</wicket:message>";
                                     CaretModel caret = editor.getCaretModel();
@@ -139,8 +144,11 @@ public class ExtractPropertiesAction extends EditorAction {
                                     // move the caret to the end of the selection
                                     caret.moveToOffset(startTag.length() + end);
                                     EditorModificationUtil.insertStringAtCaret(editor, endTag);
+                                } else if (psiFile instanceof PsiJavaFile) {
+                                    // replace in java with getString(...)
+                                    final PsiExpression expression = JavaPsiFacade.getElementFactory(psiClass.getProject()).createExpressionFromText("getString(\"" + key + "\")", psiClass);
+                                    psiElement.getParent().replace(expression);
                                 }
-                                // TODO mm replace in java with getString(...) ...?
                             }
 
                             return true;
