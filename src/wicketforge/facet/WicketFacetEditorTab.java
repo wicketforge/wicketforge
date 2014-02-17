@@ -161,7 +161,7 @@ class WicketFacetEditorTab extends FacetEditorTab {
         private void doEdit(int index) {
             FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(false, true, false, false, false, false);
             fileChooserDescriptor.setHideIgnored(false);
-            VirtualFile virtualFile = FileChooser.chooseFile(editorContext.getProject(), fileChooserDescriptor, index >= 0 ? ((VirtualFilePointer) additionalPathModel.get(index)).getFile() : null);
+            VirtualFile virtualFile = FileChooser.chooseFile(fileChooserDescriptor, editorContext.getProject(), index >= 0 ? ((VirtualFilePointer) additionalPathModel.get(index)).getFile() : null);
             if (virtualFile != null) {
                 VirtualFilePointer filePointer = VirtualFilePointerManager.getInstance().create(virtualFile, wicketForgeFacet.getModule(), null);
                 if (index >= 0) {
