@@ -1,68 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <artifacts>
 
-    <artifact version="1.4.22" urlPrefix="http://repo1.maven.org/maven2/">
-        <item url="org/apache/wicket/wicket/1.4.22/wicket-1.4.22.jar">
+    <artifact version="1.4.23" urlPrefix="http://repo1.maven.org/maven2/">
+        <item url="org/apache/wicket/wicket/1.4.23/wicket-1.4.23.jar">
             <required-class fqn="org.apache.wicket.Application"/>
         </item>
-        <item url="org/apache/wicket/wicket-datetime/1.4.22/wicket-datetime-1.4.22.jar"/> <!--org.apache.wicket.datetime.DateConverter-->
-        <item url="org/apache/wicket/wicket-devutils/1.4.22/wicket-devutils-1.4.22.jar"/> <!---->
-        <item url="org/apache/wicket/wicket-extensions/1.4.22/wicket-extensions-1.4.22.jar"/> <!--org.apache.wicket.extensions.Initializer-->
-        <item url="org/apache/wicket/wicket-ioc/1.4.22/wicket-ioc-1.4.22.jar"/> <!---->
-        <item url="org/apache/wicket/wicket-spring/1.4.22/wicket-spring-1.4.22.jar"/> <!--org.apache.wicket.spring.SpringWebApplication-->
-        <item url="org/apache/wicket/wicket-velocity/1.4.22/wicket-velocity-1.4.22.jar"/> <!--org.apache.wicket.velocity.Initializer-->
-        <item url="org/apache/wicket/wicket-auth-roles/1.4.22/wicket-auth-roles-1.4.22.jar"/> <!--org.apache.wicket.authentication.AuthenticatedWebApplication-->
-        <item url="org/apache/wicket/wicket-guice/1.4.22/wicket-guice-1.4.22.jar"/> <!--org.apache.wicket.guice.GuiceComponentInjector-->
-        <item url="org/apache/wicket/wicket-jmx/1.4.22/wicket-jmx-1.4.22.jar"/> <!--org.apache.wicket.jmx.Application-->
+        <item url="org/apache/wicket/wicket-datetime/1.4.23/wicket-datetime-1.4.23.jar"/> <!--org.apache.wicket.datetime.DateConverter-->
+        <item url="org/apache/wicket/wicket-devutils/1.4.23/wicket-devutils-1.4.23.jar"/> <!---->
+        <item url="org/apache/wicket/wicket-extensions/1.4.23/wicket-extensions-1.4.23.jar"/> <!--org.apache.wicket.extensions.Initializer-->
+        <item url="org/apache/wicket/wicket-ioc/1.4.23/wicket-ioc-1.4.23.jar"/> <!---->
+        <item url="org/apache/wicket/wicket-spring/1.4.23/wicket-spring-1.4.23.jar"/> <!--org.apache.wicket.spring.SpringWebApplication-->
+        <item url="org/apache/wicket/wicket-velocity/1.4.23/wicket-velocity-1.4.23.jar"/> <!--org.apache.wicket.velocity.Initializer-->
+        <item url="org/apache/wicket/wicket-auth-roles/1.4.23/wicket-auth-roles-1.4.23.jar"/> <!--org.apache.wicket.authentication.AuthenticatedWebApplication-->
+        <item url="org/apache/wicket/wicket-guice/1.4.23/wicket-guice-1.4.23.jar"/> <!--org.apache.wicket.guice.GuiceComponentInjector-->
+        <item url="org/apache/wicket/wicket-jmx/1.4.23/wicket-jmx-1.4.23.jar"/> <!--org.apache.wicket.jmx.Application-->
         <item url="org/slf4j/slf4j-api/1.5.8/slf4j-api-1.5.8.jar" required="false">
             <required-class fqn="org.slf4j.Logger"/>
         </item>
     </artifact>
 
-    <artifact version="1.5.10" urlPrefix="http://repo1.maven.org/maven2/">
-        <item url="org/apache/wicket/wicket-core/1.5.10/wicket-core-1.5.10.jar">
+    <artifact version="1.5.11" urlPrefix="http://repo1.maven.org/maven2/">
+        <item url="org/apache/wicket/wicket-core/1.5.11/wicket-core-1.5.11.jar">
             <required-class fqn="org.apache.wicket.Application"/>
         </item>
-        <item url="org/apache/wicket/wicket-util/1.5.10/wicket-util-1.5.10.jar">
+        <item url="org/apache/wicket/wicket-util/1.5.11/wicket-util-1.5.11.jar">
             <required-class fqn="org.apache.wicket.util.IProvider"/>
         </item>
-        <item url="org/apache/wicket/wicket-request/1.5.10/wicket-request-1.5.10.jar">
+        <item url="org/apache/wicket/wicket-request/1.5.11/wicket-request-1.5.11.jar">
             <required-class fqn="org.apache.wicket.request.Request"/>
         </item>
-        <item url="org/apache/wicket/wicket-datetime/1.5.10/wicket-datetime-1.5.10.jar"/> <!--org.apache.wicket.datetime.DateConverter-->
-        <item url="org/apache/wicket/wicket-devutils/1.5.10/wicket-devutils-1.5.10.jar"/> <!---->
-        <item url="org/apache/wicket/wicket-extensions/1.5.10/wicket-extensions-1.5.10.jar"/> <!--org.apache.wicket.extensions.Initializer-->
-        <item url="org/apache/wicket/wicket-ioc/1.5.10/wicket-ioc-1.5.10.jar"/> <!---->
-        <item url="org/apache/wicket/wicket-spring/1.5.10/wicket-spring-1.5.10.jar"/> <!--org.apache.wicket.spring.SpringWebApplication-->
-        <item url="org/apache/wicket/wicket-velocity/1.5.10/wicket-velocity-1.5.10.jar"/> <!--org.apache.wicket.velocity.Initializer-->
-        <item url="org/apache/wicket/wicket-auth-roles/1.5.10/wicket-auth-roles-1.5.10.jar"/> <!--org.apache.wicket.authentication.AuthenticatedWebApplication-->
-        <item url="org/apache/wicket/wicket-guice/1.5.10/wicket-guice-1.5.10.jar"/> <!--org.apache.wicket.guice.GuiceComponentInjector-->
-        <item url="org/apache/wicket/wicket-jmx/1.5.10/wicket-jmx-1.5.10.jar"/> <!--org.apache.wicket.jmx.Application-->
+        <item url="org/apache/wicket/wicket-datetime/1.5.11/wicket-datetime-1.5.11.jar"/> <!--org.apache.wicket.datetime.DateConverter-->
+        <item url="org/apache/wicket/wicket-devutils/1.5.11/wicket-devutils-1.5.11.jar"/> <!---->
+        <item url="org/apache/wicket/wicket-extensions/1.5.11/wicket-extensions-1.5.11.jar"/> <!--org.apache.wicket.extensions.Initializer-->
+        <item url="org/apache/wicket/wicket-ioc/1.5.11/wicket-ioc-1.5.11.jar"/> <!---->
+        <item url="org/apache/wicket/wicket-spring/1.5.11/wicket-spring-1.5.11.jar"/> <!--org.apache.wicket.spring.SpringWebApplication-->
+        <item url="org/apache/wicket/wicket-velocity/1.5.11/wicket-velocity-1.5.11.jar"/> <!--org.apache.wicket.velocity.Initializer-->
+        <item url="org/apache/wicket/wicket-auth-roles/1.5.11/wicket-auth-roles-1.5.11.jar"/> <!--org.apache.wicket.authentication.AuthenticatedWebApplication-->
+        <item url="org/apache/wicket/wicket-guice/1.5.11/wicket-guice-1.5.11.jar"/> <!--org.apache.wicket.guice.GuiceComponentInjector-->
+        <item url="org/apache/wicket/wicket-jmx/1.5.11/wicket-jmx-1.5.11.jar"/> <!--org.apache.wicket.jmx.Application-->
         <item url="org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar" required="false">
             <required-class fqn="org.slf4j.Logger"/>
         </item>
     </artifact>
 
-    <artifact version="6.10.0" urlPrefix="http://repo1.maven.org/maven2/">
-        <item url="org/apache/wicket/wicket-core/6.10.0/wicket-core-6.10.0.jar">
+    <artifact version="6.13.0" urlPrefix="http://repo1.maven.org/maven2/">
+        <item url="org/apache/wicket/wicket-core/6.13.0/wicket-core-6.13.0.jar">
             <required-class fqn="org.apache.wicket.Application"/>
         </item>
-        <item url="org/apache/wicket/wicket-util/6.10.0/wicket-util-6.10.0.jar">
+        <item url="org/apache/wicket/wicket-util/6.13.0/wicket-util-6.13.0.jar">
             <required-class fqn="org.apache.wicket.util.IProvider"/>
         </item>
-        <item url="org/apache/wicket/wicket-datetime/6.10.0/wicket-datetime-6.10.0.jar"/> <!--org.apache.wicket.datetime.DateConverter-->
-        <item url="org/apache/wicket/wicket-request/6.10.0/wicket-request-6.10.0.jar">
+        <item url="org/apache/wicket/wicket-datetime/6.13.0/wicket-datetime-6.13.0.jar"/> <!--org.apache.wicket.datetime.DateConverter-->
+        <item url="org/apache/wicket/wicket-request/6.13.0/wicket-request-6.13.0.jar">
             <required-class fqn="org.apache.wicket.request.Request"/>
         </item>
-        <item url="org/apache/wicket/wicket-devutils/6.10.0/wicket-devutils-6.10.0.jar"/> <!---->
-        <item url="org/apache/wicket/wicket-extensions/6.10.0/wicket-extensions-6.10.0.jar"/> <!--org.apache.wicket.extensions.Initializer-->
-        <item url="org/apache/wicket/wicket-ioc/6.10.0/wicket-ioc-6.10.0.jar"/> <!---->
-        <item url="org/apache/wicket/wicket-cdi/6.10.0/wicket-cdi-6.10.0.jar"/> <!---->
-        <item url="org/apache/wicket/wicket-spring/6.10.0/wicket-spring-6.10.0.jar"/> <!--org.apache.wicket.spring.SpringWebApplication-->
-        <item url="org/apache/wicket/wicket-velocity/6.10.0/wicket-velocity-6.10.0.jar"/> <!--org.apache.wicket.velocity.Initializer-->
-        <item url="org/apache/wicket/wicket-auth-roles/6.10.0/wicket-auth-roles-6.10.0.jar"/> <!--org.apache.wicket.authentication.AuthenticatedWebApplication-->
-        <item url="org/apache/wicket/wicket-guice/6.10.0/wicket-guice-6.10.0.jar"/> <!--org.apache.wicket.guice.GuiceComponentInjector-->
-        <item url="org/apache/wicket/wicket-jmx/6.10.0/wicket-jmx-6.10.0.jar"/> <!--org.apache.wicket.jmx.Application-->
+        <item url="org/apache/wicket/wicket-devutils/6.13.0/wicket-devutils-6.13.0.jar"/> <!---->
+        <item url="org/apache/wicket/wicket-extensions/6.13.0/wicket-extensions-6.13.0.jar"/> <!--org.apache.wicket.extensions.Initializer-->
+        <item url="org/apache/wicket/wicket-ioc/6.13.0/wicket-ioc-6.13.0.jar"/> <!---->
+        <item url="org/apache/wicket/wicket-cdi/6.13.0/wicket-cdi-6.13.0.jar"/> <!---->
+        <item url="org/apache/wicket/wicket-spring/6.13.0/wicket-spring-6.13.0.jar"/> <!--org.apache.wicket.spring.SpringWebApplication-->
+        <item url="org/apache/wicket/wicket-velocity/6.13.0/wicket-velocity-6.13.0.jar"/> <!--org.apache.wicket.velocity.Initializer-->
+        <item url="org/apache/wicket/wicket-auth-roles/6.13.0/wicket-auth-roles-6.13.0.jar"/> <!--org.apache.wicket.authentication.AuthenticatedWebApplication-->
+        <item url="org/apache/wicket/wicket-guice/6.13.0/wicket-guice-6.13.0.jar"/> <!--org.apache.wicket.guice.GuiceComponentInjector-->
+        <item url="org/apache/wicket/wicket-jmx/6.13.0/wicket-jmx-6.13.0.jar"/> <!--org.apache.wicket.jmx.Application-->
         <item url="org/slf4j/slf4j-api/1.6.4/slf4j-api-1.6.4.jar" required="false">
             <required-class fqn="org.slf4j.Logger"/>
         </item>
