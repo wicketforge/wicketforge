@@ -16,7 +16,11 @@
 package wicketforge.psi.hierarchy;
 
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiAnonymousClass;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiExpression;
+import com.intellij.psi.PsiNewExpression;
+import com.intellij.psi.util.PsiUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
@@ -25,37 +29,36 @@ import wicketforge.util.WicketPsiUtil;
 import javax.swing.*;
 
 public final class ClassWicketIdNewComponentItem implements ItemPresentation {
-    private PsiNewExpression newExpression;
-    private PsiExpression wicketIdExpression;
-    private String wicketId;
-    private PsiClass baseClassToCreate;
+    private final PsiNewExpression newExpression;
+    private final PsiExpression wicketIdExpression;
+    private final String wicketId;
+    private final PsiClass baseClassToCreate;
 
-    private ClassWicketIdNewComponentItem() {
+    private ClassWicketIdNewComponentItem(@NotNull PsiNewExpression newExpression, @NotNull PsiExpression wicketIdExpression, @NotNull String wicketId, @NotNull PsiClass baseClassToCreate) {
+        this.newExpression = newExpression;
+        this.wicketIdExpression = wicketIdExpression;
+        this.wicketId = wicketId;
+        this.baseClassToCreate = baseClassToCreate;
     }
 
     @Nullable
     static ClassWicketIdNewComponentItem create(@NotNull PsiNewExpression newExpression) {
-        ClassWicketIdNewComponentItem result = new ClassWicketIdNewComponentItem();
-
-        result.newExpression = newExpression;
-        result.wicketIdExpression = WicketPsiUtil.getWicketIdExpressionFromArguments(newExpression);
-        if (result.wicketIdExpression == null) {
+        PsiExpression wicketIdExpression = WicketPsiUtil.getWicketIdExpressionFromArguments(newExpression);
+        if (wicketIdExpression == null) {
             return null;
         }
-        result.wicketId = WicketPsiUtil.getWicketIdFromExpression(result.wicketIdExpression);
-        if (result.wicketId == null) {
+        String wicketId = WicketPsiUtil.getWicketIdFromExpression(wicketIdExpression);
+        if (wicketId == null) {
             return null;
         }
-        PsiJavaCodeReferenceElement referenceElement = newExpression.getClassOrAnonymousClassReference();
-        if (referenceElement == null) {
+        PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated(newExpression);
+        if (classToBeCreated instanceof PsiAnonymousClass) {
+            classToBeCreated = PsiUtil.resolveClassInType(((PsiAnonymousClass) classToBeCreated).getBaseClassType());
+        }
+        if (classToBeCreated == null) {
             return null;
         }
-        PsiElement resolvedElement = referenceElement.resolve();
-        if (!(resolvedElement instanceof PsiClass)) {
-            return null;
-        }
-        result.baseClassToCreate = (PsiClass) resolvedElement;
-        return result;
+        return new ClassWicketIdNewComponentItem(newExpression, wicketIdExpression, wicketId, classToBeCreated);
     }
 
     @NotNull

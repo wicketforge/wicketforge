@@ -189,7 +189,7 @@ public final class WicketPsiUtil {
      * @param expression
      * @return PsiAnonymousClass or referenced PsiClass or null
      *
-     * This is *not* equal to PsiNewExpression.getClassOrAnonymousClassReference()  // todo check if other calls of getClassOrAnonymousClassReference should/can be replaced with this getClassToBeCreated
+     * This is *not* equal to PsiNewExpression.getClassOrAnonymousClassReference()
      */
     @Nullable
     public static PsiClass getClassToBeCreated(@NotNull PsiNewExpression expression) {
