@@ -71,7 +71,7 @@ public class ViewWicketStructureAction extends AnAction {
         if (fileEditor == null) {
             return;
         }
-        StructureView structureView = new StructureViewComponent(fileEditor, viewModel, project);
+        StructureView structureView = new StructureViewComponent(fileEditor, viewModel, project, true);
 
         FileStructurePopup popup = createStructureViewPopup(project, fileEditor, structureView);
         popup.setTitle(psiFile.getName());
