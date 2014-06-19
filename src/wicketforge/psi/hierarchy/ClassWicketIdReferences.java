@@ -161,10 +161,10 @@ class ClassWicketIdReferences {
                                 PsiElement markupReference = iterator.next();
                                 if (markupReference instanceof PsiNewExpression) { // check instanceOf,  markupReference can also be PsiClass (issue 67)
                                     // this one will be our markupReference
-                                    PsiClass classToCreate = resolveClassFromNewExpression((PsiNewExpression) markupReference);
+                                    PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated((PsiNewExpression) markupReference);
                                     // just to be sure our markupReference is not one with own markup (ex: someone could add components to an instance of an inner panel, bad practice but possible)
                                     // except borders, because they are WicketComponentWithAssociatedMarkup but add goes to BodyContainer of Border
-                                    if (classToCreate != null && !classToCreate.equals(psiClass) && WicketPsiUtil.isWicketComponentWithAssociatedMarkup(classToCreate) && !WicketPsiUtil.isWicketBorder(classToCreate)) {
+                                    if (classToBeCreated != null && !classToBeCreated.equals(psiClass) && WicketPsiUtil.isWicketComponentWithAssociatedMarkup(classToBeCreated) && !WicketPsiUtil.isWicketBorder(classToBeCreated)) {
                                         iterator.remove();
                                     }
                                 }
@@ -338,35 +338,12 @@ class ClassWicketIdReferences {
                     }
                 } else if (expression instanceof PsiNewExpression) {
                     // check if its a new wicket component
-                    PsiClass classToCreate = resolveClassFromNewExpression((PsiNewExpression) expression);
-                    if (classToCreate != null && WicketPsiUtil.isWicketComponent(classToCreate)) {
+                    PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated((PsiNewExpression) expression);
+                    if (classToBeCreated != null && WicketPsiUtil.isWicketComponent(classToBeCreated)) {
                         return new SmartList<PsiNewExpression>((PsiNewExpression) expression);
                     }
                 }
                 return null;
-            }
-
-            /**
-             * @param newExpression
-             * @return PsiAnonymousClass or referenced PsiClass or null
-             *
-             * This is *not* equal to PsiNewExpression.getClassOrAnonymousClassReference()
-             */
-            @Nullable
-            private PsiClass resolveClassFromNewExpression(@NotNull PsiNewExpression newExpression) {
-                // first check if referenced var is a anonymous class, then we have our result
-                PsiClass result = newExpression.getAnonymousClass();
-                if (result == null) {
-                    // if not anonymous -> resolve concrete class as result
-                    PsiJavaCodeReferenceElement referenceElement = newExpression.getClassReference();
-                    if (referenceElement != null) {
-                        PsiElement resolvedElement = referenceElement.resolve();
-                        if (resolvedElement != null && resolvedElement instanceof PsiClass) {
-                            result = (PsiClass) resolvedElement;
-                        }
-                    }
-                }
-                return result;
             }
 
             /**

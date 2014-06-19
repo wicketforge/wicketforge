@@ -185,14 +185,27 @@ public final class WicketPsiUtil {
         return null;
     }
 
+    /**
+     * @param expression
+     * @return PsiAnonymousClass or referenced PsiClass or null
+     *
+     * This is *not* equal to PsiNewExpression.getClassOrAnonymousClassReference()  // todo check if other calls of getClassOrAnonymousClassReference should/can be replaced with this getClassToBeCreated
+     */
     @Nullable
-    // todo mm -> check if we can deprecate this -> i think this one should be like wicketforge.psi.hierarchy.ClassWicketIdReferences -> resolveClassFromNewExpression
-    public static PsiClass getClassFromNewExpression(@NotNull PsiNewExpression expression) {
-        PsiMethod constructor = expression.resolveConstructor();
-        if (constructor == null || !constructor.getContainingFile().isPhysical()) {
-            return null;
+    public static PsiClass getClassToBeCreated(@NotNull PsiNewExpression expression) {
+        // first check if referenced var is a anonymous class, then we have our result
+        PsiClass result = expression.getAnonymousClass();
+        if (result == null) {
+            // if not anonymous -> resolve concrete class as result
+            PsiJavaCodeReferenceElement referenceElement = expression.getClassReference();
+            if (referenceElement != null) {
+                PsiElement resolvedElement = referenceElement.resolve();
+                if (resolvedElement != null && resolvedElement instanceof PsiClass) {
+                    result = (PsiClass) resolvedElement;
+                }
+            }
         }
-        return constructor.getContainingClass();
+        return result;
     }
 
     @Nullable

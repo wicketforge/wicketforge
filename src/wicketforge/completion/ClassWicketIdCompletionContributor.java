@@ -106,8 +106,8 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
             return null;
         }
 
-        PsiClass psiClass = WicketPsiUtil.getClassFromNewExpression((PsiNewExpression) parent);
+        PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated((PsiNewExpression) parent);
 
-        return psiClass != null && WicketPsiUtil.isWicketComponent(psiClass) ? (PsiNewExpression) parent : null;
+        return classToBeCreated != null && WicketPsiUtil.isWicketComponent(classToBeCreated) ? (PsiNewExpression) parent : null;
     }
 }

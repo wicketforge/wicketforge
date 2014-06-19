@@ -88,11 +88,11 @@ class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
                     @Override
                     public void visitNewExpression(PsiNewExpression expression) {
                         super.visitNewExpression(expression);
-                        PsiClass psiClass = WicketPsiUtil.getClassFromNewExpression(expression);
+                        PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated(expression);
                         // if its a component
-                        if (psiClass != null && WicketPsiUtil.isWicketComponent(psiClass)) {
+                        if (classToBeCreated != null && WicketPsiUtil.isWicketComponent(classToBeCreated)) {
                             // highlight wicketId expression (but only if its not a page)
-                            if (!WicketPsiUtil.isWicketPage(psiClass)) {
+                            if (!WicketPsiUtil.isWicketPage(classToBeCreated)) {
                                 PsiExpression wicketIdExpression = WicketPsiUtil.getWicketIdExpressionFromArguments(expression);
                                 if (wicketIdExpression != null) {
                                     // only PsiLiteralExpression are resolvable wicketIds
