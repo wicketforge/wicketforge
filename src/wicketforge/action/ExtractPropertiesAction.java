@@ -20,6 +20,7 @@ import com.intellij.lang.properties.psi.PropertiesFile;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorModificationUtil;
@@ -117,7 +118,7 @@ public class ExtractPropertiesAction extends EditorAction {
                                     Messages.showErrorDialog(project, "Could not create properties file.", "Extract Text");
                                     return false;
                                 }
-                                propertiesFile = PropertiesUtil.getPropertiesFile((PsiFile) element) ;
+                                propertiesFile = PropertiesUtil.getPropertiesFile((PsiFile) element);
                             } else if (selectedItem instanceof PropertiesFile) {
                                 // use existing properties file
                                 propertiesFile = (PropertiesFile) selectedItem;
@@ -126,29 +127,34 @@ public class ExtractPropertiesAction extends EditorAction {
                             }
 
                             if (propertiesFile != null) {
-                                // add
-                                propertiesFile.addProperty(key, value);
+                                CommandProcessor.getInstance().runUndoTransparentAction(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // add
+                                        propertiesFile.addProperty(key, value);
 
-                                if (psiFile instanceof XmlFile) {
-                                    // replace in html with wicket:message
-                                    String startTag = String.format("<wicket:message key=\"%s\">", key);
-                                    String endTag = "</wicket:message>";
-                                    CaretModel caret = editor.getCaretModel();
-                                    SelectionModel selection = editor.getSelectionModel();
-                                    int start = selection.getSelectionStart();
-                                    int end = selection.getSelectionEnd();
-                                    selection.removeSelection();
+                                        if (psiFile instanceof XmlFile) {
+                                            // replace in html with wicket:message
+                                            String startTag = String.format("<wicket:message key=\"%s\">", key);
+                                            String endTag = "</wicket:message>";
+                                            CaretModel caret = editor.getCaretModel();
+                                            SelectionModel selection = editor.getSelectionModel();
+                                            int start = selection.getSelectionStart();
+                                            int end = selection.getSelectionEnd();
+                                            selection.removeSelection();
 
-                                    caret.moveToOffset(start);
-                                    EditorModificationUtil.insertStringAtCaret(editor, startTag);
-                                    // move the caret to the end of the selection
-                                    caret.moveToOffset(startTag.length() + end);
-                                    EditorModificationUtil.insertStringAtCaret(editor, endTag);
-                                } else if (psiFile instanceof PsiJavaFile) {
-                                    // replace in java with getString(...)
-                                    final PsiExpression expression = JavaPsiFacade.getElementFactory(psiClass.getProject()).createExpressionFromText("getString(\"" + key + "\")", psiClass);
-                                    psiElement.getParent().replace(expression);
-                                }
+                                            caret.moveToOffset(start);
+                                            EditorModificationUtil.insertStringAtCaret(editor, startTag);
+                                            // move the caret to the end of the selection
+                                            caret.moveToOffset(startTag.length() + end);
+                                            EditorModificationUtil.insertStringAtCaret(editor, endTag);
+                                        } else if (psiFile instanceof PsiJavaFile) {
+                                            // replace in java with getString(...)
+                                            final PsiExpression expression = JavaPsiFacade.getElementFactory(psiClass.getProject()).createExpressionFromText("getString(\"" + key + "\")", psiClass);
+                                            psiElement.getParent().replace(expression);
+                                        }
+                                    }
+                                });
                             }
 
                             return true;
