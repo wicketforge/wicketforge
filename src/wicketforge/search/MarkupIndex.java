@@ -38,7 +38,7 @@ public class MarkupIndex extends WicketResourceIndexExtension {
     }
 
     @Override
-    public boolean acceptInput(VirtualFile file) {
+    public boolean acceptInput(@NotNull VirtualFile file) {
         return StdFileTypes.HTML.equals(file.getFileType());
     }
 

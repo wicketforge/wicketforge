@@ -88,6 +88,7 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
             return psiJavaFile.canNavigateToSource();
         }
 
+        @NotNull
         @Override
         public ItemPresentation getPresentation() {
             return psiJavaFile.getPresentation();
@@ -95,6 +96,7 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
 
         private TreeElement[] children;
 
+        @NotNull
         @Override
         public TreeElement[] getChildren() {
             if (children == null) {
@@ -140,11 +142,13 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
             return psiClass.canNavigateToSource();
         }
 
+        @NotNull
         @Override
         public ItemPresentation getPresentation() {
             return psiClass.getPresentation();
         }
 
+        @NotNull
         @Override
         public TreeElement[] getChildren() {
             if (children == null) {
@@ -195,11 +199,13 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
                 return true;
             }
 
+            @NotNull
             @Override
             public ItemPresentation getPresentation() {
                 return newComponentItem;
             }
 
+            @NotNull
             @Override
             public TreeElement[] getChildren() {
                 if (children == null) {

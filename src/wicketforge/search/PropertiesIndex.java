@@ -47,7 +47,7 @@ public class PropertiesIndex extends WicketResourceIndexExtension {
     }
 
     @Override
-    public boolean acceptInput(VirtualFile file) {
+    public boolean acceptInput(@NotNull VirtualFile file) {
         FileType fileType = file.getFileType();
         return StdFileTypes.PROPERTIES.equals(fileType) || StdFileTypes.XML.equals(fileType);
     }

@@ -85,11 +85,13 @@ public class MarkupStructureTreeModel extends TextEditorBasedStructureViewModel 
             return true;
         }
 
+        @NotNull
         @Override
         public ItemPresentation getPresentation() {
             return markupWicketIdItem;
         }
 
+        @NotNull
         @Override
         public TreeElement[] getChildren() {
             if (children == null) {

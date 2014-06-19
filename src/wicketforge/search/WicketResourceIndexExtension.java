@@ -66,11 +66,13 @@ abstract class WicketResourceIndexExtension extends ScalarIndexExtension<String>
         return this;
     }
 
+    @NotNull
     @Override
     public KeyDescriptor<String> getKeyDescriptor() {
         return keyDescriptor;
     }
 
+    @NotNull
     @Override
     public FileBasedIndex.InputFilter getInputFilter() {
         return this;
