@@ -17,6 +17,7 @@ package wicketforge.psi.hierarchy;
 
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.SmartList;
 import com.intellij.util.containers.Stack;
@@ -312,7 +313,7 @@ class ClassWicketIdReferences {
                         if (method == null) {
                             return null;
                         }
-                        PsiClass returnClass = getMethodReturnClass(method);
+                        PsiClass returnClass = PsiUtil.resolveClassInClassTypeOnly(method.getReturnType());
                         if (returnClass == null || !WicketPsiUtil.isWicketComponent(returnClass) || "get".equals(method.getName())) {
                             return null;
                         }
@@ -341,20 +342,6 @@ class ClassWicketIdReferences {
                     PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated((PsiNewExpression) expression);
                     if (classToBeCreated != null && WicketPsiUtil.isWicketComponent(classToBeCreated)) {
                         return new SmartList<PsiNewExpression>((PsiNewExpression) expression);
-                    }
-                }
-                return null;
-            }
-
-            /**
-             * @return PsiClass of method return or null
-             */
-            @Nullable
-            private PsiClass getMethodReturnClass(@Nullable PsiMethod method) {
-                if (method != null) {
-                    PsiType type = method.getReturnType();
-                    if (type instanceof PsiClassType) {
-                        return ((PsiClassType) type).resolve();
                     }
                 }
                 return null;
