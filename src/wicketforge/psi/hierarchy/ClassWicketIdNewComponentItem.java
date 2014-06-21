@@ -17,9 +17,9 @@ package wicketforge.psi.hierarchy;
 
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiAnonymousClass;
+import com.intellij.psi.PsiCallExpression;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiExpression;
-import com.intellij.psi.PsiNewExpression;
 import com.intellij.psi.util.PsiUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,21 +29,21 @@ import wicketforge.util.WicketPsiUtil;
 import javax.swing.*;
 
 public final class ClassWicketIdNewComponentItem implements ItemPresentation {
-    private final PsiNewExpression newExpression;
+    private final PsiCallExpression callExpression;
     private final PsiExpression wicketIdExpression;
     private final String wicketId;
     private final PsiClass baseClassToCreate;
 
-    private ClassWicketIdNewComponentItem(@NotNull PsiNewExpression newExpression, @NotNull PsiExpression wicketIdExpression, @NotNull String wicketId, @NotNull PsiClass baseClassToCreate) {
-        this.newExpression = newExpression;
+    private ClassWicketIdNewComponentItem(@NotNull PsiCallExpression callExpression, @NotNull PsiExpression wicketIdExpression, @NotNull String wicketId, @NotNull PsiClass baseClassToCreate) {
+        this.callExpression = callExpression;
         this.wicketIdExpression = wicketIdExpression;
         this.wicketId = wicketId;
         this.baseClassToCreate = baseClassToCreate;
     }
 
     @Nullable
-    static ClassWicketIdNewComponentItem create(@NotNull PsiNewExpression newExpression) {
-        PsiExpression wicketIdExpression = WicketPsiUtil.getWicketIdExpressionFromArguments(newExpression);
+    static ClassWicketIdNewComponentItem create(@NotNull PsiCallExpression callExpression) {
+        PsiExpression wicketIdExpression = WicketPsiUtil.getWicketIdExpressionFromArguments(callExpression);
         if (wicketIdExpression == null) {
             return null;
         }
@@ -51,19 +51,19 @@ public final class ClassWicketIdNewComponentItem implements ItemPresentation {
         if (wicketId == null) {
             return null;
         }
-        PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated(newExpression);
+        PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated(callExpression);
         if (classToBeCreated instanceof PsiAnonymousClass) {
             classToBeCreated = PsiUtil.resolveClassInType(((PsiAnonymousClass) classToBeCreated).getBaseClassType());
         }
         if (classToBeCreated == null) {
             return null;
         }
-        return new ClassWicketIdNewComponentItem(newExpression, wicketIdExpression, wicketId, classToBeCreated);
+        return new ClassWicketIdNewComponentItem(callExpression, wicketIdExpression, wicketId, classToBeCreated);
     }
 
     @NotNull
-    public PsiNewExpression getNewExpression() {
-        return newExpression;
+    public PsiCallExpression getCallExpression() {
+        return callExpression;
     }
 
     @NotNull

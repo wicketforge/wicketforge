@@ -86,19 +86,23 @@ class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
             for (PsiClass psiClass : ((PsiJavaFile) file).getClasses()) {
                 psiClass.accept(new JavaRecursiveElementVisitor() {
                     @Override
-                    public void visitNewExpression(PsiNewExpression expression) {
-                        super.visitNewExpression(expression);
-                        PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated(expression);
+                    public void visitCallExpression(PsiCallExpression callExpression) {
+                        super.visitCallExpression(callExpression);
+                        PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated(callExpression);
                         // if its a component
                         if (classToBeCreated != null && WicketPsiUtil.isWicketComponent(classToBeCreated)) {
                             // highlight wicketId expression (but only if its not a page)
                             if (!WicketPsiUtil.isWicketPage(classToBeCreated)) {
-                                PsiExpression wicketIdExpression = WicketPsiUtil.getWicketIdExpressionFromArguments(expression);
+                                PsiExpression wicketIdExpression = WicketPsiUtil.getWicketIdExpressionFromArguments(callExpression);
                                 if (wicketIdExpression != null) {
                                     // only PsiLiteralExpression are resolvable wicketIds
-                                    HighlightInfo highlightInfo = createHighlightInfo(
-                                            hasReference(wicketIdExpression, ClassWicketIdReference.class) ? WicketForgeColorSettingsPage.HIGHLIGHT_JAVAWICKETID : WicketForgeColorSettingsPage.HIGHLIGHT_JAVAWICKETID_NOTRESOLVABLE,
-                                            wicketIdExpression.getTextRange());
+                                    HighlightInfoType type;
+                                    if (hasReference(wicketIdExpression, ClassWicketIdReference.class)) {
+                                        type = WicketForgeColorSettingsPage.HIGHLIGHT_JAVAWICKETID;
+                                    } else {
+                                        type = WicketForgeColorSettingsPage.HIGHLIGHT_JAVAWICKETID_NOTRESOLVABLE;
+                                    }
+                                    HighlightInfo highlightInfo = createHighlightInfo(type, wicketIdExpression.getTextRange());
                                     if (highlightInfo != null) {
                                         workList.add(highlightInfo);
                                     }

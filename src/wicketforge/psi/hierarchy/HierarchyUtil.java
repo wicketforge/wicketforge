@@ -53,7 +53,7 @@ public final class HierarchyUtil {
             // go thru all new references
             for (Map.Entry<String, ClassWicketIdItem> entry : hierarchy.getWicketIdPathMap().entrySet()) {
                 for (ClassWicketIdNewComponentItem newComponentItem : entry.getValue().getNewComponentItems()) {
-                    TextRange textRange = newComponentItem.getNewExpression().getTextRange();
+                    TextRange textRange = newComponentItem.getCallExpression().getTextRange();
                     // if wicketId is in new-references-textRange and this is inner of current best...
                     if (textRange.contains(wicketIdTextRange) && bestTextRange.contains(textRange)) {
                         // then we have a better candidate

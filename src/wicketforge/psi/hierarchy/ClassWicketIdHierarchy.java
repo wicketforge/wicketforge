@@ -16,9 +16,9 @@
 package wicketforge.psi.hierarchy;
 
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.psi.PsiCallExpression;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiNewExpression;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
@@ -47,7 +47,7 @@ public class ClassWicketIdHierarchy {
 
         ClassWicketIdReferences classWicketIdReferences = ClassWicketIdReferences.build(psiClass);
 
-        List<PsiNewExpression> addedComponents = classWicketIdReferences.getAdded(psiClass);
+        List<PsiCallExpression> addedComponents = classWicketIdReferences.getAdded(psiClass);
         if (addedComponents != null) {
             addRecursive(classWicketIdReferences, new StringBuilder(), root, psiClass, addedComponents, 0);
         }
@@ -57,7 +57,7 @@ public class ClassWicketIdHierarchy {
                               @NotNull StringBuilder path,
                               @NotNull ClassWicketIdItem parent,
                               @NotNull PsiElement parentElement,
-                              @Nullable List<PsiNewExpression> addedComponents,
+                              @Nullable List<PsiCallExpression> addedComponents,
                               int depth) {
         if (depth++ > 50) {
             LOG.error("Deep addRecursive", path.toString());
@@ -65,12 +65,12 @@ public class ClassWicketIdHierarchy {
         }
         
         if (addedComponents != null) {
-            for (PsiNewExpression newExpression : addedComponents) {
+            for (PsiCallExpression callExpression : addedComponents) {
                 // fix issue 95: add the component to itself (no sense) but crash wicketforge
-                if (newExpression.equals(parentElement)) {
+                if (callExpression.equals(parentElement)) {
                     continue;
                 }
-                ClassWicketIdNewComponentItem newComponentItem = classWicketIdReferences.getNewComponentItem(newExpression);
+                ClassWicketIdNewComponentItem newComponentItem = classWicketIdReferences.getNewComponentItem(callExpression);
                 if (newComponentItem != null && !parent.contains(newComponentItem)) {
                     int length = path.length();
                     try {
@@ -80,7 +80,7 @@ public class ClassWicketIdHierarchy {
 
                         child.getNewComponentItems().add(newComponentItem);
 
-                        addRecursive(classWicketIdReferences, path, child, newExpression, classWicketIdReferences.getAdded(newExpression), depth);
+                        addRecursive(classWicketIdReferences, path, child, callExpression, classWicketIdReferences.getAdded(callExpression), depth);
                     } finally {
                         path.setLength(length);
                     }
@@ -91,15 +91,15 @@ public class ClassWicketIdHierarchy {
         PsiClass superClass = null;
         if (parentElement instanceof PsiClass) {
             superClass = ((PsiClass) parentElement).getSuperClass();
-        } else if (parentElement instanceof PsiNewExpression) {
-            PsiNewExpression newExpression = (PsiNewExpression) parentElement;
-            ClassWicketIdNewComponentItem newComponentItem = classWicketIdReferences.getNewComponentItem(newExpression);
+        } else if (parentElement instanceof PsiCallExpression) {
+            PsiCallExpression callExpression = (PsiCallExpression) parentElement;
+            ClassWicketIdNewComponentItem newComponentItem = classWicketIdReferences.getNewComponentItem(callExpression);
             if (newComponentItem != null) {
                 superClass = newComponentItem.getBaseClassToCreate();
             }
         }
         if (superClass != null) {
-            List<PsiNewExpression> superAddedComponents = classWicketIdReferences.getAdded(superClass);
+            List<PsiCallExpression> superAddedComponents = classWicketIdReferences.getAdded(superClass);
             if (superAddedComponents != null) {
                 addRecursive(classWicketIdReferences, path, parent, superClass, superAddedComponents, depth);
             }

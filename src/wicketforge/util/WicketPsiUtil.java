@@ -186,22 +186,26 @@ public final class WicketPsiUtil {
     }
 
     /**
-     * @param expression
+     * @param callExpression
      * @return PsiAnonymousClass or referenced PsiClass or null
      *
      * This is *not* equal to PsiNewExpression.getClassOrAnonymousClassReference()
      */
     @Nullable
-    public static PsiClass getClassToBeCreated(@NotNull PsiNewExpression expression) {
-        // first check if referenced var is a anonymous class, then we have our result
-        PsiClass result = expression.getAnonymousClass();
-        if (result == null) {
-            // if not anonymous -> resolve concrete class as result
-            PsiJavaCodeReferenceElement referenceElement = expression.getClassReference();
-            if (referenceElement != null) {
-                PsiElement resolvedElement = referenceElement.resolve();
-                if (resolvedElement != null && resolvedElement instanceof PsiClass) {
-                    result = (PsiClass) resolvedElement;
+    public static PsiClass getClassToBeCreated(@NotNull PsiCallExpression callExpression) {
+        PsiClass result = null;
+        if (callExpression instanceof PsiNewExpression) {
+            PsiNewExpression newExpression = (PsiNewExpression) callExpression;
+            // first check if referenced var is a anonymous class, then we have our result
+            result = newExpression.getAnonymousClass();
+            if (result == null) {
+                // if not anonymous -> resolve concrete class as result
+                PsiJavaCodeReferenceElement referenceElement = newExpression.getClassReference();
+                if (referenceElement != null) {
+                    PsiElement resolvedElement = referenceElement.resolve();
+                    if (resolvedElement != null && resolvedElement instanceof PsiClass) {
+                        result = (PsiClass) resolvedElement;
+                    }
                 }
             }
         }
@@ -209,7 +213,7 @@ public final class WicketPsiUtil {
     }
 
     @Nullable
-    public static PsiExpression getWicketIdExpressionFromArguments(@NotNull PsiNewExpression expression) {
+    public static PsiExpression getWicketIdExpressionFromArguments(@NotNull PsiCallExpression expression) {
         PsiExpressionList expressionList = expression.getArgumentList();
         if (expressionList != null) {
             PsiExpression[] psiExpressions = expressionList.getExpressions();

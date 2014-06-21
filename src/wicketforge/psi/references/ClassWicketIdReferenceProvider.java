@@ -32,11 +32,11 @@ public class ClassWicketIdReferenceProvider extends PsiReferenceProvider {
         PsiExpression[] expressions = expressionList.getExpressions();
         if (expressions.length > 0 && expressions[0].equals(element)) {
             if (WicketForgeFacet.hasFacetOrIsFromLibrary(element)) {
-                PsiElement parent = expressionList.getParent(); // can be PsiNewExpression or PsiAnonymousClass
-                PsiNewExpression newExpression = (PsiNewExpression) (parent instanceof PsiNewExpression ? parent : parent.getParent());
-                PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated(newExpression);
+                PsiElement parent = expressionList.getParent(); // can be PsiCallExpression or PsiAnonymousClass
+                PsiCallExpression callExpression = (PsiCallExpression) (parent instanceof PsiCallExpression ? parent : parent.getParent());
+                PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated(callExpression);
                 if (classToBeCreated != null && WicketPsiUtil.isWicketComponent(classToBeCreated) && !WicketPsiUtil.isWicketPage(classToBeCreated)) {
-                    PsiClass wicketClass = WicketPsiUtil.getParentWicketClass(newExpression);
+                    PsiClass wicketClass = WicketPsiUtil.getParentWicketClass(callExpression);
                     if (wicketClass != null && MarkupIndex.getBaseFile(wicketClass) != null) {
                         return new PsiReference[] {new ClassWicketIdReference((PsiLiteralExpression) element, wicketClass)};
                     }

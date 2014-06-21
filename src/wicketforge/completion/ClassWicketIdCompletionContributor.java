@@ -48,9 +48,9 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
                     if (psiElement instanceof PsiJavaToken) {
                         PsiExpression wicketIdExpression = getWicketIdExpression((PsiJavaToken) psiElement);
                         if (wicketIdExpression != null) {
-                            PsiNewExpression wicketNewExpression = getWicketNewExpression(wicketIdExpression);
-                            if (wicketNewExpression != null) {
-                                PsiClass psiClass = WicketPsiUtil.getParentWicketClass(wicketNewExpression);
+                            PsiCallExpression callExpression = getCallExpression(wicketIdExpression);
+                            if (callExpression != null) {
+                                PsiClass psiClass = WicketPsiUtil.getParentWicketClass(callExpression);
                                 if (psiClass != null) {
                                     PsiFile markup = MarkupIndex.getBaseFile(psiClass);
                                     if (markup != null) {
@@ -96,18 +96,18 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
     }
 
     @Nullable
-    private PsiNewExpression getWicketNewExpression(@NotNull PsiExpression wicketIdExpression) {
+    private PsiCallExpression getCallExpression(@NotNull PsiExpression wicketIdExpression) {
         PsiExpressionList expressionList = (PsiExpressionList) wicketIdExpression.getParent();
         PsiElement parent = expressionList.getParent();
         if (parent instanceof PsiAnonymousClass) {
             parent = parent.getParent();
         }
-        if (!(parent instanceof PsiNewExpression)) {
+        if (!(parent instanceof PsiCallExpression)) {
             return null;
         }
 
-        PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated((PsiNewExpression) parent);
+        PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated((PsiCallExpression) parent);
 
-        return classToBeCreated != null && WicketPsiUtil.isWicketComponent(classToBeCreated) ? (PsiNewExpression) parent : null;
+        return classToBeCreated != null && WicketPsiUtil.isWicketComponent(classToBeCreated) ? (PsiCallExpression) parent : null;
     }
 }

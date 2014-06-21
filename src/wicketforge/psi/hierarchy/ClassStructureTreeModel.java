@@ -19,10 +19,10 @@ import com.intellij.ide.structureView.StructureViewTreeElement;
 import com.intellij.ide.structureView.TextEditorBasedStructureViewModel;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiCallExpression;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiJavaFile;
-import com.intellij.psi.PsiNewExpression;
 import com.intellij.util.PsiNavigateUtil;
 import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
@@ -49,10 +49,10 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
 
     @Override
     protected boolean isSuitable(PsiElement element) {
-        if (element instanceof PsiNewExpression) {
+        if (element instanceof PsiCallExpression) {
             for (TreeElement treeElement : getRoot().getChildren()) {
                 if (treeElement instanceof ClassTreeElement) {
-                    return ((ClassTreeElement) treeElement).classWicketIdReferences.getNewComponentItem((PsiNewExpression) element) != null;
+                    return ((ClassTreeElement) treeElement).classWicketIdReferences.getNewComponentItem((PsiCallExpression) element) != null;
                 }
             }
         } else if (element instanceof PsiClass) {
@@ -153,9 +153,9 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
         public TreeElement[] getChildren() {
             if (children == null) {
                 List<TreeElement> list = new SmartList<TreeElement>();
-                List<PsiNewExpression> addedComponents = classWicketIdReferences.getAdded(psiClass);
+                List<PsiCallExpression> addedComponents = classWicketIdReferences.getAdded(psiClass);
                 if (addedComponents != null) {
-                    for (PsiNewExpression addedComponent : addedComponents) {
+                    for (PsiCallExpression addedComponent : addedComponents) {
                         list.add(new WicketIdTreeElement(addedComponent));
                     }
                 }
@@ -171,10 +171,10 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
 
         private class WicketIdTreeElement implements StructureViewTreeElement {
             private TreeElement[] children;
-            private final PsiNewExpression psiElement;
+            private final PsiCallExpression psiElement;
             private final ClassWicketIdNewComponentItem newComponentItem;
 
-            private WicketIdTreeElement(PsiNewExpression psiElement) {
+            private WicketIdTreeElement(PsiCallExpression psiElement) {
                 this.psiElement = psiElement;
                 this.newComponentItem = classWicketIdReferences.getNewComponentItem(psiElement);
             }
@@ -209,11 +209,11 @@ public class ClassStructureTreeModel extends TextEditorBasedStructureViewModel {
             @Override
             public TreeElement[] getChildren() {
                 if (children == null) {
-                    List<PsiNewExpression> addedComponents = classWicketIdReferences.getAdded(psiElement);
+                    List<PsiCallExpression> addedComponents = classWicketIdReferences.getAdded(psiElement);
                     if (addedComponents != null) {
                         children = new TreeElement[addedComponents.size()];
                         for (int i = 0, addedComponentsSize = addedComponents.size(); i < addedComponentsSize; i++) {
-                            PsiNewExpression addedComponent = addedComponents.get(i);
+                            PsiCallExpression addedComponent = addedComponents.get(i);
                             children[i] = new WicketIdTreeElement(addedComponent);
                         }
                     } else {

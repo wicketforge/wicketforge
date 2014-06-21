@@ -30,9 +30,9 @@ public class WicketReferenceContributor extends PsiReferenceContributor {
         {// java -> new Component("..." ...)
             ElementPattern<PsiLiteralExpression> pattern = StandardPatterns.or(
                     //
-                    PsiJavaPatterns.psiElement(PsiLiteralExpression.class).withParent(PsiExpressionList.class).withSuperParent(2, PsiNewExpression.class),
+                    PsiJavaPatterns.psiElement(PsiLiteralExpression.class).withParent(PsiExpressionList.class).withSuperParent(2, PsiCallExpression.class),
                     // for Anonymous create like Link's...
-                    PsiJavaPatterns.psiElement(PsiLiteralExpression.class).withParent(PsiExpressionList.class).withSuperParent(2, PsiAnonymousClass.class).withSuperParent(3, PsiNewExpression.class)
+                    PsiJavaPatterns.psiElement(PsiLiteralExpression.class).withParent(PsiExpressionList.class).withSuperParent(2, PsiAnonymousClass.class).withSuperParent(3, PsiCallExpression.class)
             );
             registrar.registerReferenceProvider(pattern, new ClassWicketIdReferenceProvider());
         }

@@ -28,30 +28,30 @@ import wicketforge.util.WicketPsiUtil;
 import java.util.*;
 
 class ClassWicketIdReferences {
-    private final Map<PsiElement, List<PsiNewExpression>> addMap;
-    private final Map<PsiNewExpression, ClassWicketIdNewComponentItem> newComponentItemMap;
+    private final Map<PsiElement, List<PsiCallExpression>> addMap;
+    private final Map<PsiCallExpression, ClassWicketIdNewComponentItem> newComponentItemMap;
 
-    private ClassWicketIdReferences(@NotNull Map<PsiElement, List<PsiNewExpression>> addMap, @NotNull Map<PsiNewExpression, ClassWicketIdNewComponentItem> newComponentItemMap) {
+    private ClassWicketIdReferences(@NotNull Map<PsiElement, List<PsiCallExpression>> addMap, @NotNull Map<PsiCallExpression, ClassWicketIdNewComponentItem> newComponentItemMap) {
         this.addMap = addMap;
         this.newComponentItemMap = newComponentItemMap;
     }
 
     /**
-     * @param psiElement PsiClass or PsiNewExpression reference from a WicketMarkup component
-     * @return List with all added wicket components (PsiNewExpression)
+     * @param psiElement PsiClass or PsiCallExpression reference from a WicketMarkup component
+     * @return List with all added wicket components (PsiCallExpression)
      */
     @Nullable
-    public List<PsiNewExpression> getAdded(@Nullable PsiElement psiElement) {
+    public List<PsiCallExpression> getAdded(@Nullable PsiElement psiElement) {
         return addMap.get(psiElement);
     }
 
     /**
-     * @param newExpression
+     * @param callExpression
      * @return
      */
     @Nullable
-    public ClassWicketIdNewComponentItem getNewComponentItem(@Nullable PsiNewExpression newExpression) {
-        return newComponentItemMap.get(newExpression);
+    public ClassWicketIdNewComponentItem getNewComponentItem(@Nullable PsiCallExpression callExpression) {
+        return newComponentItemMap.get(callExpression);
     }
 
     /**
@@ -66,8 +66,8 @@ class ClassWicketIdReferences {
     }
 
     public static ClassWicketIdReferences build(@NotNull final PsiClass psiClass, final boolean onlyThisMarkupContainer) {
-        final Map<PsiElement, List<PsiNewExpression>> componentAddMap = new HashMap<PsiElement, List<PsiNewExpression>>(); // Key: PsiClass or PsiNewExpression reference from a WicketMarkup component
-        final Map<PsiElement, List<PsiNewExpression>> componentReplaceMap = new HashMap<PsiElement, List<PsiNewExpression>>();
+        final Map<PsiElement, List<PsiCallExpression>> componentAddMap = new HashMap<PsiElement, List<PsiCallExpression>>(); // Key: PsiClass or PsiCallExpression reference from a WicketMarkup component
+        final Map<PsiElement, List<PsiCallExpression>> componentReplaceMap = new HashMap<PsiElement, List<PsiCallExpression>>();
         psiClass.accept(new JavaRecursiveElementVisitor() {
             private MarkupReferences markupReferences = new MarkupReferences();
 
@@ -138,7 +138,7 @@ class ClassWicketIdReferences {
                 }
                 String methodName = method.getName();
 
-                Map<PsiElement, List<PsiNewExpression>> currentComponentMap;
+                Map<PsiElement, List<PsiCallExpression>> currentComponentMap;
                 if (ArrayUtil.contains(methodName, "add", "addOrReplace", "autoAdd", "replace", "addToBorder", "replaceInBorder") && WicketPsiUtil.isMarkupContainer(methodCallClass)) {
                     currentComponentMap = componentAddMap;
                 } else if (ArrayUtil.contains(methodName, "replaceWith") && WicketPsiUtil.isWicketComponent(methodCallClass)) {
@@ -160,9 +160,9 @@ class ClassWicketIdReferences {
                         if (currentComponentMap != componentReplaceMap) {
                             for (Iterator<? extends PsiElement> iterator = markupReferenceList.iterator(); iterator.hasNext(); ) {
                                 PsiElement markupReference = iterator.next();
-                                if (markupReference instanceof PsiNewExpression) { // check instanceOf,  markupReference can also be PsiClass (issue 67)
+                                if (markupReference instanceof PsiCallExpression) { // check instanceOf,  markupReference can also be PsiClass (issue 67)
                                     // this one will be our markupReference
-                                    PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated((PsiNewExpression) markupReference);
+                                    PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated((PsiCallExpression) markupReference);
                                     // just to be sure our markupReference is not one with own markup (ex: someone could add components to an instance of an inner panel, bad practice but possible)
                                     // except borders, because they are WicketComponentWithAssociatedMarkup but add goes to BodyContainer of Border
                                     if (classToBeCreated != null && !classToBeCreated.equals(psiClass) && WicketPsiUtil.isWicketComponentWithAssociatedMarkup(classToBeCreated) && !WicketPsiUtil.isWicketBorder(classToBeCreated)) {
@@ -199,17 +199,17 @@ class ClassWicketIdReferences {
                 PsiExpressionList callExpressionList = callExpression.getArgumentList();
                 if (callExpressionList != null) {
                     for (PsiElement markupReference : markupReferenceList) {
-                        List<PsiNewExpression> addList = currentComponentMap.get(markupReference);
+                        List<PsiCallExpression> addList = currentComponentMap.get(markupReference);
                         for (PsiExpression callParameterExpression : callExpressionList.getExpressions()) {
                             // resolve expressions for new wicket component
-                            List<PsiNewExpression> newExpressions = resolveExpressionNewWicketComponent(callParameterExpression);
-                            if (newExpressions.size() > 0) {
+                            List<PsiCallExpression> callExpressions = resolveExpressionNewWicketComponent(callParameterExpression);
+                            if (callExpressions.size() > 0) {
                                 // and add to its
                                 if (addList == null) {
-                                    addList = newExpressions;
+                                    addList = callExpressions;
                                     currentComponentMap.put(markupReference, addList);
                                 } else {
-                                    addList.addAll(newExpressions);
+                                    addList.addAll(callExpressions);
                                 }
                             }
                         }
@@ -262,24 +262,24 @@ class ClassWicketIdReferences {
             /**
              *
              * @param expression
-             * @return referenced PsiNewExpression's (if they are Wicket Components)
+             * @return referenced PsiCallExpression's (if they are Wicket Components)
              */
             @NotNull
-            private List<PsiNewExpression> resolveExpressionNewWicketComponent(@Nullable PsiExpression expression) {
-                List<PsiNewExpression> list = new SmartList<PsiNewExpression>();
+            private List<PsiCallExpression> resolveExpressionNewWicketComponent(@Nullable PsiExpression expression) {
+                List<PsiCallExpression> list = new SmartList<PsiCallExpression>();
                 if (expression instanceof PsiConditionalExpression) {
-                    List<PsiNewExpression> newExpression = resolveExpressionNewWicketComponentInternal(((PsiConditionalExpression) expression).getThenExpression());
-                    if (newExpression != null) {
-                        list.addAll(newExpression);
+                    List<PsiCallExpression> callExpressions = resolveExpressionNewWicketComponentInternal(((PsiConditionalExpression) expression).getThenExpression());
+                    if (callExpressions != null) {
+                        list.addAll(callExpressions);
                     }
-                    newExpression = resolveExpressionNewWicketComponentInternal(((PsiConditionalExpression) expression).getElseExpression());
-                    if (newExpression != null) {
-                        list.addAll(newExpression);
+                    callExpressions = resolveExpressionNewWicketComponentInternal(((PsiConditionalExpression) expression).getElseExpression());
+                    if (callExpressions != null) {
+                        list.addAll(callExpressions);
                     }
                 } else {
-                    List<PsiNewExpression> newExpression = resolveExpressionNewWicketComponentInternal(expression);
-                    if (newExpression != null) {
-                        list.addAll(newExpression);
+                    List<PsiCallExpression> callExpressions = resolveExpressionNewWicketComponentInternal(expression);
+                    if (callExpressions != null) {
+                        list.addAll(callExpressions);
                     }
                 }
                 return list;
@@ -289,7 +289,7 @@ class ClassWicketIdReferences {
              *
              */
             @Nullable
-            private List<PsiNewExpression> resolveExpressionNewWicketComponentInternal(@Nullable PsiExpression expression) {
+            private List<PsiCallExpression> resolveExpressionNewWicketComponentInternal(@Nullable PsiExpression expression) {
                 // get new Expression/Variable from method chaining ex: new Label(...).setOutputMarkupId(true).setEnabled(true);
                 if (expression instanceof PsiMethodCallExpression) {
                     PsiMethodCallExpression methodCallExpression = null;
@@ -326,22 +326,22 @@ class ClassWicketIdReferences {
 
                 // resolve
                 if (expression instanceof PsiReference) {
-                    // if it's a reference -> find possibly newExpression from our var stack
+                    // if it's a reference -> find possibly callExpression from our var stack
                     PsiElement resolvedElement = ((PsiReference) expression).resolve();
                     if (resolvedElement instanceof PsiVariable) {
-                        List<PsiNewExpression> result = new SmartList<PsiNewExpression>();
+                        List<PsiCallExpression> result = new SmartList<PsiCallExpression>();
                         for (PsiElement element : markupReferences.get((PsiVariable) resolvedElement)) {
-                            if (element instanceof PsiNewExpression) {
-                                result.add((PsiNewExpression) element);
+                            if (element instanceof PsiCallExpression) {
+                                result.add((PsiCallExpression) element);
                             }
                         }
                         return result;
                     }
-                } else if (expression instanceof PsiNewExpression) {
+                } else if (expression instanceof PsiCallExpression) {
                     // check if its a new wicket component
-                    PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated((PsiNewExpression) expression);
+                    PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated((PsiCallExpression) expression);
                     if (classToBeCreated != null && WicketPsiUtil.isWicketComponent(classToBeCreated)) {
-                        return new SmartList<PsiNewExpression>((PsiNewExpression) expression);
+                        return new SmartList<PsiCallExpression>((PsiCallExpression) expression);
                     }
                 }
                 return null;
@@ -349,13 +349,13 @@ class ClassWicketIdReferences {
         });
 
         // merge all componentReplaceMap into componentAddMap
-        for (Map.Entry<PsiElement, List<PsiNewExpression>> entry : componentReplaceMap.entrySet()) {
-            // we need newExpression
+        for (Map.Entry<PsiElement, List<PsiCallExpression>> entry : componentReplaceMap.entrySet()) {
+            // we need callExpression
             PsiElement key = entry.getKey();
-            if (key instanceof PsiNewExpression) {
-                PsiNewExpression newExpression = (PsiNewExpression) key;
-                for (List<PsiNewExpression> list : componentAddMap.values()) {
-                    if (list.contains(newExpression)) {
+            if (key instanceof PsiCallExpression) {
+                PsiCallExpression callExpression = (PsiCallExpression) key;
+                for (List<PsiCallExpression> list : componentAddMap.values()) {
+                    if (list.contains(callExpression)) {
                         list.addAll(entry.getValue());
                     }
                 }
@@ -363,13 +363,13 @@ class ClassWicketIdReferences {
         }
 
         // put all new wicket component expressions to a list as ClassWicketIdNewComponentItem
-        Map<PsiNewExpression, ClassWicketIdNewComponentItem> newComponentItemMap = new HashMap<PsiNewExpression, ClassWicketIdNewComponentItem>();
-        for (List<PsiNewExpression> list : componentAddMap.values()) {
-            for (PsiNewExpression newExpression : list) {
-                if (!newComponentItemMap.containsKey(newExpression)) {
-                    ClassWicketIdNewComponentItem newComponentItem = ClassWicketIdNewComponentItem.create(newExpression);
+        Map<PsiCallExpression, ClassWicketIdNewComponentItem> newComponentItemMap = new HashMap<PsiCallExpression, ClassWicketIdNewComponentItem>();
+        for (List<PsiCallExpression> list : componentAddMap.values()) {
+            for (PsiCallExpression callExpression : list) {
+                if (!newComponentItemMap.containsKey(callExpression)) {
+                    ClassWicketIdNewComponentItem newComponentItem = ClassWicketIdNewComponentItem.create(callExpression);
                     if (newComponentItem != null) {
-                        newComponentItemMap.put(newExpression, newComponentItem);
+                        newComponentItemMap.put(callExpression, newComponentItem);
                     }
                 }
             }
@@ -383,10 +383,10 @@ class ClassWicketIdReferences {
         private Map<PsiVariable, List<? extends PsiElement>> variableMap = new HashMap<PsiVariable, List<? extends PsiElement>>();
 
         /**
-         * Get PsiClass or PsiNewExpression as MarkupContainer of WicketComponent from variable.
+         * Get PsiClass or PsiCallExpression as MarkupContainer of WicketComponent from variable.
          *
          * @param variable  PsiVariable
-         * @return          PsiClass, PsiNewExpression of WicketComponent or null.
+         * @return          PsiClass, PsiCallExpression of WicketComponent or null.
          */
         @NotNull
         private List<? extends PsiElement> get(@NotNull PsiVariable variable) {
@@ -395,10 +395,10 @@ class ClassWicketIdReferences {
         }
 
         /**
-         * Put assigned PsiClass or PsiNewExpression of a WicketComponent to variable into our variableMap.
+         * Put assigned PsiClass or PsiCallExpression of a WicketComponent to variable into our variableMap.
          *
          * @param variable      PsiVariable
-         * @param elements       PsiClass or PsiNewExpression
+         * @param elements       PsiClass or PsiCallExpression
          */
         private void put(@NotNull PsiVariable variable, @Nullable List<? extends PsiElement> elements) {
             if (elements == null || elements.isEmpty()) {
@@ -411,7 +411,7 @@ class ClassWicketIdReferences {
         }
 
         /**
-         * current is -> the current reference for add(...) -> PsiClass or PsiNewExpression (for anonymous classes)
+         * current is -> the current reference for add(...) -> PsiClass or PsiCallExpression (for anonymous classes)
          * @param current
          */
         private void pushCurrent(@Nullable List<? extends PsiElement> current) {
