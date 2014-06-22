@@ -116,13 +116,12 @@ class ClassWicketIdReferences {
                         return; // in this case super already done...
                     }
                 }
-                // todo mm -> check if other subclasses from AbstractRepeater need also to be handled here...
                 super.visitMethod(method);
             }
 
             @Override
             public void visitCallExpression(PsiCallExpression callExpression) {
-                // first super, so assignement adds could be resolved, ex: add(link = new Link(...)) // todo mm -> check if super of other visits should be also called first
+                // first super, so assignement adds could be resolved, ex: add(link = new Link(...))
                 super.visitCallExpression(callExpression);
 
                 if (!(callExpression instanceof PsiMethodCallExpression)) {

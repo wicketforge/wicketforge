@@ -30,7 +30,6 @@ import java.util.List;
 /**
  *
  */
-// TODO think about to remove WicketVersion and implement getNS and getXmlPropertiesFileExtension in other way...
 enum WicketVersion {
     WICKET_1_3("http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd", FilenameConstants.EXT_XML),
     WICKET_1_4("http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd", FilenameConstants.EXT_XML),
