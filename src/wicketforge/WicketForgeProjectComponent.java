@@ -32,6 +32,7 @@ public class WicketForgeProjectComponent implements ProjectComponent {
     @Override
     public void initComponent() {
         IntentionManager intentionManager = IntentionManager.getInstance();
+        intentionManager.registerIntentionAndMetaData(new AddComponentFactoryIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
         intentionManager.registerIntentionAndMetaData(new AddMarkupPageIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
         intentionManager.registerIntentionAndMetaData(new AddMarkupPanelIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);
         intentionManager.registerIntentionAndMetaData(new AddMarkupBorderIntention(), Constants.INTENSION_INSPECTION_GROUPNAME);

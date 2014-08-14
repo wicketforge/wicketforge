@@ -41,6 +41,9 @@ public interface Constants {
     public static final String WICKET_RESOURCEMODEL = "org.apache.wicket.model.ResourceModel";
     public static final String WICKET_STRINGRESOURCEMODEL = "org.apache.wicket.model.StringResourceModel";
 
+    // wicketforge annotations
+    public static final String WICKETFORGE_COMPONENT_FACTORY = "com.googlecode.wicketforge.annotations.ComponentFactory";
+
     // intension/inspection
     public static final String INTENSION_INSPECTION_GROUPNAME = "Wicket";
 

@@ -15,6 +15,7 @@
  */
 package wicketforge.util;
 
+import com.intellij.codeInsight.AnnotationUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
@@ -207,6 +208,12 @@ public final class WicketPsiUtil {
                         result = (PsiClass) resolvedElement;
                     }
                 }
+            }
+        } else if (callExpression instanceof PsiMethodCallExpression) {
+            PsiMethodCallExpression methodCallExpression = (PsiMethodCallExpression) callExpression;
+            PsiMethod psiMethod = methodCallExpression.resolveMethod();
+            if (psiMethod != null && AnnotationUtil.findAnnotation(psiMethod, Constants.WICKETFORGE_COMPONENT_FACTORY) != null) {
+                result = PsiUtil.resolveClassInClassTypeOnly(psiMethod.getReturnType());
             }
         }
         return result;

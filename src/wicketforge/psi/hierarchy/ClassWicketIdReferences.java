@@ -294,6 +294,11 @@ class ClassWicketIdReferences {
                     PsiMethodCallExpression methodCallExpression = null;
                     while (expression instanceof PsiMethodCallExpression) {
                         methodCallExpression = (PsiMethodCallExpression) expression;
+                        // check for ComponentFactory (like DateTextField.forDatePattern(...))
+                        PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated(methodCallExpression);
+                        if (classToBeCreated != null && WicketPsiUtil.isWicketComponent(classToBeCreated)) {
+                            return new SmartList<PsiCallExpression>(methodCallExpression);
+                        }
                         PsiElement element = expression.getFirstChild();
                         if (element instanceof PsiReferenceExpression) {
                             element = element.getFirstChild();
