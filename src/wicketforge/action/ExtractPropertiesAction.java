@@ -15,7 +15,7 @@
  */
 package wicketforge.action;
 
-import com.intellij.lang.properties.PropertiesUtil;
+import com.intellij.lang.properties.PropertiesImplUtil;
 import com.intellij.lang.properties.psi.PropertiesFile;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
@@ -118,7 +118,7 @@ public class ExtractPropertiesAction extends EditorAction {
                                     Messages.showErrorDialog(project, "Could not create properties file.", "Extract Text");
                                     return false;
                                 }
-                                propertiesFile = PropertiesUtil.getPropertiesFile((PsiFile) element);
+                                propertiesFile = PropertiesImplUtil.getPropertiesFile((PsiFile) element);
                             } else if (selectedItem instanceof PropertiesFile) {
                                 // use existing properties file
                                 propertiesFile = (PropertiesFile) selectedItem;

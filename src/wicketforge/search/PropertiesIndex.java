@@ -15,7 +15,7 @@
  */
 package wicketforge.search;
 
-import com.intellij.lang.properties.PropertiesUtil;
+import com.intellij.lang.properties.PropertiesImplUtil;
 import com.intellij.lang.properties.psi.PropertiesFile;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.StdFileTypes;
@@ -90,6 +90,6 @@ public class PropertiesIndex extends WicketResourceIndexExtension {
     @Nullable
     public static PropertiesFile getBaseFile(@NotNull final PsiClass psiClass) {
         PsiFile[] files = getFilesByClass(NAME, psiClass, false);
-        return files.length > 0 ? PropertiesUtil.getPropertiesFile(files[0]) : null;
+        return files.length > 0 ? PropertiesImplUtil.getPropertiesFile(files[0]) : null;
     }
 }
