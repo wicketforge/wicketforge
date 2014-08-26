@@ -30,6 +30,7 @@ import com.intellij.util.xml.XmlFileHeader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
@@ -56,9 +57,13 @@ public class PropertiesIndex extends WicketResourceIndexExtension {
     @Override
     public Map<String, Void> map(FileContent inputData) {
         if (StdFileTypes.XML.equals(inputData.getFileType())) {
-            // check if its a properties xml
-            XmlFileHeader fileHeader = NanoXmlUtil.parseHeader(inputData.getFile());
-            if (!"properties".equals(fileHeader.getRootTagLocalName())) {
+            boolean isPropertiesXml = false;
+            try {
+                XmlFileHeader fileHeader = NanoXmlUtil.parseHeaderWithException(inputData.getFile());
+                isPropertiesXml = "properties".equals(fileHeader.getRootTagLocalName());
+            } catch (IOException ignore) {
+            }
+            if (!isPropertiesXml) {
                 return Collections.emptyMap(); // if not, nothing to map here
             }
         }
