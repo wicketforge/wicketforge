@@ -8,9 +8,9 @@ Simply install latest release with IDEA's Plugin Manager.
 
 [ChangeNotes](../../wiki/Change-Notes)
 
-## Usage ##
+## Usage / Help ##
 
-See [Wiki](../../wiki) for features and usage instructions.
+See [Wiki](../../wiki) for features and usage instructions. If you have problems then raise an [Issue](../../issues) or ask for [Help](http://groups.google.com/group/wicketforge).
 
 ## License ##
 
