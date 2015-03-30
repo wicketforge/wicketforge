@@ -1,5 +1,5 @@
 <!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
-<idea-plugin version="2" url="http://code.google.com/p/wicketforge/">
+<idea-plugin version="2" url="https://github.com/minman/wicketforge">
     <id>WicketForge</id>
     <name>WicketForge</name>
     <!--<version>5.0.0.EAP-1</version>-->
@@ -8,14 +8,14 @@
         <![CDATA[
         <p>WicketForge assists developers creating <a href="http://wicket.apache.org/">Wicket</a> applications.</p>
         <p/>
-        <p>See <a href="http://code.google.com/p/wicketforge/wiki/Introduction">Wiki</a> for features and usage instructions.</p>
+        <p>See <a href="https://github.com/minman/wicketforge/wiki">Wiki</a> for features and usage instructions.</p>
         ]]>
     </description>
     <vendor logo="/icons/wicket.png">Minas Manthos</vendor>
     <!-- build 138 -> 14 EAP -->
     <idea-version since-build="138.0000"/>
     <depends>com.intellij.properties</depends>
-    <change-notes><![CDATA[See <a href="http://code.google.com/p/wicketforge/wiki/ChangeNotes">change notes</a>.]]></change-notes>
+    <change-notes><![CDATA[See <a href="https://github.com/minman/wicketforge/wiki/Change-Notes">change notes</a>.]]></change-notes>
     <extensions defaultExtensionNs="com.intellij">
         <facetType implementation="wicketforge.facet.WicketForgeFacetType"/>
         <framework.detector implementation="wicketforge.facet.WicketForgeFacetType$WicketForgeFacetDetector"/>
