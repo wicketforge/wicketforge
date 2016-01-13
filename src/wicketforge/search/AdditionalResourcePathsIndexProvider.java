@@ -25,10 +25,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.facet.WicketForgeFacet;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 public class AdditionalResourcePathsIndexProvider extends IndexableSetContributor {
+
+    private static final Set<VirtualFile> EMPTY_FILE_SET = Collections.emptySet();
+
     @NotNull
     @Override
     public Set<VirtualFile> getAdditionalProjectRootsToIndex(@Nullable Project project) {
