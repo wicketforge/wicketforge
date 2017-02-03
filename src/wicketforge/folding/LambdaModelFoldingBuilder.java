@@ -52,13 +52,14 @@ public class LambdaModelFoldingBuilder extends FoldingBuilderEx {
                         String getterStr = getterDef.getText();
                         String setterStr = setterDef.getText();
                         PsiType modelDefType = modelDef.getType();
+                        boolean isGet = getterStr.contains("::get") && getterStr.replace("::get", "/").equals(setterStr.replace("::set", "/"));
+                        boolean isBoolIs = getterStr.contains("::is") && getterStr.replace("::is", "/").equals(setterStr.replace("::set", "/"));
 
                         // First param is assignable to IModel and following two looks like getter and setter
                         if (
                                 modelDefType == null ||
                                         !PsiType.getTypeByName("org.apache.wicket.model.IModel", root.getProject(), root.getResolveScope()).isAssignableFrom(modelDefType) ||
-                                        !getterStr.contains("::get") ||
-                                        !getterStr.replace("::get", "/").equals(setterStr.replace("::set", "/"))
+                                        !(isGet || isBoolIs)
                                 ) {
                             return;
                         }
@@ -69,7 +70,8 @@ public class LambdaModelFoldingBuilder extends FoldingBuilderEx {
                                 new TextRange(getterDef.getTextRange().getStartOffset(), setterDef.getTextRange().getEndOffset()),
                                 group,
                                 expression,
-                                getterStr
+                                getterStr,
+                                isBoolIs
                         ));
                     });
         }
@@ -91,18 +93,25 @@ public class LambdaModelFoldingBuilder extends FoldingBuilderEx {
 
         final PsiMethodCallExpression expression;
         final String getterStr;
+        final boolean isBoolIs;
 
-        FoldGetSetDescriptor(@NotNull ASTNode node, @NotNull TextRange range, @Nullable FoldingGroup group, PsiMethodCallExpression expression, String getterStr) {
+        FoldGetSetDescriptor(@NotNull ASTNode node, @NotNull TextRange range, @Nullable FoldingGroup group, PsiMethodCallExpression expression, String getterStr, boolean isBoolIs) {
             super(node, range, group);
             this.expression = expression;
             this.getterStr = getterStr;
+            this.isBoolIs = isBoolIs;
         }
 
         @Nullable
         @Override
         public String getPlaceholderText() {
-            // Shorten get and set into one get/set
-            return getterStr.replace("::get", "::get/set");
+            if (isBoolIs) {
+                // Shorten is and set into one is/set
+                return getterStr.replace("::is", "::is/set");
+            } else {
+                // Shorten get and set into one get/set
+                return getterStr.replace("::get", "::get/set");
+            }
         }
     }
 }
