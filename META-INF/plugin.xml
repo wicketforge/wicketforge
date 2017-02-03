@@ -43,6 +43,8 @@
         <automaticRenamerFactory implementation="wicketforge.refactoring.MarkupRenamerFactory"/>
         <automaticRenamerFactory implementation="wicketforge.refactoring.PropertiesRenamerFactory"/>
 
+        <lang.foldingBuilder language="JAVA" implementationClass="wicketforge.folding.LambdaModelFoldingBuilder"/>
+
     </extensions>
     <application-components>
         <component>
