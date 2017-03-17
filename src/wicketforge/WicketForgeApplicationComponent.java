@@ -50,7 +50,7 @@ public class WicketForgeApplicationComponent implements ApplicationComponent, In
     }
 
     @Override
-    public Class[] getInspectionClasses() {
-        return new Class[]{MarkupWicketIdInspection.class, ClassWicketIdInspection.class, EmptySrcAttributeInspection.class};
+    public Class<?>[] getInspectionClasses() {
+        return new Class<?>[]{MarkupWicketIdInspection.class, ClassWicketIdInspection.class, EmptySrcAttributeInspection.class};
     }
 }

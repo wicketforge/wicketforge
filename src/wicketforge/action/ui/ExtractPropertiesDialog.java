@@ -46,7 +46,7 @@ public class ExtractPropertiesDialog extends DialogWrapper {
     private JPanel contentPane;
     private JTextField propertyKeyTextField;
     private JTextArea propertyValueTextArea;
-    private JComboBox propertiesFileComboBox;
+    private JComboBox<Object> propertiesFileComboBox;
     private JCheckBox chooseDifferentDestinationFolderCheckBox;
     private JPanel chooseDifferentDestinationFolderPanel;
 
@@ -110,7 +110,7 @@ public class ExtractPropertiesDialog extends DialogWrapper {
     }
 
     private void addPropertiesFilesOptions() {
-        List<Object> data = new ArrayList<Object>();
+        List<Object> data = new ArrayList<>();
 
         { // find component class properties file
             PropertiesFile propertiesFile = PropertiesIndex.getBaseFile(componentClass);
@@ -132,7 +132,7 @@ public class ExtractPropertiesDialog extends DialogWrapper {
             }
         }
 
-        propertiesFileComboBox.setModel(new DefaultComboBoxModel(data.toArray(new Object[data.size()])));
+        propertiesFileComboBox.setModel(new DefaultComboBoxModel<>(data.toArray(new Object[data.size()])));
         propertiesFileComboBox.setRenderer(new PropertiesFileComboBoxRenderer());
         propertiesFileComboBox.addActionListener(new ActionListener() {
             @Override
@@ -189,9 +189,12 @@ public class ExtractPropertiesDialog extends DialogWrapper {
         }
     }
 
-    private static class PropertiesFileComboBoxRenderer extends ColoredListCellRenderer {
+    private static class PropertiesFileComboBoxRenderer extends ColoredListCellRenderer<Object> {
+
+        private static final long serialVersionUID = -2202784914251116067L;
+
         @Override
-        protected void customizeCellRenderer(JList list, Object value, int index, boolean selected, boolean hasFocus) {
+        protected void customizeCellRenderer(@NotNull JList<?> list, Object value, int index, boolean selected, boolean hasFocus) {
             if (value instanceof PropertiesFile) {
                 append(((PropertiesFile) value).getName());
             } else if (value instanceof NewPropertiesFileInfo) {
@@ -219,7 +222,7 @@ public class ExtractPropertiesDialog extends DialogWrapper {
         }
     }
 
-    public static interface ActionRunnable {
+    public interface ActionRunnable {
         /**
          * @param selectedItem PropertiesFile or NewPropertiesFileInfo
          */

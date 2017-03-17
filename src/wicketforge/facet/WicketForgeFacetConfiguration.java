@@ -56,7 +56,7 @@ public class WicketForgeFacetConfiguration implements FacetConfiguration {
     public void readExternal(Element element) {
         Element resourceUrlsElement = element.getChild(RESOURCEURLS_TAG);
         if (resourceUrlsElement != null) {
-            List resourceUrlsChildren = resourceUrlsElement.getChildren(RESOURCEURL_TAG);
+            List<Element> resourceUrlsChildren = resourceUrlsElement.getChildren(RESOURCEURL_TAG);
             if (resourceUrlsChildren != null) {
                 for (Object child : resourceUrlsChildren) {
                     if (child instanceof Element) {

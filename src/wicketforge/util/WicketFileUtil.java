@@ -61,7 +61,7 @@ public final class WicketFileUtil {
         // alternate paths
         WicketForgeFacet wicketForgeFacet = WicketForgeFacet.getInstance(module);
         if (wicketForgeFacet != null) {
-            List<VirtualFile> alternateFiles = new SmartList<VirtualFile>();
+            List<VirtualFile> alternateFiles = new SmartList<>();
             // add all valid alternate paths to list
             for (VirtualFilePointer virtualFilePointer : wicketForgeFacet.getResourcePaths()) {
                 VirtualFile virtualFile = virtualFilePointer.getFile();
@@ -100,7 +100,7 @@ public final class WicketFileUtil {
                     result.setResult(roots[0]);
                 } else {
                     PsiDirectory defaultDir = PackageUtil.findPossiblePackageDirectoryInModule(module, packageName);
-                    result.setResult(MoveClassesOrPackagesUtil.chooseSourceRoot(targetPackage, new SmartList<VirtualFile>(roots), defaultDir));
+                    result.setResult(MoveClassesOrPackagesUtil.chooseSourceRoot(targetPackage, new SmartList<>(roots), defaultDir));
                 }
             }
         }.execute().getResultObject();
@@ -138,9 +138,9 @@ public final class WicketFileUtil {
             return null;
         }
 
-        final FileTemplate template = FileTemplateManager.getInstance().getJ2eeTemplate(templateName);
+        final FileTemplate template = FileTemplateManager.getDefaultInstance().getJ2eeTemplate(templateName);
 
-        Properties props = FileTemplateManager.getInstance().getDefaultProperties();
+        Properties props = FileTemplateManager.getDefaultInstance().getDefaultProperties();
         props.put(Constants.PROP_WICKET_NS, WicketVersion.getVersion(directory).getNS());
         try {
             return FileTemplateUtil.createFromTemplate(template, fileName, props, directory);
@@ -150,7 +150,7 @@ public final class WicketFileUtil {
     }
 
     /**
-     * @param vf
+     * @param vf file
      * @return true if file is in library
      */
     public static boolean isInLibrary(@NotNull VirtualFile vf, @NotNull Project project) {

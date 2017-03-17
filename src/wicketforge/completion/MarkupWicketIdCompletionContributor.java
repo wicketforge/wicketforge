@@ -40,7 +40,7 @@ import wicketforge.search.ClassIndex;
 public class MarkupWicketIdCompletionContributor extends CompletionContributor {
 
     @Override
-    public void fillCompletionVariants(final CompletionParameters p, final CompletionResultSet rs) {
+    public void fillCompletionVariants(@NotNull final CompletionParameters p, @NotNull final CompletionResultSet rs) {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             @Override
             public void run() {
@@ -79,7 +79,7 @@ public class MarkupWicketIdCompletionContributor extends CompletionContributor {
     }
 
     /**
-     * @param position
+     * @param position position
      * @return XmlAttributeValue if position is wicket:id attribute else null
      */
     @Nullable

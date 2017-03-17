@@ -123,7 +123,7 @@ final class ResourceInfo {
 
     @Nullable
     private static String getPackageNameFromAdditionalResourcePaths(@NotNull VirtualFile file, @NotNull VirtualFile dir, @NotNull Project project) {
-        List<Module> modules = new SmartList<Module>();
+        List<Module> modules = new SmartList<>();
         Module module = ModuleUtil.findModuleForFile(file, project);
         if (module != null) {
             // if we have a module -> only get resourcepaths from this one

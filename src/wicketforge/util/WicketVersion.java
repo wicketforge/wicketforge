@@ -66,7 +66,7 @@ enum WicketVersion {
             return WICKET_1_5;
         }
 
-        List<String> methods = new ArrayList<String>();
+        List<String> methods = new ArrayList<>();
         for (PsiMethod m : c.getMethods()) {
             methods.add(m.getName());
         }

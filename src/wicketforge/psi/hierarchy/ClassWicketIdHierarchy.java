@@ -40,7 +40,7 @@ public class ClassWicketIdHierarchy {
     }
 
     private ClassWicketIdHierarchy(@NotNull final PsiClass psiClass) {
-        this.wicketIdPathMap = new HashMap<String, ClassWicketIdItem>();
+        this.wicketIdPathMap = new HashMap<>();
 
         ClassWicketIdItem root = new ClassWicketIdItem("", null);
         this.wicketIdPathMap.put("", root);

@@ -260,7 +260,7 @@ class ClassWicketIdReferences {
 
             /**
              *
-             * @param expression
+             * @param expression {@link PsiExpression}
              * @return referenced PsiCallExpression's (if they are Wicket Components)
              */
             @NotNull

@@ -33,7 +33,7 @@ import java.util.List;
 public class WicketClassLineMarkerProvider implements LineMarkerProvider {
     @Override
     @Nullable
-    public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement element) {
+    public LineMarkerInfo<?> getLineMarkerInfo(@NotNull PsiElement element) {
         if (element instanceof PsiIdentifier && element.getParent() instanceof PsiClass) {
             if (WicketForgeFacet.hasFacetOrIsFromLibrary(element)) {
                 PsiClass psiClass = (PsiClass) element.getParent();

@@ -21,6 +21,7 @@ import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
+import com.intellij.openapi.editor.Caret;
 import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorModificationUtil;
@@ -52,7 +53,7 @@ public class ExtractPropertiesAction extends EditorAction {
 
     private static EditorActionHandler DEFAULTHANDLER = new EditorWriteActionHandler() {
         @Override
-        public void executeWriteAction(final Editor editor, DataContext dataContext) {
+        public void executeWriteAction(final Editor editor, @Nullable Caret caret, DataContext dataContext) {
             final Project project = editor.getProject();
             if (project == null) {
                 return;

@@ -36,15 +36,15 @@ class NavigableLineMarkerInfo {
     private NavigableLineMarkerInfo() {
     }
 
-    public static LineMarkerInfo create(@NotNull PsiElement element, @NotNull final NavigatablePsiElement[] targets, @NotNull Icon icon) {
-        return new LineMarkerInfo(element, element.getTextRange(), icon, Pass.UPDATE_ALL,
+    public static LineMarkerInfo<?> create(@NotNull PsiElement element, @NotNull final NavigatablePsiElement[] targets, @NotNull Icon icon) {
+        return new LineMarkerInfo<>(element, element.getTextRange(), icon, Pass.UPDATE_ALL,
                 new Function<PsiElement, String>() {
                     @Override
                     public String fun(PsiElement psiElement) {
                         return GutterIconTooltipHelper.composeText(targets, "", "{0}");
                     }
                 },
-                new GutterIconNavigationHandler() {
+                new GutterIconNavigationHandler<PsiElement>() {
                     @Override
                     public void navigate(MouseEvent e, PsiElement elt) {
                         PsiElementListNavigator.openTargets(e, targets, "Select Target", null, new DefaultPsiElementCellRenderer());

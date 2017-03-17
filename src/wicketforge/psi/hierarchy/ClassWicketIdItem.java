@@ -59,7 +59,7 @@ public final class ClassWicketIdItem implements ItemPresentation {
 
     private void addChild(@NotNull ClassWicketIdItem child) {
         if (children == null) {
-            children = new ArrayList<ClassWicketIdItem>();
+            children = new ArrayList<>();
         }
         children.add(child);
     }

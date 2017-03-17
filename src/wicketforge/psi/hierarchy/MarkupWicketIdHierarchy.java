@@ -38,7 +38,7 @@ public class MarkupWicketIdHierarchy {
     }
 
     private MarkupWicketIdHierarchy(@NotNull final XmlFile xmlFile) {
-        this.wicketIdPathMap = new HashMap<String, MarkupWicketIdItem>();
+        this.wicketIdPathMap = new HashMap<>();
         this.root = new MarkupWicketIdItem();
         this.wicketIdPathMap.put("", root);
 

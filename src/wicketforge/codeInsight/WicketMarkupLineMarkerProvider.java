@@ -40,7 +40,7 @@ import java.util.List;
 public class WicketMarkupLineMarkerProvider implements LineMarkerProvider {
     @Override
     @Nullable
-    public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement element) {
+    public LineMarkerInfo<?> getLineMarkerInfo(@NotNull PsiElement element) {
         // look for root tag
         if (element instanceof XmlToken && ((XmlToken) element).getTokenType() == XmlTokenType.XML_START_TAG_START &&
                 element.getParent() instanceof XmlTag && element.getParent().getParent() instanceof XmlDocument) {

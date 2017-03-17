@@ -27,6 +27,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlToken;
+import org.jetbrains.annotations.NotNull;
 import wicketforge.search.ClassIndex;
 import wicketforge.search.PropertiesIndex;
 import wicketforge.util.WicketPsiUtil;
@@ -36,7 +37,7 @@ import wicketforge.util.WicketPsiUtil;
 public class PropertiesCompletionContributor extends CompletionContributor {
 
     @Override
-    public void fillCompletionVariants(final CompletionParameters p, final CompletionResultSet rs) {
+    public void fillCompletionVariants(@NotNull final CompletionParameters p, @NotNull final CompletionResultSet rs) {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             @Override
             public void run() {
