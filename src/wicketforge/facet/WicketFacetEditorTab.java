@@ -66,6 +66,7 @@ class WicketFacetEditorTab extends FacetEditorTab {
         ApplicationManager.getApplication().getMessageBus().syncPublisher(WicketForgeFacetConfiguration.ADDITIONAL_PATHS_CHANGED).run();
     }
 
+    @NotNull
     @Override
     public JComponent createComponent() {
         return additionalPathPanel;
@@ -86,9 +87,12 @@ class WicketFacetEditorTab extends FacetEditorTab {
      *
      */
     private static class AdditionalPathPanel extends JPanel {
+
+        private static final long serialVersionUID = -5205009875460687996L;
+
         private final FacetEditorContext editorContext;
         private final WicketForgeFacet wicketForgeFacet;
-        private DefaultListModel additionalPathModel = new DefaultListModel(); // List of VirtualFilePointer
+        private DefaultListModel<VirtualFilePointer> additionalPathModel = new DefaultListModel<>(); // List of VirtualFilePointer
 
         public AdditionalPathPanel(@NotNull FacetEditorContext editorContext) {
             super(new BorderLayout());
@@ -97,7 +101,7 @@ class WicketFacetEditorTab extends FacetEditorTab {
 
             reset(); // fill current items into model
 
-            final JBList listComponent = new JBList(additionalPathModel);
+            final JBList<VirtualFilePointer> listComponent = new JBList<>(additionalPathModel);
             listComponent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             listComponent.setCellRenderer(new AdditionalPathListCellRenderer());
             listComponent.getEmptyText().setText("No additional paths defined");
@@ -151,9 +155,9 @@ class WicketFacetEditorTab extends FacetEditorTab {
         }
 
         public void apply() {
-            List<VirtualFilePointer> list = new SmartList<VirtualFilePointer>();
+            List<VirtualFilePointer> list = new SmartList<>();
             for (int i = 0, n = additionalPathModel.size(); i < n; i++) {
-                list.add((VirtualFilePointer) additionalPathModel.get(i));
+                list.add(additionalPathModel.get(i));
             }
             wicketForgeFacet.setResourcePaths(list);
         }
@@ -161,7 +165,7 @@ class WicketFacetEditorTab extends FacetEditorTab {
         private void doEdit(int index) {
             FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(false, true, false, false, false, false);
             fileChooserDescriptor.setHideIgnored(false);
-            VirtualFile virtualFile = FileChooser.chooseFile(fileChooserDescriptor, editorContext.getProject(), index >= 0 ? ((VirtualFilePointer) additionalPathModel.get(index)).getFile() : null);
+            VirtualFile virtualFile = FileChooser.chooseFile(fileChooserDescriptor, editorContext.getProject(), index >= 0 ? additionalPathModel.get(index).getFile() : null);
             if (virtualFile != null) {
                 VirtualFilePointer filePointer = VirtualFilePointerManager.getInstance().create(virtualFile, wicketForgeFacet.getModule(), null);
                 if (index >= 0) {
@@ -173,9 +177,12 @@ class WicketFacetEditorTab extends FacetEditorTab {
         }
     }
 
-    private static class AdditionalPathListCellRenderer extends ColoredListCellRenderer {
+    private static class AdditionalPathListCellRenderer extends ColoredListCellRenderer<Object> {
+
+        private static final long serialVersionUID = -3921456926670162369L;
+
         @Override
-        protected void customizeCellRenderer(JList list, Object value, int index, boolean selected, boolean hasFocus) {
+        protected void customizeCellRenderer(@NotNull JList<?> list, Object value, int index, boolean selected, boolean hasFocus) {
             if (value instanceof VirtualFilePointer) {
                 VirtualFilePointer filePointer = (VirtualFilePointer) value;
                 setIcon(PlatformIcons.DIRECTORY_CLOSED_ICON);

@@ -54,6 +54,7 @@ public class AdditionalResourcePathsIndexProvider extends IndexableSetContributo
         return EMPTY_FILE_SET;
     }
 
+    @NotNull
     @Override
     public Set<VirtualFile> getAdditionalRootsToIndex() {
         return EMPTY_FILE_SET;

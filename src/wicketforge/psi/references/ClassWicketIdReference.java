@@ -74,7 +74,7 @@ public class ClassWicketIdReference implements PsiReference {
 
     @Override
     public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
-        ElementManipulator manipulator = ElementManipulators.getManipulator(wicketIdExpression);
+        ElementManipulator<?> manipulator = ElementManipulators.getManipulator(wicketIdExpression);
         if (manipulator instanceof StringLiteralManipulator) {
             return ((StringLiteralManipulator) manipulator).handleContentChange(wicketIdExpression, newElementName);
         }

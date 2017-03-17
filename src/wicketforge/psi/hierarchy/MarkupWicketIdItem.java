@@ -47,7 +47,7 @@ public final class MarkupWicketIdItem implements ItemPresentation {
 
     void addChild(@NotNull MarkupWicketIdItem child) {
         if (children == null) {
-            children = new ArrayList<MarkupWicketIdItem>();
+            children = new ArrayList<>();
         }
         children.add(child);
     }
@@ -69,7 +69,7 @@ public final class MarkupWicketIdItem implements ItemPresentation {
 
     @NotNull
     public List<MarkupWicketIdItem> getChildren() {
-        return children == null ? Collections.<MarkupWicketIdItem>emptyList() : children;
+        return children == null ? Collections.emptyList() : children;
     }
 
     /* ItemPresentation*/

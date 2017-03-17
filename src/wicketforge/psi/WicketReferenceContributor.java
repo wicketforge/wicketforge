@@ -17,6 +17,7 @@ package wicketforge.psi;
 
 import com.intellij.patterns.*;
 import com.intellij.psi.*;
+import org.jetbrains.annotations.NotNull;
 import wicketforge.Constants;
 import wicketforge.psi.references.ClassWicketIdReferenceProvider;
 import wicketforge.psi.references.MarkupWicketIdReferenceProvider;
@@ -25,7 +26,7 @@ import wicketforge.psi.references.MarkupWicketIdReferenceProvider;
  */
 public class WicketReferenceContributor extends PsiReferenceContributor {
     @Override
-    public void registerReferenceProviders(PsiReferenceRegistrar registrar) {
+    public void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
 
         {// java -> new Component("..." ...)
             ElementPattern<PsiLiteralExpression> pattern = StandardPatterns.or(

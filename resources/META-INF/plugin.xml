@@ -16,6 +16,7 @@
     <idea-version since-build="138.0000"/>
     <depends>com.intellij.properties</depends>
     <change-notes><![CDATA[See <a href="https://github.com/minman/wicketforge/wiki/Change-Notes">change notes</a>.]]></change-notes>
+
     <extensions defaultExtensionNs="com.intellij">
         <facetType implementation="wicketforge.facet.WicketForgeFacetType"/>
         <framework.detector implementation="wicketforge.facet.WicketForgeFacetType$WicketForgeFacetDetector"/>
@@ -60,34 +61,34 @@
         </component>
     </project-components>
     <actions>
-            <action id="WicketForgeToggle"
-                    class="wicketforge.action.ToggleAction"
-                    text="Wicket Java Markup Toggle"
-                    description="Toggles between Wicket Java and Markup files">
-                <keyboard-shortcut keymap="$default" first-keystroke="alt shift W"/>
-                <keyboard-shortcut keymap="Mac OS X" first-keystroke="control shift W"/>
-                <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift W"/>
-            </action>
-            <action id="WicketForgeExtractProperties"
-                    class="wicketforge.action.ExtractPropertiesAction"
-                    text="Extract Text to Properties..."
-                    description="Extract selected text to properties"/>
-            <action id="WicketForgeCreatePage"
-                    class="wicketforge.action.CreateWicketPageAction"
-                    text="New Wicket Page"
-                    description="Creates new Wicket page skeleton"/>
-            <action id="WicketForgeCreatePanel"
-                    class="wicketforge.action.CreateWicketPanelAction"
-                    text="New Wicket Panel"
-                    description="Creates new Wicket panel skeleton"/>
-            <action id="WicketForgeViewStructure"
-                    class="wicketforge.action.ViewWicketStructureAction"
-                    text="Wicket Structure"
-                    description="Popup Wicket structure of the current file for quick navigation">
-                <add-to-group group-id="GoToCodeGroup" anchor="after" relative-to-action="FileStructurePopup"/>
-                <keyboard-shortcut keymap="$default" first-keystroke="alt shift F12"/>
-                <keyboard-shortcut keymap="Mac OS X" first-keystroke="control shift F12"/>
-                <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift F12"/>
+        <action id="WicketForgeToggle"
+                class="wicketforge.action.ToggleAction"
+                text="Wicket Java Markup Toggle"
+                description="Toggles between Wicket Java and Markup files">
+            <keyboard-shortcut keymap="$default" first-keystroke="alt shift W"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="control shift W"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift W"/>
+        </action>
+        <action id="WicketForgeExtractProperties"
+                class="wicketforge.action.ExtractPropertiesAction"
+                text="Extract Text to Properties..."
+                description="Extract selected text to properties"/>
+        <action id="WicketForgeCreatePage"
+                class="wicketforge.action.CreateWicketPageAction"
+                text="New Wicket Page"
+                description="Creates new Wicket page skeleton"/>
+        <action id="WicketForgeCreatePanel"
+                class="wicketforge.action.CreateWicketPanelAction"
+                text="New Wicket Panel"
+                description="Creates new Wicket panel skeleton"/>
+        <action id="WicketForgeViewStructure"
+                class="wicketforge.action.ViewWicketStructureAction"
+                text="Wicket Structure"
+                description="Popup Wicket structure of the current file for quick navigation">
+            <add-to-group group-id="GoToCodeGroup" anchor="after" relative-to-action="FileStructurePopup"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt shift F12"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="control shift F12"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift F12"/>
         </action>
 
         <group text="WicketForge">

@@ -38,7 +38,7 @@ abstract class ResourceRenamerFactory implements AutomaticRenamerFactory {
     }
 
     @Override
-    public boolean isApplicable(PsiElement element) {
+    public boolean isApplicable(@NotNull PsiElement element) {
         return element instanceof PsiClass && !getAllFilesIncludeInnerclasses((PsiClass) element).isEmpty();
     }
 
@@ -56,6 +56,7 @@ abstract class ResourceRenamerFactory implements AutomaticRenamerFactory {
     public void setEnabled(boolean enabled) {
     }
 
+    @NotNull
     @Override
     public AutomaticRenamer createRenamer(PsiElement element, String newName, Collection<UsageInfo> usages) {
         return new ResourceRenamer((PsiClass) element, newName);

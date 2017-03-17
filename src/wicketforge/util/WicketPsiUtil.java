@@ -187,7 +187,7 @@ public final class WicketPsiUtil {
     }
 
     /**
-     * @param callExpression
+     * @param callExpression {@link PsiCallExpression}
      * @return PsiAnonymousClass or referenced PsiClass or null
      *
      * This is *not* equal to PsiNewExpression.getClassOrAnonymousClassReference()

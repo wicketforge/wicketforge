@@ -53,13 +53,13 @@ abstract class CreateWicketAction extends CreateElementActionBase {
         private final Project project;
         private final PsiDirectory psiDirectory;
         private String templateName;
-        private SmartPsiElementPointer[] createdElements;
+        private SmartPsiElementPointer<?>[] createdElements;
 
         public ActionRunnableImpl(final Project project, final PsiDirectory directory, final String templateName) {
             this.project = project;
             this.psiDirectory = directory;
             this.templateName = templateName;
-            createdElements = new SmartPsiElementPointer[0];
+            createdElements = new SmartPsiElementPointer<?>[0];
         }
 
         @Override
@@ -110,7 +110,7 @@ abstract class CreateWicketAction extends CreateElementActionBase {
                             }
                         });
 
-                        createdElements = new SmartPsiElementPointer[psiElements.length];
+                        createdElements = new SmartPsiElementPointer<?>[psiElements.length];
                         SmartPointerManager manager = SmartPointerManager.getInstance(project);
                         for (int i = 0; i < createdElements.length; i++) {
                             createdElements[i] = manager.createSmartPsiElementPointer(psiElements[i]);
@@ -137,8 +137,8 @@ abstract class CreateWicketAction extends CreateElementActionBase {
 
         @NotNull
         public final PsiElement[] getCreatedElements() {
-            List<PsiElement> elts = new ArrayList<PsiElement>();
-            for (SmartPsiElementPointer pointer : createdElements) {
+            List<PsiElement> elts = new ArrayList<>();
+            for (SmartPsiElementPointer<?> pointer : createdElements) {
                 final PsiElement elt = pointer.getElement();
                 if (elt != null) {
                     elts.add(elt);

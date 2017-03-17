@@ -37,7 +37,7 @@ import wicketforge.util.WicketPsiUtil;
 public class ClassWicketIdCompletionContributor extends CompletionContributor {
 
     @Override
-    public void fillCompletionVariants(final CompletionParameters p, final CompletionResultSet rs) {
+    public void fillCompletionVariants(@NotNull final CompletionParameters p, @NotNull final CompletionResultSet rs) {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             @Override
             public void run() {
@@ -82,7 +82,7 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
     }
 
     /**
-     * @param position
+     * @param position position
      * @return          possible candidate for wicketId (psiExpression) of position or null if not matches
      */
     @Nullable

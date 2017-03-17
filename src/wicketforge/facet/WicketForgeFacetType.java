@@ -80,9 +80,10 @@ public class WicketForgeFacetType extends FacetType<WicketForgeFacet, WicketForg
             super(STRING_ID);
         }
 
+        @NotNull
         @Override
         public FacetType<WicketForgeFacet, WicketForgeFacetConfiguration> getFacetType() {
-            //noinspection unchecked
+            //noinspection unchecked,ConstantConditions
             return FacetTypeRegistry.getInstance().findFacetType(STRING_ID);
         }
 
