@@ -15,17 +15,28 @@
  */
 package wicketforge.intention;
 
+import static com.intellij.codeInsight.AnnotationUtil.CHECK_EXTERNAL;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.intellij.codeInsight.AnnotationUtil;
 import com.intellij.codeInsight.intention.AddAnnotationFix;
 import com.intellij.codeInsight.intention.AddAnnotationPsiFix;
 import com.intellij.codeInsight.intention.impl.BaseIntentionAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.psi.CommonClassNames;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiModifierListOwner;
+import com.intellij.psi.PsiParameter;
+import com.intellij.psi.PsiType;
 import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.IncorrectOperationException;
-import org.jetbrains.annotations.NotNull;
+
 import wicketforge.Constants;
 import wicketforge.util.WicketPsiUtil;
 
@@ -68,7 +79,7 @@ public class AddComponentFactoryIntention extends BaseIntentionAction {
 //            return false;
 //        }
         setText(AddAnnotationPsiFix.calcText(owner, TOADD));
-        if (AnnotationUtil.isAnnotated(owner, TOADD, false, false)) {
+        if (AnnotationUtil.isAnnotated(owner, TOADD, (CHECK_EXTERNAL | AnnotationUtil.CHECK_INFERRED))) {
             return false;
         }
 

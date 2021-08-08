@@ -15,11 +15,18 @@
  */
 package wicketforge.action;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.intellij.ide.actions.ViewStructureAction;
 import com.intellij.ide.structureView.StructureView;
 import com.intellij.ide.structureView.StructureViewModel;
 import com.intellij.ide.structureView.newStructureView.StructureViewComponent;
 import com.intellij.ide.util.FileStructurePopup;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.project.Project;
@@ -29,7 +36,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.xml.XmlFile;
-import org.jetbrains.annotations.NotNull;
+
 import wicketforge.psi.hierarchy.ClassStructureTreeModel;
 import wicketforge.psi.hierarchy.MarkupStructureTreeModel;
 
@@ -80,7 +87,7 @@ public class ViewWicketStructureAction extends AnAction {
 
     @NotNull
     private static FileStructurePopup createStructureViewPopup(@NotNull Project project, @NotNull FileEditor fileEditor, @NotNull StructureView structureView) {
-        return new FileStructurePopup(project, fileEditor, structureView, true);
+        return new FileStructurePopup(project, fileEditor, ViewStructureAction.createStructureViewModel(project, fileEditor, structureView));
     }
 
     @Override

@@ -15,18 +15,31 @@
  */
 package wicketforge.completion;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.ide.highlighter.HtmlFileType;
+import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.lang.properties.IProperty;
+import com.intellij.lang.properties.PropertiesFileType;
 import com.intellij.lang.properties.psi.PropertiesFile;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.fileTypes.StdFileTypes;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiExpressionList;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiJavaFile;
+import com.intellij.psi.PsiJavaToken;
+import com.intellij.psi.PsiLiteralExpression;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiNewExpression;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlToken;
+
 import wicketforge.search.ClassIndex;
 import wicketforge.search.PropertiesIndex;
 import wicketforge.util.WicketPsiUtil;
@@ -36,32 +49,29 @@ import wicketforge.util.WicketPsiUtil;
 public class PropertiesCompletionContributor extends CompletionContributor {
 
     @Override
-    public void fillCompletionVariants(final CompletionParameters p, final CompletionResultSet rs) {
-        ApplicationManager.getApplication().runReadAction(new Runnable() {
-            @Override
-            public void run() {
-                PsiFile f = p.getOriginalFile();
-                if (f.getFileType() == StdFileTypes.JAVA && p.getPosition() instanceof PsiJavaToken) {
-                    PsiJavaToken position = (PsiJavaToken) p.getPosition();
-                    if (isWicketResourceModel(position)) {
-                        PsiJavaFile jf = (PsiJavaFile) f;
-                        PsiClass[] classes = jf.getClasses();
+    public void fillCompletionVariants(final @NotNull CompletionParameters p, final @NotNull CompletionResultSet rs) {
+        ApplicationManager.getApplication().runReadAction(() -> {
+            PsiFile f = p.getOriginalFile();
+            if (f.getFileType() == JavaFileType.INSTANCE && p.getPosition() instanceof PsiJavaToken) {
+                PsiJavaToken position = (PsiJavaToken) p.getPosition();
+                if (isWicketResourceModel(position)) {
+                    PsiJavaFile jf = (PsiJavaFile) f;
+                    PsiClass[] classes = jf.getClasses();
 
-                        for (PsiClass c : classes) {
-                            if (WicketPsiUtil.isWicketComponent(c)) {
-                                addPropertiesToResult(c, rs);
-                            }
+                    for (PsiClass c : classes) {
+                        if (WicketPsiUtil.isWicketComponent(c)) {
+                            addPropertiesToResult(c, rs);
                         }
                     }
-                } else if (f.getFileType() == StdFileTypes.HTML) {
-                    PsiElement psiElement = p.getPosition();
-                    if (psiElement instanceof XmlToken) {
-                        XmlToken position = (XmlToken) psiElement;
-                        if (isWicketAttribute(position)) {
-                            PsiClass c = ClassIndex.getAssociatedClass(f);
-                            if (c != null) {
-                                addPropertiesToResult(c, rs);
-                            }
+                }
+            } else if (f.getFileType() == HtmlFileType.INSTANCE) {
+                PsiElement psiElement = p.getPosition();
+                if (psiElement instanceof XmlToken) {
+                    XmlToken position = (XmlToken) psiElement;
+                    if (isWicketAttribute(position)) {
+                        PsiClass c = ClassIndex.getAssociatedClass(f);
+                        if (c != null) {
+                            addPropertiesToResult(c, rs);
                         }
                     }
                 }
@@ -77,7 +87,7 @@ public class PropertiesCompletionContributor extends CompletionContributor {
                 if (propertyKey != null) {
                     LookupElementBuilder lookupElementBuilder =
                             LookupElementBuilder.create(propertyKey)
-                                    .withIcon(StdFileTypes.PROPERTIES.getIcon())
+                                    .withIcon(PropertiesFileType.INSTANCE.getIcon())
                                     .withTypeText(".properties")
                                     .withTailText("  " + property.getValue(), true);
                     rs.addElement(lookupElementBuilder);
@@ -115,9 +125,7 @@ public class PropertiesCompletionContributor extends CompletionContributor {
 
         if (WicketPsiUtil.isWicketResourceModel(psiClass)) {
             PsiExpressionList constructorArgs = newExpression.getArgumentList();
-            if (constructorArgs == null) {
-                return false;
-            }
+            return constructorArgs != null;
         }
         return true;
     }

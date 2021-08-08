@@ -15,15 +15,20 @@
  */
 package wicketforge.util;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.intellij.CommonBundle;
-import com.intellij.codeInsight.CodeInsightBundle;
 import com.intellij.ide.fileTemplates.FileTemplate;
 import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.ide.fileTemplates.FileTemplateUtil;
 import com.intellij.ide.util.PackageUtil;
 import com.intellij.openapi.application.ReadAction;
-import com.intellij.openapi.application.Result;
-import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleRootManager;
@@ -41,14 +46,9 @@ import com.intellij.refactoring.util.RefactoringMessageUtil;
 import com.intellij.refactoring.util.RefactoringUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.SmartList;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
 import wicketforge.Constants;
 import wicketforge.facet.WicketForgeFacet;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
 
 public final class WicketFileUtil {
     private WicketFileUtil() {
@@ -61,7 +61,7 @@ public final class WicketFileUtil {
         // alternate paths
         WicketForgeFacet wicketForgeFacet = WicketForgeFacet.getInstance(module);
         if (wicketForgeFacet != null) {
-            List<VirtualFile> alternateFiles = new SmartList<VirtualFile>();
+            List<VirtualFile> alternateFiles = new SmartList<>();
             // add all valid alternate paths to list
             for (VirtualFilePointer virtualFilePointer : wicketForgeFacet.getResourcePaths()) {
                 VirtualFile virtualFile = virtualFilePointer.getFile();
@@ -90,32 +90,30 @@ public final class WicketFileUtil {
     public static PsiDirectory selectTargetDirectory(@NotNull final String packageName, @NotNull final Project project, @NotNull final Module module) {
         final PackageWrapper targetPackage = new PackageWrapper(PsiManager.getInstance(project), packageName);
 
-        final VirtualFile selectedRoot = new ReadAction<VirtualFile>() {
-            @Override
-            protected void run(@NotNull Result<VirtualFile> result) throws Throwable {
+        VirtualFile selectedRoot;
+        try {
+            selectedRoot = ReadAction.<VirtualFile, Exception>compute(() -> {
                 VirtualFile[] roots = getResourceRoots(module);
-                if (roots.length == 0) return;
+                if (roots.length == 0) return null;
 
                 if (roots.length == 1) {
-                    result.setResult(roots[0]);
+                    return roots[0];
                 } else {
                     PsiDirectory defaultDir = PackageUtil.findPossiblePackageDirectoryInModule(module, packageName);
-                    result.setResult(MoveClassesOrPackagesUtil.chooseSourceRoot(targetPackage, new SmartList<VirtualFile>(roots), defaultDir));
+                    return MoveClassesOrPackagesUtil.chooseSourceRoot(targetPackage, new SmartList<>(roots), defaultDir);
                 }
-            }
-        }.execute().getResultObject();
+            });
+        } catch (Exception ex){
+            Messages.showMessageDialog(project, ex.getMessage(), CommonBundle.getErrorTitle(), Messages.getErrorIcon());
+            return null;
+        }
 
         if (selectedRoot == null) {
             return null;
         }
 
         try {
-            return new WriteCommandAction<PsiDirectory>(project, CodeInsightBundle.message("create.directory.command")) {
-                @Override
-                protected void run(@NotNull Result<PsiDirectory> result) throws Throwable {
-                    result.setResult(RefactoringUtil.createPackageDirectoryInSourceRoot(targetPackage, selectedRoot));
-                }
-            }.execute().getResultObject();
+            return WriteAction.<PsiDirectory, IncorrectOperationException>compute(() -> RefactoringUtil.createPackageDirectoryInSourceRoot(targetPackage, selectedRoot));
         } catch (IncorrectOperationException e) {
             Messages.showMessageDialog(project, e.getMessage(), CommonBundle.getErrorTitle(), Messages.getErrorIcon());
             return null;
@@ -138,9 +136,9 @@ public final class WicketFileUtil {
             return null;
         }
 
-        final FileTemplate template = FileTemplateManager.getInstance().getJ2eeTemplate(templateName);
+        final FileTemplate template = FileTemplateManager.getInstance(directory.getProject()).getJ2eeTemplate(templateName);
 
-        Properties props = FileTemplateManager.getInstance().getDefaultProperties();
+        Properties props = FileTemplateManager.getInstance(directory.getProject()).getDefaultProperties();
         props.put(Constants.PROP_WICKET_NS, WicketVersion.getVersion(directory).getNS());
         try {
             return FileTemplateUtil.createFromTemplate(template, fileName, props, directory);

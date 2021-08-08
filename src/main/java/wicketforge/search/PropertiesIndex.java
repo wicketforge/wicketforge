@@ -15,10 +15,19 @@
  */
 package wicketforge.search;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
+
+import org.apache.commons.lang.NotImplementedException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import com.intellij.ide.highlighter.XmlFileType;
+import com.intellij.lang.properties.PropertiesFileType;
 import com.intellij.lang.properties.PropertiesImplUtil;
 import com.intellij.lang.properties.psi.PropertiesFile;
 import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
@@ -27,16 +36,16 @@ import com.intellij.util.indexing.ID;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.util.xml.NanoXmlUtil;
 import com.intellij.util.xml.XmlFileHeader;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
 
 public class PropertiesIndex extends WicketResourceIndexExtension {
     private static final ID<String, Void> NAME = ID.create("WicketPropertiesIndex");
 
+
+    @SuppressWarnings("unused")
+    private PropertiesIndex() throws NotImplementedException {
+    }
+
+    @SuppressWarnings("unused")
     public PropertiesIndex(@NotNull MessageBus messageBus) {
         super(messageBus);
     }
@@ -50,13 +59,13 @@ public class PropertiesIndex extends WicketResourceIndexExtension {
     @Override
     public boolean acceptInput(@NotNull VirtualFile file) {
         FileType fileType = file.getFileType();
-        return StdFileTypes.PROPERTIES.equals(fileType) || StdFileTypes.XML.equals(fileType);
+        return PropertiesFileType.INSTANCE.equals(fileType) || XmlFileType.INSTANCE.equals(fileType);
     }
 
     @NotNull
     @Override
     public Map<String, Void> map(FileContent inputData) {
-        if (StdFileTypes.XML.equals(inputData.getFileType())) {
+        if (XmlFileType.INSTANCE.equals(inputData.getFileType())) {
             boolean isPropertiesXml = false;
             try {
                 XmlFileHeader fileHeader = NanoXmlUtil.parseHeaderWithException(inputData.getFile());
@@ -89,7 +98,11 @@ public class PropertiesIndex extends WicketResourceIndexExtension {
      */
     @Nullable
     public static PropertiesFile getBaseFile(@NotNull final PsiClass psiClass) {
-        PsiFile[] files = getFilesByClass(NAME, psiClass, false);
-        return files.length > 0 ? PropertiesImplUtil.getPropertiesFile(files[0]) : null;
+        try {
+            PsiFile[] files = getFilesByClass(NAME, psiClass, false);
+            return files.length > 0 ? PropertiesImplUtil.getPropertiesFile(files[0]) : null;
+        } catch (NoClassDefFoundError error){
+            return null;
+        }
     }
 }

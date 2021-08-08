@@ -20,23 +20,24 @@ import org.jetbrains.annotations.NotNull;
 import wicketforge.Constants;
 
 import java.net.URL;
+import java.util.Objects;
 
 public class WicketLibraryType extends DownloadableLibraryType {
 //    private static final Logger LOG = Logger.getInstance("#wicketforge.library.WicketLibraryType");
     private static final String[] DETECTIONCLASSNAMES = new String[]{Constants.WICKET_APPLICATION};
 
     public WicketLibraryType() {
-        super("Wicket", "wicket", "wicket", Constants.WICKET_ICON, getUrl("wicket"));
+        super(() -> "Wicket", "wicket", "wicket", getUrl("wicket"));
     }
 
     @Override
-    protected String[] getDetectionClassNames() {
+    protected String @NotNull [] getDetectionClassNames() {
         return DETECTIONCLASSNAMES;
     }
 
     @NotNull
-    private static URL getUrl(@NotNull String lib) {
-        return WicketLibraryType.class.getResource("/resources/" + lib + ".xml");
+    private static URL getUrl(@NotNull String lib){
+        return Objects.requireNonNull(WicketLibraryType.class.getClassLoader().getResource("wicket.xml"));
 //        try {
 ////            return new URL("http", "wicketforge.googlecode.com", "/files/" + lib + ".xml");
 //            return new URL("http", "resources.wicketforge.googlecode.com", "/git/" + lib + ".xml");

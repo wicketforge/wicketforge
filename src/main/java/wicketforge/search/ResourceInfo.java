@@ -15,8 +15,16 @@
  */
 package wicketforge.search;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import com.intellij.ide.highlighter.HtmlFileType;
+import com.intellij.ide.highlighter.XmlFileType;
+import com.intellij.lang.properties.PropertiesFileType;
 import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.module.ModuleUtil;
@@ -29,14 +37,10 @@ import com.intellij.openapi.vfs.pointers.VirtualFilePointer;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.SmartList;
 import com.intellij.util.indexing.FileContent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
 import wicketforge.facet.WicketForgeFacet;
 import wicketforge.util.FilenameConstants;
 import wicketforge.util.WicketFilenameUtil;
-
-import java.util.Collections;
-import java.util.List;
 
 final class ResourceInfo {
     @NotNull
@@ -55,9 +59,9 @@ final class ResourceInfo {
     @Nullable
     public static ResourceInfo from(@NotNull PsiFile file) {
         FileType fileType = file.getFileType();
-        if (StdFileTypes.HTML.equals(fileType)) {
+        if (HtmlFileType.INSTANCE.equals(fileType)) {
             return fromMarkup(file.getVirtualFile(), file.getProject(), file.getText());
-        } else if (StdFileTypes.PROPERTIES.equals(fileType) || StdFileTypes.XML.equals(fileType)) {
+        } else if (PropertiesFileType.INSTANCE.equals(fileType) || XmlFileType.INSTANCE.equals(fileType)) {
             return fromProperties(file.getVirtualFile(), file.getProject());
         }
         return null;
@@ -69,9 +73,9 @@ final class ResourceInfo {
     @Nullable
     public static ResourceInfo from(@NotNull FileContent fileContent) {
         FileType fileType = fileContent.getFileType();
-        if (StdFileTypes.HTML.equals(fileType)) {
+        if (HtmlFileType.INSTANCE.equals(fileType)) {
             return fromMarkup(fileContent.getFile(), fileContent.getProject(), fileContent.getContentAsText().toString());
-        } else if (StdFileTypes.PROPERTIES.equals(fileType) || StdFileTypes.XML.equals(fileType)) {
+        } else if (PropertiesFileType.INSTANCE.equals(fileType) || XmlFileType.INSTANCE.equals(fileType)) {
             return fromProperties(fileContent.getFile(), fileContent.getProject());
         }
         return null;
@@ -123,7 +127,7 @@ final class ResourceInfo {
 
     @Nullable
     private static String getPackageNameFromAdditionalResourcePaths(@NotNull VirtualFile file, @NotNull VirtualFile dir, @NotNull Project project) {
-        List<Module> modules = new SmartList<Module>();
+        List<Module> modules = new SmartList<>();
         Module module = ModuleUtil.findModuleForFile(file, project);
         if (module != null) {
             // if we have a module -> only get resourcepaths from this one

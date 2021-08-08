@@ -1,0 +1,52 @@
+/*
+ * Copyright 2010 The WicketForge-Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package wicketforge.codeInsight;
+
+import java.util.Arrays;
+
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.intellij.codeInsight.daemon.LineMarkerInfo;
+import com.intellij.codeInsight.daemon.impl.GutterTooltipHelper;
+import com.intellij.codeInsight.daemon.impl.PsiElementListNavigator;
+import com.intellij.ide.util.DefaultPsiElementCellRenderer;
+import com.intellij.openapi.editor.markup.GutterIconRenderer;
+import com.intellij.psi.NavigatablePsiElement;
+import com.intellij.psi.PsiElement;
+import com.intellij.util.Function;
+
+/**
+ */
+class NavigableLineMarkerInfo<T extends PsiElement> {
+    private NavigableLineMarkerInfo() {
+    }
+
+    public static <T extends PsiElement> LineMarkerInfo<T> create(@NotNull T element, @NotNull final NavigatablePsiElement[] targets, @NotNull Icon icon) {
+        return new LineMarkerInfo<>(
+                element,
+                element.getTextRange(),
+                icon,
+                (Function<PsiElement, String>) psiElement -> {
+                    return GutterTooltipHelper.getTooltipText(Arrays.asList(targets), "", false, null);
+                    //return GutterIconTooltipHelper.composeText(targets, "", "{0}");
+                },
+                (e, elt) -> PsiElementListNavigator.openTargets(e, targets, "Select Target", null, new DefaultPsiElementCellRenderer()),
+                GutterIconRenderer.Alignment.LEFT,
+                () -> ""); //TODO: provide a accessible markup provider here
+    }
+}

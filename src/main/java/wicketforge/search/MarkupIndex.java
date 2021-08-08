@@ -21,11 +21,16 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.indexing.ID;
 import com.intellij.util.messages.MessageBus;
+
+import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class MarkupIndex extends WicketResourceIndexExtension {
     private static final ID<String, Void> NAME = ID.create("WicketMarkupIndex");
+
+    public MarkupIndex() throws NotImplementedException {
+    }
 
     public MarkupIndex(@NotNull MessageBus messageBus) {
         super(messageBus);

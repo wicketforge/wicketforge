@@ -28,6 +28,8 @@ import com.intellij.util.indexing.*;
 import com.intellij.util.io.EnumeratorStringDescriptor;
 import com.intellij.util.io.KeyDescriptor;
 import com.intellij.util.messages.MessageBus;
+
+import org.apache.commons.lang.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.facet.WicketForgeFacetConfiguration;
 import wicketforge.util.WicketPsiUtil;
@@ -37,6 +39,9 @@ import java.util.*;
 abstract class WicketResourceIndexExtension extends ScalarIndexExtension<String> implements FileBasedIndex.InputFilter, DataIndexer<String, Void, FileContent>  {
     private final EnumeratorStringDescriptor keyDescriptor = new EnumeratorStringDescriptor();
     private static final char LOCALIZEDFILE_INDEXMARKER = '#';
+
+    protected WicketResourceIndexExtension() throws NotImplementedException{
+    }
 
     protected WicketResourceIndexExtension(@NotNull MessageBus messageBus) {
         messageBus.connect().subscribe(WicketForgeFacetConfiguration.ADDITIONAL_PATHS_CHANGED, new Runnable() {
@@ -125,4 +130,6 @@ abstract class WicketResourceIndexExtension extends ScalarIndexExtension<String>
         }
         return PsiUtilCore.toPsiFileArray(result);
     }
+
+
 }

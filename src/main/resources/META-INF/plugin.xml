@@ -1,0 +1,131 @@
+<idea-plugin>
+    <!-- Product and plugin compatibility requirements -->
+    <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.properties</depends>
+    <depends>com.intellij.java</depends>
+
+
+    <id>WicketForge</id>
+    <name>WicketForge</name>
+    <version>6.0.1</version>
+    <description>
+        <![CDATA[
+        <p>WicketForge assists developers creating <a href="http://wicket.apache.org/">Wicket</a> applications.</p>
+        <p/>
+        <p>See <a href="https://github.com/wicketforge/wicketforge/wiki">Wiki</a> for features and usage instructions.</p>
+        ]]>
+    </description>
+    <vendor>WicketForge</vendor>
+    <!-- build 138 -> 14 EAP -->
+    <idea-version since-build="138.0000"/>
+    <change-notes><![CDATA[See <a href="https://github.com/wicketforge/wicketforge/wiki/Change-Notes">change notes</a>.]]></change-notes>
+    <extensions defaultExtensionNs="com.intellij">
+        <facetType implementation="wicketforge.facet.WicketForgeFacetType"/>
+        <framework.detector implementation="wicketforge.facet.WicketForgeFacetType$WicketForgeFacetDetector"/>
+        <library.type implementation="wicketforge.library.WicketLibraryType"/>
+        <frameworkSupport implementation="wicketforge.facet.WicketFrameworkSupportProvider"/>
+        <fileTemplateGroup implementation="wicketforge.templates.WicketFileTemplateGroupFactory"/>
+
+        <completion.contributor language="JAVA" implementationClass="wicketforge.completion.ClassWicketIdCompletionContributor"/>
+        <completion.contributor language="JAVA" implementationClass="wicketforge.completion.PropertiesCompletionContributor"/>
+
+        <completion.contributor language="HTML" implementationClass="wicketforge.completion.MarkupWicketIdCompletionContributor"/>
+        <completion.contributor language="HTML" implementationClass="wicketforge.completion.PropertiesCompletionContributor"/>
+
+        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="wicketforge.codeInsight.WicketClassLineMarkerProvider"/>
+        <codeInsight.lineMarkerProvider language="HTML" implementationClass="wicketforge.codeInsight.WicketMarkupLineMarkerProvider"/>
+
+        <colorSettingsPage implementation="wicketforge.highlighting.WicketForgeColorSettingsPage"/>
+
+        <psi.referenceContributor implementation="wicketforge.psi.WicketReferenceContributor"/>
+
+        <indexedRootsProvider implementation="wicketforge.search.AdditionalResourcePathsIndexProvider"/>
+        <fileBasedIndex implementation="wicketforge.search.MarkupIndex"/>
+        <fileBasedIndex implementation="wicketforge.search.PropertiesIndex"/>
+
+        <automaticRenamerFactory implementation="wicketforge.refactoring.MarkupRenamerFactory"/>
+        <automaticRenamerFactory implementation="wicketforge.refactoring.PropertiesRenamerFactory"/>
+
+        <intentionAction>
+            <className>wicketforge.intention.AddComponentFactoryIntention</className>
+            <category>SDK intentions</category>
+        </intentionAction>
+        <intentionAction>
+            <className>wicketforge.intention.AddMarkupPageIntention</className>
+            <category>SDK intentions</category>
+        </intentionAction>
+        <intentionAction>
+            <className>wicketforge.intention.AddMarkupBorderIntention</className>
+            <category>SDK intentions</category>
+        </intentionAction>
+        <intentionAction>
+            <className>wicketforge.intention.AddMarkupPanelIntention</className>
+            <category>SDK intentions</category>
+        </intentionAction>
+        <intentionAction>
+            <className>wicketforge.intention.AddPropertiesIntention</className>
+            <category>SDK intentions</category>
+        </intentionAction>
+        <intentionAction>
+            <className>wicketforge.intention.AddPropertiesXMLIntention</className>
+            <category>SDK intentions</category>
+        </intentionAction>
+    </extensions>
+    <application-components>
+        <component>
+            <implementation-class>wicketforge.WicketForgeApplicationComponent</implementation-class>
+        </component>
+    </application-components>
+    <project-components>
+        <component>
+            <implementation-class>wicketforge.WicketForgeProjectComponent</implementation-class>
+        </component>
+        <component>
+            <implementation-class>wicketforge.highlighting.WicketForgeHighlightingPassFactory</implementation-class>
+        </component>
+    </project-components>
+    <actions>
+        <action id="WicketForgeToggle"
+                class="wicketforge.action.ToggleAction"
+                text="Wicket Java Markup Toggle"
+                description="Toggles between Wicket Java and Markup files">
+            <keyboard-shortcut keymap="$default" first-keystroke="alt shift W"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="control shift W"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift W"/>
+        </action>
+        <action id="WicketForgeExtractProperties"
+                class="wicketforge.action.ExtractPropertiesAction"
+                text="Extract Text to Properties..."
+                description="Extract selected text to properties"/>
+        <action id="WicketForgeCreatePage"
+                class="wicketforge.action.CreateWicketPageAction"
+                text="New Wicket Page"
+                description="Creates new Wicket page skeleton"/>
+        <action id="WicketForgeCreatePanel"
+                class="wicketforge.action.CreateWicketPanelAction"
+                text="New Wicket Panel"
+                description="Creates new Wicket panel skeleton"/>
+        <action id="WicketForgeViewStructure"
+                class="wicketforge.action.ViewWicketStructureAction"
+                text="Wicket Structure"
+                description="Popup Wicket structure of the current file for quick navigation">
+            <add-to-group group-id="GoToCodeGroup" anchor="after" relative-to-action="FileStructurePopup"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt shift F12"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="control shift F12"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift F12"/>
+        </action>
+
+        <group text="WicketForge">
+            <separator/>
+            <reference ref="WicketForgeToggle"/>
+            <reference ref="WicketForgeExtractProperties"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="CutCopyPasteGroup"/>
+        </group>
+        <group id="WicketForgeCreateGroup" class="wicketforge.action.WicketActionGroup" text="Wicket">
+            <reference ref="WicketForgeCreatePage"/>
+            <reference ref="WicketForgeCreatePanel"/>
+            <add-to-group group-id="NewGroup" anchor="last"/>
+        </group>
+    </actions>
+</idea-plugin>
