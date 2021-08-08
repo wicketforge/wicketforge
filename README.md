@@ -1,12 +1,29 @@
 ## Summary ##
 
+<!-- Plugin description -->
+
 WicketForge is a plugin for [IntelliJ IDEA](http://www.jetbrains.com/idea/) designed to assist developers creating applications using [Apache Wicket](http://wicket.apache.org/).
 
-## Installation ##
+<!-- Plugin description end -->
 
-Simply install latest release with IDEA's Plugin Manager.
+## Installation
 
-[ChangeNotes](../../wiki/Change-Notes)
+- Using IDE built-in plugin system:
+
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "WicketForge"</kbd> >
+  <kbd>Install Plugin</kbd>
+
+- Manually:
+
+  Download the [latest release](https://github.com/bamarc/WicketForge/releases/latest) and install it manually using
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+
+
+---
+Plugin based on the [IntelliJ Platform Plugin Template][template].
+
+[template]: https://github.com/JetBrains/intellij-platform-plugin-template
+
 
 ## Usage / Help ##
 
