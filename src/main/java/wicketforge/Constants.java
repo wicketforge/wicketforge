@@ -50,50 +50,7 @@ public interface Constants {
     // fileTemplate properties
     public static final String PROP_WICKET_NS = "WICKET_NS";
 
-    // icons
-    public static final Icon WICKET_ICON = IconLoader.getIcon("/resources/icons/wicket.png", Constants.class);
-    public static final Icon WICKET_COMPONENT_ICON = IconLoader.getIcon("/resources/icons/wicket_component.png", Constants.class);
-    public static final Icon TOJAVAREF = IconLoader.getIcon("/resources/icons/wicket_form.png", Constants.class);
-    public static final Icon TOMARKUPREF = IconLoader.getIcon("/resources/icons/wicket_form.png", Constants.class);
 
-    // icon markup references
-    public static final Icon ICON_MARKUP_ = IconLoader.getIcon("/resources/icons/wicket_component.png", Constants.class);
-    public static final Icon ICON_MARKUP_DIV = IconLoader.getIcon("/resources/icons/components/div.png", Constants.class);
-    public static final Icon ICON_MARKUP_SPAN = IconLoader.getIcon("/resources/icons/components/div.png", Constants.class);
-    public static final Icon ICON_MARKUP_LINK = IconLoader.getIcon("/resources/icons/components/link.png", Constants.class);
-    public static final Icon ICON_MARKUP_TABLE = IconLoader.getIcon("/resources/icons/components/table.png", Constants.class);
-    public static final Icon ICON_MARKUP_TR = IconLoader.getIcon("/resources/icons/components/table_tr.png", Constants.class);
-    public static final Icon ICON_MARKUP_TD = IconLoader.getIcon("/resources/icons/components/table_td.png", Constants.class);
-    public static final Icon ICON_MARKUP_UL = IconLoader.getIcon("/resources/icons/components/ul.png", Constants.class);
-    public static final Icon ICON_MARKUP_LI = IconLoader.getIcon("/resources/icons/components/bullet.png", Constants.class);
-    public static final Icon ICON_MARKUP_LABEL = IconLoader.getIcon("/resources/icons/components/label.png", Constants.class);
-    public static final Icon ICON_MARKUP_INPUT = IconLoader.getIcon("/resources/icons/components/textField.png", Constants.class);
-    public static final Icon ICON_MARKUP_INPUT_CHECKBOX = IconLoader.getIcon("/resources/icons/components/checkBox.png", Constants.class);
-    public static final Icon ICON_MARKUP_INPUT_RADIO = IconLoader.getIcon("/resources/icons/components/radioButton.png", Constants.class);
-    public static final Icon ICON_MARKUP_TEXTAREA = IconLoader.getIcon("/resources/icons/components/textArea.png", Constants.class);
-    public static final Icon ICON_MARKUP_SELECT = IconLoader.getIcon("/resources/icons/components/select.png", Constants.class);
-    public static final Icon ICON_MARKUP_OPTION = IconLoader.getIcon("/resources/icons/components/bullet.png", Constants.class);
-    public static final Icon ICON_MARKUP_FORM = IconLoader.getIcon("/resources/icons/components/form.png", Constants.class);
-    public static final Icon ICON_MARKUP_IMG = IconLoader.getIcon("/resources/icons/components/image.png", Constants.class);
-    public static final Icon ICON_MARKUP_BUTTON = IconLoader.getIcon("/resources/icons/components/button.png", Constants.class);
-
-    // icon class references
-    public static final Icon ICON_CLASS_ = IconLoader.getIcon("/resources/icons/wicket_component.png", Constants.class);
-    public static final Icon ICON_CLASS_FORM = IconLoader.getIcon("/resources/icons/components/form.png", Constants.class);
-    public static final Icon ICON_CLASS_SELECT = IconLoader.getIcon("/resources/icons/components/select.png", Constants.class);
-    public static final Icon ICON_CLASS_CHECKBOX = IconLoader.getIcon("/resources/icons/components/checkBox.png", Constants.class);
-    public static final Icon ICON_CLASS_RADIO = IconLoader.getIcon("/resources/icons/components/radioButton.png", Constants.class);
-    public static final Icon ICON_CLASS_LABEL = IconLoader.getIcon("/resources/icons/components/label.png", Constants.class);
-    public static final Icon ICON_CLASS_LINK = IconLoader.getIcon("/resources/icons/components/link.png", Constants.class);
-    public static final Icon ICON_CLASS_BUTTON = IconLoader.getIcon("/resources/icons/components/button.png", Constants.class);
-    public static final Icon ICON_CLASS_TEXTFIELD = IconLoader.getIcon("/resources/icons/components/textField.png", Constants.class);
-    public static final Icon ICON_CLASS_TEXTAREA = IconLoader.getIcon("/resources/icons/components/textArea.png", Constants.class);
-    public static final Icon ICON_CLASS_REPEATER = IconLoader.getIcon("/resources/icons/components/repeater.png", Constants.class);
-    public static final Icon ICON_CLASS_PANEL = IconLoader.getIcon("/resources/icons/components/panel.png", Constants.class);
-    public static final Icon ICON_CLASS_BORDER = IconLoader.getIcon("/resources/icons/components/border.png", Constants.class);
-    public static final Icon ICON_CLASS_FORMCOMPONENTPANEL = IconLoader.getIcon("/resources/icons/components/formComponent.png", Constants.class);
-    public static final Icon ICON_CLASS_FORMCOMPONENT = IconLoader.getIcon("/resources/icons/components/formComponent.png", Constants.class);
-    public static final Icon ICON_CLASS_WEBMARKUPCONTAINER = IconLoader.getIcon("/resources/icons/components/div.png", Constants.class);
 
     enum PropertiesType {
         PROPERTIES(WicketTemplates.WICKET_PROPERTIES),

@@ -17,14 +17,14 @@ package wicketforge.action;
 
 import com.intellij.ide.IdeView;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.ProjectFileIndex;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiDirectory;
-import wicketforge.Constants;
+import icons.WicketForgeIcons;
 import wicketforge.facet.WicketForgeFacet;
 
 /**
@@ -34,7 +34,7 @@ public class WicketActionGroup extends DefaultActionGroup {
     public WicketActionGroup() {
         super("WicketForge", true);
         getTemplatePresentation().setDescription("Wicket");
-        getTemplatePresentation().setIcon(Constants.WICKET_ICON);
+        getTemplatePresentation().setIcon(WicketForgeIcons.WICKET_ICON);
     }
 
     @Override
@@ -43,11 +43,11 @@ public class WicketActionGroup extends DefaultActionGroup {
     }
 
     private static boolean isUnderSourceRoots(final AnActionEvent e) {
-        final IdeView view = e.getData(DataKeys.IDE_VIEW);
+        final IdeView view = e.getData(LangDataKeys.IDE_VIEW);
         if (view != null) {
-            final Module module = e.getData(DataKeys.MODULE);
+            final Module module = e.getData(LangDataKeys.MODULE);
             // let user create page/panel when we have a wicket-lib (so we can detect new facet)
-            if (module != null && WicketForgeFacet.isLibraryPresent(module)) {
+            if (WicketForgeFacet.isLibraryPresent(module)) {
                 ProjectFileIndex projectFileIndex = ProjectRootManager.getInstance(module.getProject()).getFileIndex();
                 for (PsiDirectory dir : view.getDirectories()) {
                     if (projectFileIndex.isInSourceContent(dir.getVirtualFile()) && JavaDirectoryService.getInstance().getPackage(dir) != null) {

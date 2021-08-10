@@ -50,12 +50,12 @@ public class ExtractPropertiesDialog extends DialogWrapper {
     private JCheckBox chooseDifferentDestinationFolderCheckBox;
     private JPanel chooseDifferentDestinationFolderPanel;
 
-    private Project project;
-    private Module module;
-    private ActionRunnable actionRunnable;
-    private PsiClass componentClass;
+    private final Project project;
+    private final Module module;
+    private final ActionRunnable actionRunnable;
+    private final PsiClass componentClass;
     private PsiDirectory destinationDirectory;
-    private PsiPackage psiPackage;
+    private final PsiPackage psiPackage;
 
     public ExtractPropertiesDialog(@NotNull Project project, @NotNull ActionRunnable actionRunnable, @NotNull String title, @NotNull PsiClass componentClass, @NotNull PsiDirectory directory, @NotNull String text) {
         super(project, false);
@@ -110,7 +110,7 @@ public class ExtractPropertiesDialog extends DialogWrapper {
     }
 
     private void addPropertiesFilesOptions() {
-        List<Object> data = new ArrayList<Object>();
+        List<Object> data = new ArrayList<>();
 
         { // find component class properties file
             PropertiesFile propertiesFile = PropertiesIndex.getBaseFile(componentClass);
@@ -202,8 +202,8 @@ public class ExtractPropertiesDialog extends DialogWrapper {
     }
 
     public static class NewPropertiesFileInfo {
-        private Constants.PropertiesType propertiesType;
-        private String name;
+        private final Constants.PropertiesType propertiesType;
+        private final String name;
 
         public NewPropertiesFileInfo(PsiClass componentClass, Constants.PropertiesType propertiesType) {
             this.propertiesType = propertiesType;

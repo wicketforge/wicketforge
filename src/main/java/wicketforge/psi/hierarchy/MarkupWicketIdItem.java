@@ -22,6 +22,7 @@ import com.intellij.psi.xml.XmlTag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -95,65 +96,65 @@ public final class MarkupWicketIdItem implements ItemPresentation {
         if (tag != null) {
             String name = tag.getName();
             if ("div".equals(name)) {
-                return Constants.ICON_MARKUP_DIV;
+                return WicketForgeIcons.ICON_MARKUP_DIV;
             }
             if ("span".equals(name)) {
-                return Constants.ICON_MARKUP_SPAN;
+                return WicketForgeIcons.ICON_MARKUP_SPAN;
             }
             if ("a".equals(name)) {
-                return Constants.ICON_MARKUP_LINK;
+                return WicketForgeIcons.ICON_MARKUP_LINK;
             }
             if ("table".equals(name)) {
-                return Constants.ICON_MARKUP_TABLE;
+                return WicketForgeIcons.ICON_MARKUP_TABLE;
             }
             if ("tr".equals(name)) {
-                return Constants.ICON_MARKUP_TR;
+                return WicketForgeIcons.ICON_MARKUP_TR;
             }
             if ("td".equals(name)) {
-                return Constants.ICON_MARKUP_TD;
+                return WicketForgeIcons.ICON_MARKUP_TD;
             }
             if ("ul".equals(name)) {
-                return Constants.ICON_MARKUP_UL;
+                return WicketForgeIcons.ICON_MARKUP_UL;
             }
             if ("li".equals(name)) {
-                return Constants.ICON_MARKUP_LI;
+                return WicketForgeIcons.ICON_MARKUP_LI;
             }
             if ("label".equals(name)) {
-                return Constants.ICON_MARKUP_LABEL;
+                return WicketForgeIcons.ICON_MARKUP_LABEL;
             }
             if ("input".equals(name)) {
                 String type = tag.getAttributeValue("type");
                 if ("submit".equals(type) || "reset".equals(type) || "image".equals(type) || "button".equals(type)) {
-                    return Constants.ICON_MARKUP_BUTTON;
+                    return WicketForgeIcons.ICON_MARKUP_BUTTON;
                 }
                 if ("checkbox".equals(type)) {
-                    return Constants.ICON_MARKUP_INPUT_CHECKBOX;
+                    return WicketForgeIcons.ICON_MARKUP_INPUT_CHECKBOX;
                 }
                 if ("radio".equals(type)) {
-                    return Constants.ICON_MARKUP_INPUT_RADIO;
+                    return WicketForgeIcons.ICON_MARKUP_INPUT_RADIO;
                 }
-                return Constants.ICON_MARKUP_INPUT;
+                return WicketForgeIcons.ICON_MARKUP_INPUT;
             }
             if ("textarea".equals(name)) {
-                return Constants.ICON_MARKUP_TEXTAREA;
+                return WicketForgeIcons.ICON_MARKUP_TEXTAREA;
             }
             if ("select".equals(name)) {
                 // generic icon for combobox and list because user dont have to set size attribute...
-                return Constants.ICON_MARKUP_SELECT;
+                return WicketForgeIcons.ICON_MARKUP_SELECT;
             }
             if ("option".equals(name)) {
-                return Constants.ICON_MARKUP_OPTION;
+                return WicketForgeIcons.ICON_MARKUP_OPTION;
             }
             if ("form".equals(name)) {
-                return Constants.ICON_MARKUP_FORM;
+                return WicketForgeIcons.ICON_MARKUP_FORM;
             }
             if ("img".equals(name)) {
-                return Constants.ICON_MARKUP_IMG;
+                return WicketForgeIcons.ICON_MARKUP_IMG;
             }
             if ("button".equals(name)) {
-                return Constants.ICON_MARKUP_BUTTON;
+                return WicketForgeIcons.ICON_MARKUP_BUTTON;
             }
         }
-        return Constants.ICON_MARKUP_;
+        return WicketForgeIcons.ICON_MARKUP_;
     }
 }

@@ -31,6 +31,7 @@ import com.intellij.psi.util.PsiUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 import wicketforge.search.WicketSearchScope;
 import wicketforge.util.WicketFileUtil;
 

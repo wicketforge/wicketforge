@@ -48,6 +48,7 @@ import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.SmartList;
 
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 import wicketforge.facet.WicketForgeFacet;
 
 public final class WicketFileUtil {

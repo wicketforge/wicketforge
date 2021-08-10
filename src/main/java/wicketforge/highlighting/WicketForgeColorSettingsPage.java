@@ -28,6 +28,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.ui.JBColor;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,7 +63,7 @@ public class WicketForgeColorSettingsPage implements ColorSettingsPage {
 
     @Override
     public Icon getIcon() {
-        return Constants.WICKET_ICON;
+        return WicketForgeIcons.WICKET_ICON;
     }
 
     @Override

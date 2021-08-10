@@ -5,10 +5,10 @@
     <depends>com.intellij.properties</depends>
     <depends>com.intellij.java</depends>
 
-
+    <!-- Project metadata -->
     <id>WicketForge</id>
     <name>WicketForge</name>
-    <version>6.0.1</version>
+    <version>6.0.2</version>
     <description>
         <![CDATA[
         <p>WicketForge assists developers creating <a href="http://wicket.apache.org/">Wicket</a> applications.</p>
@@ -71,20 +71,39 @@
             <className>wicketforge.intention.AddPropertiesXMLIntention</className>
             <category>SDK intentions</category>
         </intentionAction>
+
+        <localInspection language="XML"
+                         displayName="Wicket empty src attribute inspection"
+                         groupName="Wicket"
+                         level="ERROR"
+                         enabledByDefault="true"
+                         implementationClass="wicketforge.inspection.EmptySrcAttributeInspection"
+                         />
+        <localInspection language="XML"
+                         displayName="Wicket HTML ID Inspection"
+                         groupName="Wicket"
+                         level="WARNING"
+                         enabledByDefault="true"
+                         implementationClass="wicketforge.inspection.MarkupWicketIdInspection"
+                         />
+        <localInspection language="JAVA"
+                         displayName="Wicket Java ID Inspection"
+                         groupName="Wicket"
+                         enabledByDefault="true"
+                         implementationClass="wicketforge.inspection.ClassWicketIdInspection"/>
+
     </extensions>
+    <!--
     <application-components>
         <component>
             <implementation-class>wicketforge.WicketForgeApplicationComponent</implementation-class>
         </component>
     </application-components>
-    <project-components>
-        <component>
-            <implementation-class>wicketforge.WicketForgeProjectComponent</implementation-class>
-        </component>
-        <component>
-            <implementation-class>wicketforge.highlighting.WicketForgeHighlightingPassFactory</implementation-class>
-        </component>
-    </project-components>
+    -->
+    <applicationListeners>
+        <listener class="wicketforge.WicketForgeService"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </applicationListeners>
     <actions>
         <action id="WicketForgeToggle"
                 class="wicketforge.action.ToggleAction"
@@ -103,10 +122,12 @@
                 text="New Wicket Page"
                 description="Creates new Wicket page skeleton"/>
         <action id="WicketForgeCreatePanel"
+                icon="WicketForgeIcons.ICON_CLASS_PANEL"
                 class="wicketforge.action.CreateWicketPanelAction"
                 text="New Wicket Panel"
                 description="Creates new Wicket panel skeleton"/>
         <action id="WicketForgeViewStructure"
+                icon="AllIcons.General.ProjectStructure"
                 class="wicketforge.action.ViewWicketStructureAction"
                 text="Wicket Structure"
                 description="Popup Wicket structure of the current file for quick navigation">

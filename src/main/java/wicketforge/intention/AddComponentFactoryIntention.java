@@ -38,6 +38,7 @@ import com.intellij.util.ArrayUtil;
 import com.intellij.util.IncorrectOperationException;
 
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 import wicketforge.util.WicketPsiUtil;
 
 /**

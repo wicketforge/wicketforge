@@ -21,6 +21,7 @@ import com.intellij.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 import wicketforge.facet.WicketForgeFacet;
 import wicketforge.search.MarkupIndex;
 import wicketforge.util.WicketPsiUtil;
@@ -40,7 +41,7 @@ public class WicketClassLineMarkerProvider implements LineMarkerProvider {
                 if (WicketPsiUtil.isWicketComponentWithAssociatedMarkup(psiClass)) {
                     final PsiFile psiFile = MarkupIndex.getBaseFile(psiClass);
                     if (psiFile != null) {
-                        return NavigableLineMarkerInfo.create(element, new NavigatablePsiElement[] {psiFile}, Constants.TOMARKUPREF);
+                        return NavigableLineMarkerInfo.create(element, new NavigatablePsiElement[] {psiFile}, WicketForgeIcons.TOMARKUPREF);
                     }
                 }
             }

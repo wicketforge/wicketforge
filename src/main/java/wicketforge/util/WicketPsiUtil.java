@@ -28,6 +28,7 @@ import com.intellij.util.Query;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 
 import java.util.Collection;
 

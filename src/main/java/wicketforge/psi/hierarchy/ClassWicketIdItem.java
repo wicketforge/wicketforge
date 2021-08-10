@@ -20,6 +20,7 @@ import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -109,6 +110,6 @@ public final class ClassWicketIdItem implements ItemPresentation {
         if (!newComponentItems.isEmpty()) {
             return newComponentItems.get(0).getIcon(unused);
         }
-        return Constants.ICON_CLASS_;
+        return WicketForgeIcons.ICON_CLASS_;
     }
 }

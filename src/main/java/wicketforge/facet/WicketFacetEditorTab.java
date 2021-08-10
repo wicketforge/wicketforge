@@ -178,7 +178,7 @@ class WicketFacetEditorTab extends FacetEditorTab {
         protected void customizeCellRenderer(JList list, Object value, int index, boolean selected, boolean hasFocus) {
             if (value instanceof VirtualFilePointer) {
                 VirtualFilePointer filePointer = (VirtualFilePointer) value;
-                setIcon(PlatformIcons.DIRECTORY_CLOSED_ICON);
+                setIcon(PlatformIcons.FOLDER_ICON);
                 append(filePointer.getPresentableUrl(), filePointer.isValid() ? SimpleTextAttributes.REGULAR_ATTRIBUTES : SimpleTextAttributes.ERROR_ATTRIBUTES, null);
             }
         }

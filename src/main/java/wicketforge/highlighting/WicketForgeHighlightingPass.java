@@ -30,6 +30,7 @@ import com.intellij.util.SmartList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 import wicketforge.facet.WicketForgeFacet;
 import wicketforge.psi.references.ClassWicketIdReference;
 import wicketforge.psi.references.MarkupWicketIdReference;
@@ -42,7 +43,7 @@ import java.util.List;
 /**
  */
 class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
-    private PsiFile file;
+    private final PsiFile file;
 
     private volatile Collection<HighlightInfo> highlights = Collections.emptyList();
 

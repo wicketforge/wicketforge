@@ -22,6 +22,7 @@ import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlFile;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 
 import java.util.HashMap;
 import java.util.Map;

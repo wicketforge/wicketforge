@@ -31,6 +31,7 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.PsiReferenceExpression;
 
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 import wicketforge.psi.references.ClassWicketIdReference;
 
 /**
@@ -59,31 +60,5 @@ public class ClassWicketIdInspection extends AbstractBaseJavaLocalInspectionTool
                 }
             }
         };
-    }
-
-    @Override
-    @Nls
-    @NotNull
-    public String getGroupDisplayName() {
-        return Constants.INTENSION_INSPECTION_GROUPNAME;
-    }
-
-    @Override
-    @Nls
-    @NotNull
-    public String getDisplayName() {
-        return "Wicket Java ID Inspection";
-    }
-
-    @Override
-    @NonNls
-    @NotNull
-    public String getShortName() {
-        return "WicketForgeJavaIdInspection";
-    }
-
-    @Override
-    public boolean isEnabledByDefault() {
-        return true;
     }
 }

@@ -21,6 +21,7 @@ import com.intellij.facet.FacetTypeId;
 import com.intellij.facet.FacetTypeRegistry;
 import com.intellij.framework.detection.FacetBasedFrameworkDetector;
 import com.intellij.framework.detection.FileContentPattern;
+import com.intellij.ide.highlighter.HtmlFileType;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.module.JavaModuleType;
@@ -33,6 +34,7 @@ import com.intellij.util.indexing.FileContent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 
 import javax.swing.*;
 
@@ -72,7 +74,7 @@ public class WicketForgeFacetType extends FacetType<WicketForgeFacet, WicketForg
 
     @Override
     public Icon getIcon() {
-        return Constants.WICKET_ICON;
+        return WicketForgeIcons.WICKET_ICON;
     }
 
     public static class WicketForgeFacetDetector extends FacetBasedFrameworkDetector<WicketForgeFacet, WicketForgeFacetConfiguration> {
@@ -89,7 +91,7 @@ public class WicketForgeFacetType extends FacetType<WicketForgeFacet, WicketForg
         @NotNull
         @Override
         public FileType getFileType() {
-            return StdFileTypes.HTML;
+            return HtmlFileType.INSTANCE;
         }
 
         @NotNull

@@ -22,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import wicketforge.action.ui.CreatePanelDialog;
 import wicketforge.templates.WicketTemplates;
 
+import java.util.function.Consumer;
+
 /**
  * CreateWicketPanelAction
  */
@@ -32,22 +34,16 @@ public class CreateWicketPanelAction extends CreateWicketAction {
     }
 
     @Override
-    @NotNull
-    protected PsiElement[] invokeDialog(Project project, PsiDirectory directory) {
+    protected void invokeDialog(@NotNull Project project, @NotNull PsiDirectory directory, @NotNull Consumer<PsiElement[]> elementsConsumer) {
         ActionRunnableImpl actionRunnable = new ActionRunnableImpl(project, directory, WicketTemplates.WICKET_PANEL_HTML);
         CreatePanelDialog dialog = new CreatePanelDialog(project, actionRunnable, getCommandName(), directory);
         dialog.show();
-        return actionRunnable.getCreatedElements();
+        elementsConsumer.accept(actionRunnable.getCreatedElements());
     }
 
     @Override
     protected String getErrorTitle() {
         return "Cannot create Wicket Panel";
-    }
-
-    @Override
-    protected String getCommandName() {
-        return "Create Wicket Panel";
     }
 
     @Override

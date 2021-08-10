@@ -24,6 +24,7 @@ import com.intellij.psi.xml.XmlFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 import wicketforge.util.WicketPsiUtil;
 
 import java.util.Map;

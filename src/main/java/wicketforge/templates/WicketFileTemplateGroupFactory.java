@@ -19,6 +19,7 @@ import com.intellij.ide.fileTemplates.FileTemplateDescriptor;
 import com.intellij.ide.fileTemplates.FileTemplateGroupDescriptor;
 import com.intellij.ide.fileTemplates.FileTemplateGroupDescriptorFactory;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 
 /**
  * WicketFileTemplateGroupFactory
@@ -27,7 +28,7 @@ public class WicketFileTemplateGroupFactory implements FileTemplateGroupDescript
     
     @Override
     public FileTemplateGroupDescriptor getFileTemplatesDescriptor() {
-        final FileTemplateGroupDescriptor groupDescriptor = new FileTemplateGroupDescriptor("Wicket", Constants.WICKET_ICON);
+        final FileTemplateGroupDescriptor groupDescriptor = new FileTemplateGroupDescriptor("Wicket", WicketForgeIcons.WICKET_ICON);
         groupDescriptor.addTemplate(new FileTemplateDescriptor(WICKET_PAGE_HTML));
         groupDescriptor.addTemplate(new FileTemplateDescriptor(WICKET_PANEL_HTML));
         groupDescriptor.addTemplate(new FileTemplateDescriptor(WICKET_BORDER_HTML));

@@ -18,6 +18,7 @@ package wicketforge.psi;
 import com.intellij.patterns.*;
 import com.intellij.psi.*;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 import wicketforge.psi.references.ClassWicketIdReferenceProvider;
 import wicketforge.psi.references.MarkupWicketIdReferenceProvider;
 

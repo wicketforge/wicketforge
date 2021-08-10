@@ -19,6 +19,7 @@ import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.psi.*;
@@ -26,6 +27,7 @@ import com.intellij.psi.xml.XmlFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 import wicketforge.psi.hierarchy.HierarchyUtil;
 import wicketforge.psi.hierarchy.MarkupWicketIdHierarchy;
 import wicketforge.psi.hierarchy.MarkupWicketIdItem;
@@ -43,7 +45,7 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
             public void run() {
                 // lets do some basic checks...
                 PsiFile f = p.getOriginalFile();
-                if (f.getFileType() == StdFileTypes.JAVA) {
+                if (f.getFileType() == JavaFileType.INSTANCE) {
                     PsiElement psiElement = p.getOriginalPosition();
                     if (psiElement instanceof PsiJavaToken) {
                         PsiExpression wicketIdExpression = getWicketIdExpression((PsiJavaToken) psiElement);
@@ -63,7 +65,7 @@ public class ClassWicketIdCompletionContributor extends CompletionContributor {
                                                     rs.addElement(
                                                             LookupElementBuilder.create(child.getWicketId())
                                                                     //.withIcon(child.getIcon()) // child's icon bother view -> use generic icon
-                                                                    .withIcon(Constants.WICKET_COMPONENT_ICON)
+                                                                    .withIcon(WicketForgeIcons.WICKET_COMPONENT_ICON)
                                                                     .withTypeText(".html")
                                                                     .withTailText("  " + child.getLocationString(), true)
                                                     );

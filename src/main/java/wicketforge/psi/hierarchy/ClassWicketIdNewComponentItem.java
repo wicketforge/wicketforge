@@ -24,6 +24,7 @@ import com.intellij.psi.util.PsiUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 import wicketforge.util.WicketPsiUtil;
 
 import javax.swing.*;
@@ -106,56 +107,56 @@ public final class ClassWicketIdNewComponentItem implements ItemPresentation {
             String name = classToCreate.getName();
 
             if ("Form".equals(name)) {
-                return Constants.ICON_CLASS_FORM;
+                return WicketForgeIcons.ICON_CLASS_FORM;
             }
             if ("AbstractChoice".equals(name)) {
-                return Constants.ICON_CLASS_SELECT;
+                return WicketForgeIcons.ICON_CLASS_SELECT;
             }
             if ("CheckBox".equals(name)) {
-                return Constants.ICON_CLASS_CHECKBOX;
+                return WicketForgeIcons.ICON_CLASS_CHECKBOX;
             }
             if ("Radio".equals(name)) {
-                return Constants.ICON_CLASS_RADIO;
+                return WicketForgeIcons.ICON_CLASS_RADIO;
             }
             if ("Image".equals(name) || "ContextImage".equals(name)) {
-                return Constants.ICON_CLASS_RADIO;
+                return WicketForgeIcons.ICON_CLASS_RADIO;
             }
             if ("Label".equals(name) || "MultiLineLabel".equals(name) || "FormComponentLabel".equals(name)) {
-                return Constants.ICON_CLASS_LABEL;
+                return WicketForgeIcons.ICON_CLASS_LABEL;
             }
             if ("AbstractLink".equals(name)) {
-                return Constants.ICON_CLASS_LINK;
+                return WicketForgeIcons.ICON_CLASS_LINK;
             }
             if ("Button".equals(name)) {
-                return Constants.ICON_CLASS_BUTTON;
+                return WicketForgeIcons.ICON_CLASS_BUTTON;
             }
             if ("TextArea".equals(name)) {
-                return Constants.ICON_CLASS_TEXTAREA;
+                return WicketForgeIcons.ICON_CLASS_TEXTAREA;
             }
             if ("AbstractTextComponent".equals(name)) {
-                return Constants.ICON_CLASS_TEXTFIELD;
+                return WicketForgeIcons.ICON_CLASS_TEXTFIELD;
             }
             if ("AbstractRepeater".equals(name)) {
-                return Constants.ICON_CLASS_REPEATER;
+                return WicketForgeIcons.ICON_CLASS_REPEATER;
             }
             if ("Panel".equals(name)) {
-                return Constants.ICON_CLASS_PANEL;
+                return WicketForgeIcons.ICON_CLASS_PANEL;
             }
             if ("Border".equals(name)) {
-                return Constants.ICON_CLASS_BORDER;
+                return WicketForgeIcons.ICON_CLASS_BORDER;
             }
             if ("FormComponentPanel".equals(name)) {
-                return Constants.ICON_CLASS_FORMCOMPONENTPANEL;
+                return WicketForgeIcons.ICON_CLASS_FORMCOMPONENTPANEL;
             }
             if ("FormComponent".equals(name)) {
-                return Constants.ICON_CLASS_FORMCOMPONENT;
+                return WicketForgeIcons.ICON_CLASS_FORMCOMPONENT;
             }
             if ("WebMarkupContainer".equals(name)) {
-                return Constants.ICON_CLASS_WEBMARKUPCONTAINER;
+                return WicketForgeIcons.ICON_CLASS_WEBMARKUPCONTAINER;
             }
 
             classToCreate = classToCreate.getSuperClass();
         }
-        return Constants.ICON_CLASS_;
+        return WicketForgeIcons.ICON_CLASS_;
     }
 }

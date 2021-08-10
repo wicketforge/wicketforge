@@ -22,6 +22,7 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 
 /**
  * CreatePanelDialog

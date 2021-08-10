@@ -25,6 +25,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 import wicketforge.action.ui.AbstractCreateDialog;
 import wicketforge.util.WicketFileUtil;
 import wicketforge.util.WicketFilenameUtil;
@@ -38,7 +39,7 @@ import java.util.List;
 abstract class CreateWicketAction extends CreateElementActionBase {
 
     protected CreateWicketAction(String text, String description) {
-        super(text, description, Constants.WICKET_ICON);
+        super(text, description, WicketForgeIcons.WICKET_ICON);
     }
 
     @NotNull

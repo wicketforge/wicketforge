@@ -15,7 +15,7 @@
  */
 package wicketforge.search;
 
-import com.intellij.openapi.fileTypes.StdFileTypes;
+import com.intellij.ide.highlighter.HtmlFileType;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
@@ -44,7 +44,7 @@ public class MarkupIndex extends WicketResourceIndexExtension {
 
     @Override
     public boolean acceptInput(@NotNull VirtualFile file) {
-        return StdFileTypes.HTML.equals(file.getFileType());
+        return HtmlFileType.INSTANCE.equals(file.getFileType());
     }
 
     /**

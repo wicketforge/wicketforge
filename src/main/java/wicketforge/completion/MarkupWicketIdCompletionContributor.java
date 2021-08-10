@@ -19,6 +19,7 @@ import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.ide.highlighter.HtmlFileType;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.psi.PsiClass;
@@ -30,6 +31,7 @@ import com.intellij.psi.xml.XmlToken;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 import wicketforge.psi.hierarchy.ClassWicketIdHierarchy;
 import wicketforge.psi.hierarchy.ClassWicketIdItem;
 import wicketforge.psi.hierarchy.HierarchyUtil;
@@ -46,7 +48,7 @@ public class MarkupWicketIdCompletionContributor extends CompletionContributor {
             public void run() {
                 // lets do some basic checks...
                 PsiFile f = p.getOriginalFile();
-                if (f.getFileType() == StdFileTypes.HTML) {
+                if (f.getFileType() == HtmlFileType.INSTANCE) {
                     PsiElement psiElement = p.getOriginalPosition();
                     if (psiElement instanceof XmlToken) {
                         XmlAttributeValue wicketIdAttribute = getWicketIdAttribute((XmlToken) psiElement);
@@ -62,7 +64,7 @@ public class MarkupWicketIdCompletionContributor extends CompletionContributor {
                                             rs.addElement(
                                                     LookupElementBuilder.create(child.getWicketId())
                                                             //.withIcon(child.getIcon()) // child's icon bother view -> use generic icon
-                                                            .withIcon(Constants.WICKET_COMPONENT_ICON)
+                                                            .withIcon(WicketForgeIcons.WICKET_COMPONENT_ICON)
                                                             .withTypeText(".java")
                                                             .withTailText("  " + child.getLocationString(), true)
                                             );

@@ -54,7 +54,7 @@ abstract class WicketResourceIndexExtension extends ScalarIndexExtension<String>
 
     @NotNull
     @Override
-    public Map<String, Void> map(FileContent inputData) {
+    public Map<String, Void> map(@NotNull FileContent inputData) {
         ResourceInfo resourceInfo = ResourceInfo.from(inputData);
         if (resourceInfo == null) {
             return Collections.emptyMap();

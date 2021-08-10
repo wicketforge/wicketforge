@@ -18,7 +18,9 @@ package wicketforge.library;
 import com.intellij.framework.library.DownloadableLibraryType;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.Constants;
+import icons.WicketForgeIcons;
 
+import javax.swing.*;
 import java.net.URL;
 import java.util.Objects;
 
@@ -28,6 +30,11 @@ public class WicketLibraryType extends DownloadableLibraryType {
 
     public WicketLibraryType() {
         super(() -> "Wicket", "wicket", "wicket", getUrl("wicket"));
+    }
+
+    @Override
+    public @NotNull Icon getLibraryTypeIcon() {
+        return WicketForgeIcons.WICKET_ICON;
     }
 
     @Override
