@@ -9,6 +9,7 @@
 - removed deprecated ApplicationComponent-Classes and migrated to new API
 - moved Icons from Constants to new class
 ### Added
+- Updates to Plugin do no longer require IDE restart
 - Added preliminary support for IntelliJ IDEA 2021.3
 ## [6.0.1]
 ### Fixed
