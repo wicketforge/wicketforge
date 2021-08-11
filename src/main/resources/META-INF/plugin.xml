@@ -137,7 +137,7 @@
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="control shift F12"/>
         </action>
 
-        <group id="WicketForgeNavigationGroup" text="WicketForge">
+        <group id="WicketForgeNavigationGroup" text="WicketForge">A
             <separator/>
             <reference ref="WicketForgeToggle"/>
             <reference ref="WicketForgeExtractProperties"/>
