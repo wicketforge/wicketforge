@@ -28,9 +28,9 @@ import wicketforge.search.ClassIndex;
 /**
  */
 public class MarkupWicketIdReferenceProvider extends PsiReferenceProvider {
-    @NotNull
+
     @Override
-    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+    public PsiReference @NotNull [] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         XmlAttributeValue attributeValue = (XmlAttributeValue) element;
         PsiElement parent = attributeValue.getParent();
         if (parent instanceof XmlAttribute && Constants.WICKET_ID.equals(((XmlAttribute) parent).getName())) {
@@ -39,7 +39,9 @@ public class MarkupWicketIdReferenceProvider extends PsiReferenceProvider {
                 if (WicketForgeFacet.hasFacetOrIsFromLibrary(element)) {
                     PsiClass psiClass = ClassIndex.getAssociatedClass(psiFile);
                     if (psiClass != null) {
-                        return new PsiReference[] {new MarkupWicketIdReference(attributeValue, psiClass)};
+                        return new PsiReference[] {
+                                new MarkupWicketIdReference(attributeValue, psiClass)
+                        };
                     }
                 }
             }

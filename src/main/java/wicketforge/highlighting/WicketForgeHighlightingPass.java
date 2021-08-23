@@ -91,24 +91,27 @@ class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
                         super.visitCallExpression(callExpression);
                         PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated(callExpression);
                         // if its a component
-                        if (classToBeCreated != null && WicketPsiUtil.isWicketComponent(classToBeCreated)) {
-                            // highlight wicketId expression (but only if its not a page)
-                            if (!WicketPsiUtil.isWicketPage(classToBeCreated)) {
-                                PsiExpression wicketIdExpression = WicketPsiUtil.getWicketIdExpressionFromArguments(callExpression);
-                                if (wicketIdExpression != null) {
-                                    // only PsiLiteralExpression are resolvable wicketIds
-                                    HighlightInfoType type;
-                                    if (hasReference(wicketIdExpression, ClassWicketIdReference.class)) {
-                                        type = WicketForgeColorSettingsPage.HIGHLIGHT_JAVAWICKETID;
-                                    } else {
-                                        type = WicketForgeColorSettingsPage.HIGHLIGHT_JAVAWICKETID_NOTRESOLVABLE;
-                                    }
-                                    HighlightInfo highlightInfo = createHighlightInfo(type, wicketIdExpression.getTextRange());
-                                    if (highlightInfo != null) {
-                                        workList.add(highlightInfo);
-                                    }
-                                }
-                            }
+                        if (classToBeCreated == null || !WicketPsiUtil.isWicketComponent(classToBeCreated)) {
+                            return;
+                        }
+                        // highlight wicketId expression (but only if its not a page)
+                        if (WicketPsiUtil.isWicketPage(classToBeCreated)) {
+                            return;
+                        }
+                        PsiExpression wicketIdExpression = WicketPsiUtil.getWicketIdExpressionFromArguments(callExpression);
+                        if (wicketIdExpression == null) {
+                            return;
+                        }
+                        // only PsiLiteralExpression are resolvable wicketIds
+                        HighlightInfoType type;
+                        if (hasReference(wicketIdExpression, ClassWicketIdReference.class)) {
+                            type = WicketForgeColorSettingsPage.HIGHLIGHT_JAVAWICKETID;
+                        } else {
+                            type = WicketForgeColorSettingsPage.HIGHLIGHT_JAVAWICKETID_NOTRESOLVABLE;
+                        }
+                        HighlightInfo highlightInfo = createHighlightInfo(type, wicketIdExpression.getTextRange());
+                        if (highlightInfo != null) {
+                            workList.add(highlightInfo);
                         }
                     }
                 });
@@ -119,7 +122,7 @@ class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
     }
 
     private boolean hasReference(@NotNull final PsiElement element, @NotNull final Class<? extends PsiReference> referenceClass) {
-        for (PsiReference reference : element.getReferences()) {
+        for (PsiReference reference : PsiReferenceService.getService().getReferences(element, new PsiReferenceService.Hints())) {
             if (reference.getClass().equals(referenceClass)) {
                 return true;
             }
@@ -129,7 +132,6 @@ class WicketForgeHighlightingPass extends TextEditorHighlightingPass {
 
     @Override
     public void doApplyInformationToEditor() {
-        assert myDocument != null; // editor.getDocument() is notnull
         UpdateHighlightersUtil.setHighlightersToEditor(myProject, myDocument, 0, myDocument.getTextLength(), highlights, getColorsScheme(), getId());
     }
 

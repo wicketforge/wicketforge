@@ -66,7 +66,7 @@ class ClassWicketIdReferences {
     }
 
     public static ClassWicketIdReferences build(@NotNull final PsiClass psiClass, final boolean onlyThisMarkupContainer) {
-        final Map<PsiElement, List<PsiCallExpression>> componentAddMap = new HashMap<PsiElement, List<PsiCallExpression>>(); // Key: PsiClass or PsiCallExpression reference from a WicketMarkup component
+        final Map<PsiElement, List<PsiCallExpression>> componentAddMap = new HashMap<>(); // Key: PsiClass or PsiCallExpression reference from a WicketMarkup component
         final Map<PsiElement, List<PsiCallExpression>> componentReplaceMap = new HashMap<PsiElement, List<PsiCallExpression>>();
         psiClass.accept(new JavaRecursiveElementVisitor() {
             private MarkupReferences markupReferences = new MarkupReferences();
@@ -138,7 +138,7 @@ class ClassWicketIdReferences {
                 String methodName = method.getName();
 
                 Map<PsiElement, List<PsiCallExpression>> currentComponentMap;
-                if (ArrayUtil.contains(methodName, "add", "addOrReplace", "autoAdd", "replace", "addToBorder", "replaceInBorder") && WicketPsiUtil.isMarkupContainer(methodCallClass)) {
+                if (ArrayUtil.contains(methodName, "add","queue", "addOrReplace", "autoAdd", "replace", "addToBorder", "replaceInBorder") && WicketPsiUtil.isMarkupContainer(methodCallClass)) {
                     currentComponentMap = componentAddMap;
                 } else if (ArrayUtil.contains(methodName, "replaceWith") && WicketPsiUtil.isWicketComponent(methodCallClass)) {
                     currentComponentMap = componentReplaceMap;

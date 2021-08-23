@@ -32,9 +32,9 @@ import java.util.List;
 /**
  */
 public class MarkupWicketIdReference implements PsiReference, PsiPolyVariantReference {
-    private XmlAttributeValue attributeValue;
-    private PsiClass psiClass;
-    private TextRange textRange;
+    private final @NotNull XmlAttributeValue attributeValue;
+    private final PsiClass psiClass;
+    private final TextRange textRange;
 
     public MarkupWicketIdReference(@NotNull XmlAttributeValue attributeValue, @NotNull PsiClass psiClass) {
         this.attributeValue = attributeValue;
@@ -45,18 +45,18 @@ public class MarkupWicketIdReference implements PsiReference, PsiPolyVariantRefe
 
     @Override
     @NotNull
-    public ResolveResult[] multiResolve(boolean incompleteCode) {
+    public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
         String path = HierarchyUtil.findPathOf(attributeValue, false);
         if (path != null) {
             ClassWicketIdHierarchy hierarchy = ClassWicketIdHierarchy.create(psiClass);
             ClassWicketIdItem item = hierarchy.getWicketIdPathMap().get(path);
             if (item != null) {
-                final List<PsiElementResolveResult> list = new SmartList<PsiElementResolveResult>();
+                final List<PsiElementResolveResult> list = new SmartList<>();
                 for (ClassWicketIdNewComponentItem newComponentItem : item.getNewComponentItems()) {
                     list.add(new PsiElementResolveResult(newComponentItem.getWicketIdExpression()));
                 }
                 if (!list.isEmpty()) {
-                    return list.toArray(new ResolveResult[list.size()]);
+                    return list.toArray(new ResolveResult[0]);
                 }
             }
         }
@@ -64,12 +64,12 @@ public class MarkupWicketIdReference implements PsiReference, PsiPolyVariantRefe
     }
 
     @Override
-    public PsiElement getElement() {
+    public @NotNull PsiElement getElement() {
         return attributeValue;
     }
 
     @Override
-    public TextRange getRangeInElement() {
+    public @NotNull TextRange getRangeInElement() {
         return textRange;
     }
 
@@ -86,7 +86,7 @@ public class MarkupWicketIdReference implements PsiReference, PsiPolyVariantRefe
     }
 
     @Override
-    public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+    public PsiElement handleElementRename(@NotNull String newElementName) throws IncorrectOperationException {
         final PsiElement elementAt = attributeValue.findElementAt(textRange.getStartOffset());
         assert elementAt != null;
         return ElementManipulators.getManipulator(elementAt).handleContentChange(elementAt, getRangeInElement(), newElementName);
@@ -98,7 +98,7 @@ public class MarkupWicketIdReference implements PsiReference, PsiPolyVariantRefe
     }
 
     @Override
-    public boolean isReferenceTo(PsiElement element) {
+    public boolean isReferenceTo(@NotNull PsiElement element) {
         final PsiManager manager = attributeValue.getManager();
         for (final ResolveResult result : multiResolve(false)) {
             if (manager.areElementsEquivalent(result.getElement(), element)) return true;
@@ -108,7 +108,7 @@ public class MarkupWicketIdReference implements PsiReference, PsiPolyVariantRefe
 
     @Override
     @NotNull
-    public Object[] getVariants() {
+    public Object @NotNull [] getVariants() {
         return ArrayUtil.EMPTY_OBJECT_ARRAY;
     }
 

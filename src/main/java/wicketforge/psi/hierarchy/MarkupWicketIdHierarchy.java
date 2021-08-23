@@ -70,13 +70,11 @@ public class MarkupWicketIdHierarchy {
                     XmlAttributeValue attributeValue = attribute.getValueElement();
                     if (attributeValue != null) {
                         String wicketId = attributeValue.getValue();
-                        if (wicketId != null) {
-                            MarkupWicketIdItem item = new MarkupWicketIdItem(wicketId, attribute, attributeValue);
-                            current.addChild(item);
-                            sb.append(Constants.HIERARCHYSEPARATOR).append(wicketId);
-                            wicketIdPathMap.put(sb.toString(), item);
-                            current = item;
-                        }
+                        MarkupWicketIdItem item = new MarkupWicketIdItem(wicketId, attribute, attributeValue);
+                        current.addChild(item);
+                        sb.append(Constants.HIERARCHYSEPARATOR).append(wicketId);
+                        wicketIdPathMap.put(sb.toString(), item);
+                        current = item;
                     }
                 }
                 super.visitXmlAttribute(attribute);

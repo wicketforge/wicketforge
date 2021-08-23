@@ -27,22 +27,26 @@ import wicketforge.util.WicketPsiUtil;
 public class ClassWicketIdReferenceProvider extends PsiReferenceProvider {
     @NotNull
     @Override
-    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+    public PsiReference @NotNull [] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         PsiExpressionList expressionList = (PsiExpressionList) element.getParent();
         PsiExpression[] expressions = expressionList.getExpressions();
-        if (expressions.length > 0 && expressions[0].equals(element)) {
-            if (WicketForgeFacet.hasFacetOrIsFromLibrary(element)) {
-                PsiElement parent = expressionList.getParent(); // can be PsiCallExpression or PsiAnonymousClass
-                PsiCallExpression callExpression = (PsiCallExpression) (parent instanceof PsiCallExpression ? parent : parent.getParent());
-                PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated(callExpression);
-                if (classToBeCreated != null && WicketPsiUtil.isWicketComponent(classToBeCreated) && !WicketPsiUtil.isWicketPage(classToBeCreated)) {
-                    PsiClass wicketClass = WicketPsiUtil.getParentWicketClass(callExpression);
-                    if (wicketClass != null && MarkupIndex.getBaseFile(wicketClass) != null) {
-                        return new PsiReference[] {new ClassWicketIdReference((PsiLiteralExpression) element, wicketClass)};
-                    }
-                }
-            }
+        if (expressions.length <= 0 || !expressions[0].equals(element)) {
+            return PsiReference.EMPTY_ARRAY;
         }
+        if (!WicketForgeFacet.hasFacetOrIsFromLibrary(element)) {
+            return PsiReference.EMPTY_ARRAY;
+        }
+        PsiElement parent = expressionList.getParent(); // can be PsiCallExpression or PsiAnonymousClass
+        PsiCallExpression callExpression = (PsiCallExpression) (parent instanceof PsiCallExpression ? parent : parent.getParent());
+        PsiClass classToBeCreated = WicketPsiUtil.getClassToBeCreated(callExpression);
+        if (classToBeCreated == null || !WicketPsiUtil.isWicketComponent(classToBeCreated) || WicketPsiUtil.isWicketPage(classToBeCreated)) {
+            return PsiReference.EMPTY_ARRAY;
+        }
+        PsiClass wicketClass = WicketPsiUtil.getParentWicketClass(callExpression);
+        if (wicketClass != null)
+            if (MarkupIndex.getBaseFile(wicketClass) != null) {
+                return new PsiReference[]{new ClassWicketIdReference((PsiLiteralExpression) element, wicketClass)};
+            }
         return PsiReference.EMPTY_ARRAY;
     }
 }
