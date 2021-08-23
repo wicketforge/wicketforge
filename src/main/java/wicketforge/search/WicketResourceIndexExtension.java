@@ -44,12 +44,9 @@ abstract class WicketResourceIndexExtension extends ScalarIndexExtension<String>
     }
 
     protected WicketResourceIndexExtension(@NotNull MessageBus messageBus) {
-        messageBus.connect().subscribe(WicketForgeFacetConfiguration.ADDITIONAL_PATHS_CHANGED, new Runnable() {
-            @Override
-            public void run() {
-                FileBasedIndex.getInstance().requestRebuild(getName());
-            }
-        });
+        messageBus.connect().subscribe(WicketForgeFacetConfiguration.ADDITIONAL_PATHS_CHANGED, () ->
+                FileBasedIndex.getInstance().requestRebuild(getName())
+        );
     }
 
     @NotNull

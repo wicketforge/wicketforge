@@ -15,11 +15,10 @@
  */
 package wicketforge.highlighting
 
-import com.intellij.codeHighlighting.TextEditorHighlightingPassFactory
-import com.intellij.psi.PsiFile
 import com.intellij.codeHighlighting.TextEditorHighlightingPass
+import com.intellij.codeHighlighting.TextEditorHighlightingPassFactory
 import com.intellij.openapi.editor.Editor
-import wicketforge.highlighting.WicketForgeHighlightingPass
+import com.intellij.psi.PsiFile
 
 /**
  */

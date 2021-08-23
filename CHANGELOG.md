@@ -1,6 +1,9 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
 # WicketForge Changelog
+## [6.0.3]
+### Fixed
+- Wicket-ID References are now working reliable again
 
 ## [6.0.2]
 ### Fixed

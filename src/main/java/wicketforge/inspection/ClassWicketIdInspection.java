@@ -15,6 +15,7 @@
  */
 package wicketforge.inspection;
 
+import com.intellij.psi.*;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -23,12 +24,6 @@ import com.intellij.codeInspection.AbstractBaseJavaLocalInspectionTool;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.psi.JavaElementVisitor;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiExpression;
-import com.intellij.psi.PsiLiteralExpression;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.PsiReferenceExpression;
 
 import wicketforge.Constants;
 import icons.WicketForgeIcons;
@@ -52,7 +47,7 @@ public class ClassWicketIdInspection extends AbstractBaseJavaLocalInspectionTool
                 if (!(expression instanceof PsiLiteralExpression)) {
                     return;
                 }
-                for (PsiReference reference : expression.getReferences()) {
+                for (PsiReference reference : PsiReferenceService.getService().getReferences(expression, new PsiReferenceService.Hints())) {
                     if (reference instanceof ClassWicketIdReference && reference.resolve() == null) {
                         holder.registerProblem(holder.getManager().createProblemDescriptor(expression, "Wicket id reference problem",
                                 (LocalQuickFix) null, ProblemHighlightType.GENERIC_ERROR_OR_WARNING, true));

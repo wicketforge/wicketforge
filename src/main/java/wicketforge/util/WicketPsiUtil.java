@@ -27,6 +27,7 @@ import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.Query;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.kotlin.psi.KtCallExpression;
 import wicketforge.Constants;
 import icons.WicketForgeIcons;
 
@@ -112,6 +113,7 @@ public final class WicketPsiUtil {
     }
 
     private static boolean isInheritor(@NotNull PsiClass candidateClass, @NotNull String... baseClassQualifiedNames) {
+        /*
         PsiClass workClass = candidateClass;
         while (workClass != null) {
             String candidateClassQualifiedName = workClass.getQualifiedName();
@@ -125,17 +127,17 @@ public final class WicketPsiUtil {
             workClass = workClass.getSuperClass();
         }
         return false;
-        /* same (safer?) implementation thru ideas classes...
+        */
+        // same (safer?) implementation thru ideas classes...
         Project project = candidateClass.getProject();
         JavaPsiFacade psiFacade = JavaPsiFacade.getInstance(project);
         for (String baseClassQualifiedName : baseClassQualifiedNames) {
             PsiClass superClass = psiFacade.findClass(baseClassQualifiedName, GlobalSearchScope.allScope(project));
-            if (superClass != null && candidateClass.isInheritor(superClass, true)) {
+            if (superClass != null && (candidateClass.equals(superClass) || candidateClass.isInheritor(superClass, true))) {
                 return true;
             }
         }
         return false;
-        */
     }
 
     /**
@@ -187,25 +189,25 @@ public final class WicketPsiUtil {
         return null;
     }
 
-    /**
-     * @param callExpression
-     * @return PsiAnonymousClass or referenced PsiClass or null
-     *
-     * This is *not* equal to PsiNewExpression.getClassOrAnonymousClassReference()
-     */
+        /**
+         * @param callExpression
+         * @return PsiAnonymousClass or referenced PsiClass or null
+         *
+         * This is *not* equal to PsiNewExpression.getClassOrAnonymousClassReference()
+         */
     @Nullable
     public static PsiClass getClassToBeCreated(@NotNull PsiCallExpression callExpression) {
         PsiClass result = null;
         if (callExpression instanceof PsiNewExpression) {
             PsiNewExpression newExpression = (PsiNewExpression) callExpression;
-            // first check if referenced var is a anonymous class, then we have our result
+            // first check if referenced var is an anonymous class, then we have our result
             result = newExpression.getAnonymousClass();
             if (result == null) {
                 // if not anonymous -> resolve concrete class as result
                 PsiJavaCodeReferenceElement referenceElement = newExpression.getClassReference();
                 if (referenceElement != null) {
                     PsiElement resolvedElement = referenceElement.resolve();
-                    if (resolvedElement != null && resolvedElement instanceof PsiClass) {
+                    if (resolvedElement instanceof PsiClass) {
                         result = (PsiClass) resolvedElement;
                     }
                 }

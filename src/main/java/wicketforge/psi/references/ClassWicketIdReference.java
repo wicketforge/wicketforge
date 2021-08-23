@@ -22,46 +22,52 @@ import com.intellij.psi.xml.XmlFile;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import wicketforge.psi.hierarchy.HierarchyUtil;
 import wicketforge.psi.hierarchy.MarkupWicketIdHierarchy;
 import wicketforge.psi.hierarchy.MarkupWicketIdItem;
 import wicketforge.search.MarkupIndex;
 
+import java.util.Objects;
+
 /**
  */
 public class ClassWicketIdReference implements PsiReference {
-    private PsiLiteralExpression wicketIdExpression;
-    private PsiClass psiClass;
-    private TextRange textRange;
+    private final PsiLiteralExpression wicketIdExpression;
+    private final PsiClass psiClass;
+    private final TextRange textRange;
 
     public ClassWicketIdReference(@NotNull PsiLiteralExpression wicketIdExpression, @NotNull PsiClass psiClass) {
-        this.wicketIdExpression = wicketIdExpression;
-        this.psiClass = psiClass;
+        this.wicketIdExpression = Objects.requireNonNull(wicketIdExpression);
+        this.psiClass = Objects.requireNonNull(psiClass);
         textRange = new TextRange(0, wicketIdExpression.getTextLength()); // issue 62: text range from 0 -> need also parentheses 
     }
 
     @Override
-    public PsiElement getElement() {
+    public @NotNull PsiElement getElement() {
         return wicketIdExpression;
     }
 
     @Override
-    public TextRange getRangeInElement() {
+    public @NotNull TextRange getRangeInElement() {
         return textRange;
     }
 
     @Override
+    @Nullable
     public PsiElement resolve() {
         PsiFile markupFile = MarkupIndex.getBaseFile(psiClass);
-        if (markupFile != null) {
-            String path = HierarchyUtil.findPathOf(psiClass, wicketIdExpression, false, false);
-            if (path != null) {
-                MarkupWicketIdHierarchy hierarchy = MarkupWicketIdHierarchy.create((XmlFile) markupFile);
-                MarkupWicketIdItem item = hierarchy.getWicketIdPathMap().get(path);
-                if (item != null) {
-                    return item.getAttributeValue();
-                }
-            }
+        if (markupFile == null) {
+            return null;
+        }
+        String path = HierarchyUtil.findPathOf(psiClass, wicketIdExpression, false, true);
+        if (path == null) {
+            return null;
+        }
+        MarkupWicketIdHierarchy hierarchy = MarkupWicketIdHierarchy.create((XmlFile) markupFile);
+        MarkupWicketIdItem item = hierarchy.getWicketIdPathMap().get(path);
+        if (item != null) {
+            return item.getAttributeValue();
         }
         return null;
     }
@@ -73,10 +79,10 @@ public class ClassWicketIdReference implements PsiReference {
     }
 
     @Override
-    public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
-        ElementManipulator manipulator = ElementManipulators.getManipulator(wicketIdExpression);
+    public PsiElement handleElementRename(@NotNull String newElementName) throws IncorrectOperationException {
+        ElementManipulator<PsiLiteralExpression> manipulator = ElementManipulators.getManipulator(wicketIdExpression);
         if (manipulator instanceof StringLiteralManipulator) {
-            return ((StringLiteralManipulator) manipulator).handleContentChange(wicketIdExpression, newElementName);
+            return manipulator.handleContentChange(wicketIdExpression, newElementName);
         }
         return null;
     }
@@ -87,13 +93,13 @@ public class ClassWicketIdReference implements PsiReference {
     }
 
     @Override
-    public boolean isReferenceTo(PsiElement element) {
+    public boolean isReferenceTo(@NotNull PsiElement element) {
         return wicketIdExpression.getManager().areElementsEquivalent(resolve(), element);
     }
 
     @Override
     @NotNull
-    public Object[] getVariants() {
+    public Object @NotNull [] getVariants() {
         return ArrayUtil.EMPTY_OBJECT_ARRAY;
     }
 
