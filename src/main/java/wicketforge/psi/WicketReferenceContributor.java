@@ -17,8 +17,6 @@ package wicketforge.psi;
 
 import com.intellij.patterns.*;
 import com.intellij.psi.*;
-import org.jetbrains.kotlin.idea.patterns.KotlinPatterns;
-import org.jetbrains.kotlin.psi.KtParameter;
 import wicketforge.Constants;
 import wicketforge.psi.references.ClassWicketIdReferenceProvider;
 import wicketforge.psi.references.MarkupWicketIdReferenceProvider;

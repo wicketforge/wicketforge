@@ -27,9 +27,7 @@ import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.Query;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.kotlin.psi.KtCallExpression;
 import wicketforge.Constants;
-import icons.WicketForgeIcons;
 
 import java.util.Collection;
 
@@ -190,7 +188,6 @@ public final class WicketPsiUtil {
     }
 
         /**
-         * @param callExpression
          * @return PsiAnonymousClass or referenced PsiClass or null
          *
          * This is *not* equal to PsiNewExpression.getClassOrAnonymousClassReference()
@@ -241,7 +238,6 @@ public final class WicketPsiUtil {
     }
 
     /**
-     * @param element
      * @return true if element is in library
      */
     public static boolean isInLibrary(@Nullable PsiElement element) {
