@@ -213,7 +213,12 @@ public final class WicketPsiUtil {
             PsiMethodCallExpression methodCallExpression = (PsiMethodCallExpression) callExpression;
             PsiMethod psiMethod = methodCallExpression.resolveMethod();
             if (psiMethod != null && AnnotationUtil.findAnnotation(psiMethod, Constants.WICKETFORGE_COMPONENT_FACTORY) != null) {
-                result = PsiUtil.resolveClassInClassTypeOnly(psiMethod.getReturnType());
+                try {
+                    result = PsiUtil.resolveClassInClassTypeOnly(psiMethod.getReturnType());
+                } catch (IllegalStateException ex){
+                    // "index not created for stubs" exception
+                    // for now we just ignore this and return null to keep the plugin from crashing completly
+                }
             }
         }
         return result;
