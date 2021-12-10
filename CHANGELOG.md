@@ -1,6 +1,12 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
 # WicketForge Changelog
+## [6.0.4]
+### Fixed
+- IllegalStateException in WicketPsiUtils
+- Wicket Icons appear as single black pixel
+
+
 ## [6.0.3]
 ### Fixed
 - Wicket-ID References are now working reliable again
