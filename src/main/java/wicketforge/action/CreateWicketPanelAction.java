@@ -15,14 +15,16 @@
  */
 package wicketforge.action;
 
+import java.util.function.Consumer;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.NotNull;
+
 import wicketforge.action.ui.CreatePanelDialog;
 import wicketforge.templates.WicketTemplates;
-
-import java.util.function.Consumer;
 
 /**
  * CreateWicketPanelAction
@@ -34,7 +36,7 @@ public class CreateWicketPanelAction extends CreateWicketAction {
     }
 
     @Override
-    protected void invokeDialog(@NotNull Project project, @NotNull PsiDirectory directory, @NotNull Consumer<PsiElement[]> elementsConsumer) {
+    protected void invokeDialog(@NotNull Project project, @NotNull PsiDirectory directory, @NotNull Consumer<? super PsiElement[]> elementsConsumer) {
         ActionRunnableImpl actionRunnable = new ActionRunnableImpl(project, directory, WicketTemplates.WICKET_PANEL_HTML);
         CreatePanelDialog dialog = new CreatePanelDialog(project, actionRunnable, getCommandName(), directory);
         dialog.show();

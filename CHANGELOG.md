@@ -1,6 +1,10 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
 # WicketForge Changelog
+## [6.0.5]
+### Added
+- Support for IntelliJ IDEA 2022.1
+
 ## [6.0.4]
 ### Fixed
 - IllegalStateException in WicketPsiUtils
