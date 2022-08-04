@@ -1,6 +1,10 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
 # WicketForge Changelog
+## [6.0.7]
+### Added
+- Changed version range to 221.* - 223.* otherwise IntelliJ 2022.2 marks the plugin as incompatible
+
 ## [6.0.6]
 ### Added
 - Support for IntelliJ IDEA 2022.2
