@@ -2,7 +2,7 @@
 
 <!-- Plugin description -->
 
-WicketForge is a plugin for [IntelliJ IDEA](http://www.jetbrains.com/idea/) designed to assist developers creating applications using [Apache Wicket](http://wicket.apache.org/).
+WicketForge is a plugin for [IntelliJ IDEA](https://www.jetbrains.com/idea/) designed to assist developers creating applications using [Apache Wicket](https://wicket.apache.org/).
 
 <!-- Plugin description end -->
 

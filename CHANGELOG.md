@@ -1,9 +1,15 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
 # WicketForge Changelog
+
 ## [6.0.7]
+### Changed
+-  new minimum version is 2022.* (platform 222.*)
+### Fixed
+- InvalidArgumentException in MarkupWicketIdReferenceProvider
+- upgraded deprecated functions to new API
 ### Added
-- Changed version range to 221.* - 223.* otherwise IntelliJ 2022.2 marks the plugin as incompatible
+- Support for 2022.3.*
 
 ## [6.0.6]
 ### Added
