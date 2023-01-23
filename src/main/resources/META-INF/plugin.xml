@@ -8,7 +8,7 @@
     <!-- Project metadata -->
     <id>WicketForge</id>
     <name>WicketForge</name>
-    <version>6.0.4</version>
+    <version>6.0.7</version>
     <description>
         <![CDATA[
         <p>WicketForge assists developers creating <a href="http://wicket.apache.org/">Wicket</a> applications.</p>
@@ -21,6 +21,8 @@
     <idea-version since-build="138.0000"/>
     <change-notes><![CDATA[See <a href="https://github.com/wicketforge/wicketforge/wiki/Change-Notes">change notes</a>.]]></change-notes>
     <extensions defaultExtensionNs="com.intellij">
+        <!-- Service Startup -->
+        <postStartupActivity implementation="wicketforge.WicketForgeService"/>
         <facetType implementation="wicketforge.facet.WicketForgeFacetType"/>
         <framework.detector implementation="wicketforge.facet.WicketForgeFacetType$WicketForgeFacetDetector"/>
         <library.type implementation="wicketforge.library.WicketLibraryType"/>
@@ -100,10 +102,6 @@
         </component>
     </application-components>
     -->
-    <applicationListeners>
-        <listener class="wicketforge.WicketForgeService"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
     <actions>
         <action id="WicketForgeToggle"
                 class="wicketforge.action.ToggleAction"
