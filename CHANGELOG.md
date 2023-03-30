@@ -2,6 +2,10 @@
 
 # WicketForge Changelog
 
+## [6.0.8]
+### Added
+- Support for IntelliJ IDEA 2023.1
+
 ## [6.0.7]
 ### Changed
 -  new minimum version is 2022.* (platform 222.*)
