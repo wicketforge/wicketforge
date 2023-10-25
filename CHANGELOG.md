@@ -2,6 +2,10 @@
 
 # WicketForge Changelog
 
+## [6.0.9]
+- Support for IntelliJ IDEA 2023.3
+- updated dependencies
+
 ## [6.0.8]
 ### Added
 - Support for IntelliJ IDEA 2023.1
