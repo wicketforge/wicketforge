@@ -12,7 +12,7 @@ job("Build and run tests") {
     container(displayName = "Gradle build", image = "amazoncorretto:17-alpine") {
         kotlinScript { api ->
             // here goes complex logic
-            api.gradlew("build")
+            api.gradlew("buildPlugin")
         }
     }
 }
