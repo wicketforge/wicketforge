@@ -29,7 +29,7 @@ import com.intellij.util.io.EnumeratorStringDescriptor;
 import com.intellij.util.io.KeyDescriptor;
 import com.intellij.util.messages.MessageBus;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 import wicketforge.facet.WicketForgeFacetConfiguration;
 import wicketforge.util.WicketPsiUtil;
