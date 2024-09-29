@@ -2,6 +2,12 @@
 
 # WicketForge Changelog
 
+## [Unreleased]
+
+## [6.0.10]
+- Support for Intellij Idea 2024+
+- switched from IntelliJ Idea to Intellij Platform
+
 ## [6.0.9]
 - Support for IntelliJ IDEA 2023.3
 - updated dependencies
