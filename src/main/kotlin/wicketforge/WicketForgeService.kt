@@ -3,13 +3,13 @@ package wicketforge
 import com.intellij.codeHighlighting.Pass
 import com.intellij.codeHighlighting.TextEditorHighlightingPassRegistrar
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.startup.StartupActivity
+import com.intellij.openapi.startup.ProjectActivity
 import wicketforge.highlighting.WicketForgeHighlightingPassFactory
 
-class WicketForgeService : StartupActivity {
+class WicketForgeService : ProjectActivity {
     private var highlightingPassFactory = WicketForgeHighlightingPassFactory()
 
-    override fun runActivity(project: Project) {
+    override suspend fun execute(project: Project) {
         // register wicketforge highlighting pass to text editors
         TextEditorHighlightingPassRegistrar
             .getInstance(project)

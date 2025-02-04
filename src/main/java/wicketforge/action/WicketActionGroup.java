@@ -16,6 +16,7 @@
 package wicketforge.action;
 
 import com.intellij.ide.IdeView;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.LangDataKeys;
@@ -25,6 +26,7 @@ import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiDirectory;
 import icons.WicketForgeIcons;
+import org.jetbrains.annotations.NotNull;
 import wicketforge.facet.WicketForgeFacet;
 
 /**
@@ -35,6 +37,11 @@ public class WicketActionGroup extends DefaultActionGroup {
         super("WicketForge", true);
         getTemplatePresentation().setDescription("Wicket");
         getTemplatePresentation().setIcon(WicketForgeIcons.WICKET_ICON);
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 
     @Override

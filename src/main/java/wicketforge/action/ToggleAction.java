@@ -16,9 +16,7 @@
 package wicketforge.action;
 
 import com.intellij.codeInsight.hint.HintManager;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
@@ -43,19 +41,24 @@ import wicketforge.util.WicketPsiUtil;
 public class ToggleAction extends AnAction {
     @Override
     public void update(AnActionEvent e) {
-        final PsiFile psiFile = e.getData(DataKeys.PSI_FILE);
+        final PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
         // let user toggle when we have a wicket facet or we are in a lib (could be wicket lib)
         e.getPresentation().setEnabled(WicketForgeFacet.hasFacetOrIsFromLibrary(psiFile));
     }
 
     @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
+    }
+
+    @Override
     public void actionPerformed(AnActionEvent event) {
-        Editor editor = event.getData(DataKeys.EDITOR);
+        Editor editor = event.getData(CommonDataKeys.EDITOR);
         if (editor == null) {
             return;
         }
 
-        PsiFile psiFile = event.getData(DataKeys.PSI_FILE);
+        PsiFile psiFile = event.getData(CommonDataKeys.PSI_FILE);
         if (psiFile == null) {
             return;
         }

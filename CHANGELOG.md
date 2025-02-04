@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## 6.0.12
+
+- Support for Intellij Idea 2024.3
+
 ## 6.0.11
 
 - Support for Intellij Idea 2024+
